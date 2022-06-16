@@ -3,6 +3,8 @@ module Main exposing(..)
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 import Browser
+import Html.Attributes exposing (start)
+import Random
  
 -- Types
 type Position = GK | DEF | MID | ATT
@@ -18,6 +20,10 @@ positionToString pos =
         MID -> "Midfielder"
         ATT -> "Attacker"
 
+
+roll: Random.Generator Int
+roll = 
+  Random.int 1 6
 
 -- Player
 type alias Player =
@@ -76,20 +82,95 @@ lineStrength players =
 inRange: List Player -> Int -> Int -> Bool
 inRange players min max =
   min <= List.length players && List.length players <= max
+   
+type FacilityLevel = I | II | III | IV
 
+type alias Starters = 
+  { goalkeeper : Player
+  , defenders : List Player
+  , midfielders : List Player
+  , attackers : List Player
+  }
 
-validEleven: Player -> List Player -> List Player -> List Player -> Bool
-validEleven goalkeeper defense midfield offense =
+validEleven: Starters -> Bool
+validEleven starters =
   let
-    d = List.length defense
-    m = List.length midfield
-    o = List.length offense
+
+    d = List.length <| .defenders starters
+    m = List.length <| .midfielders starters
+    o = List.length <| .attackers starters
   in
-  if d + m + o /= 11 then
+  if d + m + o /= 10 then
       False
   else
-    not <| List.member False [inRange defense 3 4, inRange midfield 3 5, inRange offense 2 4]
-   
+    not <| List.member False 
+      [ inRange starters.defenders 3 4
+      , inRange starters.midfielders 3 5
+      , inRange starters.attackers 2 4]
+
+comparePlayers: List Player -> List Player -> Int
+comparePlayers home away =
+  clamp -1 1 
+    <| lineStrength home - lineStrength away
+
+type Winner = Home | Away | Tie
+type Result = Win | Loss | Draw
+
+-- TODO: Change this to use result instead of winner
+playGame: Starters -> Starters -> Winner
+playGame home away = 
+  let
+      mid = comparePlayers home.midfielders away.midfielders
+      def = comparePlayers (home.goalkeeper :: home.defenders) away.attackers
+      off = comparePlayers home.attackers (away.goalkeeper :: away.defenders)
+      sum = mid + def + off
+  in
+  if sum > 0 then Home
+  else if sum < 0 then Away
+  else Tie
+
+simGame: Int -> Int -> Result
+simGame a b = 
+  let
+    sum = clamp 2 12 (a + b)
+  in
+  if sum <= 6 then 
+    Loss
+  else if sum <= 8 then 
+    Draw
+  else 
+    Win
+
+{-
+Flow of game:
+  OffSeason
+    Income
+      Stadium + Position
+      Wages
+    Training
+      Select Players
+        Roll
+        Improved
+    Scouting
+      Draw Players
+      Choose to Sign or not
+    Investment
+      Choose Facility
+  Season
+
+-}
+
+type ClubLevel = NewlyPromoted | MidTable | Established | TitleContenders
+
+type alias User = 
+  { balance : Int
+  , squad : List Player
+  , starters : Starters
+  , stadium_level : FacilityLevel
+  , scouting_level : FacilityLevel
+  , training_level : FacilityLevel
+  , club_level : ClubLevel
+  }
   
 main =
   Browser.sandbox { init = init, update = update, view = view }
