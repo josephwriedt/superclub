@@ -4,10 +4,11 @@ import Player exposing (Player)
 import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
 import String
 import GameStyle
-import Html.Styled.Attributes exposing (attribute, css)
+import Html.Styled.Attributes exposing (attribute, css, class)
 import Html
 import Css
 import Html exposing (section)
+import List exposing (map)
 
 -- type alias Model = 
 --     { clubs : List Club
@@ -38,19 +39,14 @@ view : Model -> Html.Html Msg
 view model =
     model |> squadView |>  toUnstyled
 
-styledView : Model -> StyledHtml.Html Msg
-styledView model =
-    -- model |> playerToHtml
-    StyledHtml.section
-    [ css [ Css.displayFlex ] ]
-    <| List.map  playerToHtml model
     
 
 squadView : Model -> StyledHtml.Html Msg
 squadView squad = 
-    StyledHtml.section
+
+    StyledHtml.div
     [ css [  ] ]
-    <| List.map  playerToHtml squad
+    <| [ squadToHtml squad ]
 
 
 
@@ -69,26 +65,40 @@ init =
   , Player "Mason Mount" Player.MID Player.Left 3 6 25 12
   , Player "Mason Mount" Player.MID Player.Left 3 6 25 12
   , Player "Mason Mount" Player.MID Player.Left 3 6 25 12
+  , Player "Chloey Da Big Forehead" Player.GK Player.None 0 0 0 0
   ]
 
-playerCard: Player -> StyledHtml.Html
-playerCard player = 
-    div 
-    []
-    []
+-- cols: Int -> Css.LengthOrNumberOrAutoOrNoneOrContent
+-- flex num = 
+--   Css.LengthOrNumberOrAutoOrNoneOrContent
+
+squadToHtml: List Player -> StyledHtml.Html Msg
+squadToHtml players = 
+  let
+    attributes = [ css 
+                    [ Css.display Css.inlineFlex
+                    , Css.flexFlow1 Css.wrap
+                    ]
+                  ]
+
+    squadHtml = map playerToHtml players
+  in
+  -- Pass attributes to players' html
+  StyledHtml.node "Squad" attributes squadHtml
+
     
 playerToHtml: Player -> StyledHtml.Html Msg
 playerToHtml player =
     div 
-    [ 
-    css [ GameStyle.paddingStyle ]
+    [ class player.name
+    , css [ GameStyle.paddingStyle ] 
     ] 
     [
         div 
         [ css  [ GameStyle.cardStyle ]
-        -- , attribute "class" "player-card"
+        , class "player-card"
         ]
-        [ h2 [] [ text player.name ]
+        [ h2 [ css [ GameStyle.centerText, Css.textAlign Css.textTop ] ] [ text player.name ]
         , h4 [] [ player.position |> Player.positionToString |> text ]
         , h4 [] [ player.chemistry |> Player.chemistryToString |> text ]
         , h4 [] [ text (String.fromInt player.ability ++ " out of " ++ String.fromInt player.potential) ]

@@ -1,7 +1,6 @@
 module GameStyle exposing (..)
 import Css exposing (..)
 import Html exposing (Attribute)
-import Model exposing (Msg)
 import Html.Styled.Attributes exposing (css)
 
 cardStyle: Style
@@ -12,21 +11,22 @@ cardStyle =
     , Css.padding (px 50)
     , Css.outlineStyle Css.solid
     , borderRadius (px 10)
-    , width (px 100)
-    , height (px 350)
+    , height (pct 70)
+    , width (pct 50)
+    -- , width (px 100)
+    -- , height (px 350)
+    , height (em 8.75)
+    , width (em 6.25)
     ]
 
 paddingStyle: Style
 paddingStyle = 
     Css.batch 
-    [ Css.padding (px 50)
-    , cardDisplayStyle
+    [ 
+        Css.padding (px 10)
+        -- Css.padding (pct 5)
     ]
 
-cardDisplayStyle: Style
-cardDisplayStyle = 
-    display inlineBlock
-    
-cardDisplayAttribtue : Attribute Msg
-cardDisplayAttribtue = 
-    css [ cardDisplayStyle ]
+centerText: Style
+centerText = 
+    textAlign center
