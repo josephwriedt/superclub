@@ -1,7 +1,7 @@
 module Offseason exposing (..)
 import Club exposing (Club, FacilityLevel, ClubLevel)
 import Player exposing (Player)
-import Main exposing (Model)
+
 
 -- Finance Step
 finance: Club -> Club
@@ -40,11 +40,11 @@ clubPlacementMultiplier club_level =
         Club.TitleContenders -> 50
 
 wages: Club -> Int
-wages a = 
-    a.squad |> Player.sumAbility
+wages club = 
+    Club.squad club |> Player.sumAbility
 clubPlacement: Club -> Int
-clubPlacement a =
-    case a.club_position of
+clubPlacement club =
+    case club.club_position of
         Club.First -> 100
         Club.Second -> 90
         Club.Third -> 80

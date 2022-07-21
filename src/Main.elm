@@ -6,7 +6,6 @@ import Browser
 import Html.Attributes exposing (start)
 import Player exposing (Player)
 import Model exposing (init, update, view)
-import Model exposing (Msg)
 
 {-
 Flow of game:

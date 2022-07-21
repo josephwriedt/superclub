@@ -1,6 +1,11 @@
 module Player exposing (..)
 import Random
-import Html exposing (Html, div)
+import Compare exposing (Comparator)
+import Css exposing (position)
+import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
+import Html.Styled.Attributes exposing (attribute, css, class)
+import GameStyle
+import Msg exposing (Msg)
 
 -- Types
 type Position = GK | DEF | MID | ATT
@@ -11,10 +16,19 @@ type Chemistry = Left | Right | Both | None
 positionToString: Position -> String
 positionToString pos = 
     case pos of 
-        GK -> "GoalKeeper"
+        GK -> "Goalkeeper"
         DEF -> "Defender"
         MID -> "Midfielder"
         ATT -> "Attacker"
+
+positionToInt: Position -> Int
+positionToInt position =
+  case position of
+      GK -> 4
+      DEF -> 3
+      MID -> 2
+      ATT -> 1
+
 
 chemistryToString: Chemistry -> String
 chemistryToString chem =
@@ -23,8 +37,6 @@ chemistryToString chem =
     Right -> "Right Half Star on Card"
     Both -> "Half Stars on Both Side of Card"
     None -> ""
-
--- chemistryToHtml: 
 
 roll: Random.Generator Int
 roll = 
@@ -46,6 +58,10 @@ playerToString: Player -> String
 playerToString player =
     String.join " " [.name player, String.fromInt <| .ability player, positionToString <| .position player]
 
+playerPositionToInt: Player -> Int
+playerPositionToInt player =
+  player.position |> positionToInt
+
  
 hasChemistry: Player -> Player -> Bool
 hasChemistry a b =
@@ -58,7 +74,7 @@ hasChemistry a b =
  
  
 chemistryScore: List Player -> Int
-chemistryScore line =
+chemistryScore line  =
   case line of
     l :: r :: rest ->
       if hasChemistry l r then
@@ -78,11 +94,59 @@ lineStrength: List Player -> Int
 lineStrength players =
   sumAbility players + chemistryScore players
  
-inRange: List Player -> Int -> Int -> Bool
-inRange players min max =
-  min <= List.length players && List.length players <= max
+
 
 comparePlayers: List Player -> List Player -> Int
 comparePlayers home away =
   clamp -1 1 
     <| lineStrength home - lineStrength away
+
+
+-- Comparator for players
+positionComparator: Comparator Player
+positionComparator =
+  Compare.by playerPositionToInt
+
+currentAbilityComparator: Comparator Player
+currentAbilityComparator =
+  Compare.by .ability
+
+potentialAbilityComparator: Comparator Player
+potentialAbilityComparator = 
+  Compare.by .potential
+
+playerComparator: Comparator Player
+playerComparator = 
+  Compare.concat [ positionComparator, currentAbilityComparator, potentialAbilityComparator ]
+
+sortPlayers: List Player -> List Player
+sortPlayers players =
+  players |> List.sortWith playerComparator
+
+playerStyle: Player -> Css.Style
+playerStyle player =
+  case player.position of
+    GK -> GameStyle.goalkeeperStyle
+    DEF -> GameStyle.defenderStyle
+    MID -> GameStyle.midfielderStyle
+    ATT -> GameStyle.attackerStyle
+
+
+playerToHtml: Player -> StyledHtml.Html Msg
+playerToHtml player =
+  div 
+    [ class player.name
+    , css [ GameStyle.paddingStyle ] 
+    ] 
+    [
+        div 
+        [ css  [ playerStyle player ]
+        , class "player-card"
+        ]
+        [ h2 [ css [ GameStyle.centerText, Css.textAlign Css.textTop ] ] [ text player.name ]
+        , h4 [] [ player.position |> positionToString |> text ]
+        , h4 [] [ player.chemistry |> chemistryToString |> text ]
+        , h4 [] [ text (String.fromInt player.ability ++ " out of " ++ String.fromInt player.potential) ]
+        
+        ]
+    ]

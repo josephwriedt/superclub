@@ -9,6 +9,7 @@ import Html
 import Css
 import Html exposing (section)
 import List exposing (map)
+import Msg exposing (Msg)
 
 -- type alias Model = 
 --     { clubs : List Club
@@ -17,19 +18,17 @@ import List exposing (map)
 --     , inactive_players : List Player
 --     }
 
-type Msg
-  = Increment
-  | Decrement
+
 
 
 -- UPDATE
 update : Msg -> Model -> Model
 update msg model =
   case msg of
-    Increment ->
+    Msg.Increment ->
       model 
 
-    Decrement ->
+    Msg.Decrement ->
       model
 
 
@@ -37,12 +36,17 @@ update msg model =
 -- VIEW
 view : Model -> Html.Html Msg
 view model =
-    model |> squadView |>  toUnstyled
+    -- model |> squadView |>  toUnstyled
+    model |> Club.clubFolderHtml |> toUnstyled
 
     
 
 squadView : Model -> StyledHtml.Html Msg
-squadView squad = 
+squadView club = 
+  let
+      squad = Club.squad club
+  in
+  
 
     StyledHtml.div
     [ css [  ] ]
@@ -52,21 +56,43 @@ squadView squad =
 
 -- MODEL
 type alias Model = 
-    -- Player
-    List Player
+    Club
  
-init : Model
+init : Club
 init =
-    -- Player "John Terry" Player.DEF Player.None 5 5 10 5 
-  [ Player "John Terry" Player.DEF Player.None 5 5 10 5 
-  , Player "Mason Mount" Player.MID Player.Left 3 6 25 12
-  , Player "Bukayo Saka" Player.MID Player.Left 3 6 25 12
-  , Player "Mason Mount" Player.MID Player.Left 3 6 25 12
-  , Player "Mason Mount" Player.MID Player.Left 3 6 25 12
-  , Player "Mason Mount" Player.MID Player.Left 3 6 25 12
-  , Player "Mason Mount" Player.MID Player.Left 3 6 25 12
-  , Player "Chloey Da Big Forehead" Player.GK Player.None 0 0 0 0
-  ]
+  let
+      attackers = [ Player "Gabriel Jesus" Player.ATT Player.None 5 5 10 5 
+                  , Player "Gabriel Martinelli" Player.ATT Player.Left 3 6 25 12
+                  , Player "Bukayo Saka" Player.ATT Player.Left 3 6 25 12 
+                  ]
+      midfielders = [ Player "Martin Odeegard" Player.MID Player.None 5 5 10 5 
+                    , Player "Granit Xhaka" Player.MID Player.Left 3 6 25 12
+                    , Player "Thomas Partey" Player.MID Player.Left 3 6 25 12
+                    ]
+      defenders = [ Player "Kieran Tierney" Player.DEF Player.None 5 5 10 5 
+                  , Player "William Saliba" Player.DEF Player.Left 3 6 25 12
+                  , Player "Ben White" Player.DEF Player.Left 3 6 25 12
+                  , Player "Takehiro Tomayisu" Player.DEF Player.Left 3 6 25 12
+                  ]
+      reserves = [ Player "Eddie Nketiah" Player.ATT Player.None 5 5 10 5 
+                  , Player "Matt Turner" Player.GK Player.Left 3 6 25 12
+                  , Player "Cedric Soares" Player.DEF Player.Left 3 6 25 12
+                  ]
+  in
+  { balance = 100
+  , stadium_level = Club.I
+  , scouting_level = Club.I
+  , training_level = Club.I
+  , club_level = Club.NewlyPromoted
+  , club_position = Club.Fifth
+  , attackers = attackers
+  , midfielders = midfielders
+  , defenders = defenders
+  , goalkeeper = Player "Petr Cech" Player.GK Player.None 1 1 0 0
+  , reserves = reserves
+  }
+
+    
 
 -- cols: Int -> Css.LengthOrNumberOrAutoOrNoneOrContent
 -- flex num = 
@@ -81,28 +107,10 @@ squadToHtml players =
                     ]
                   ]
 
-    squadHtml = map playerToHtml players
+    squadHtml = map Player.playerToHtml players
   in
   -- Pass attributes to players' html
   StyledHtml.node "Squad" attributes squadHtml
 
     
-playerToHtml: Player -> StyledHtml.Html Msg
-playerToHtml player =
-    div 
-    [ class player.name
-    , css [ GameStyle.paddingStyle ] 
-    ] 
-    [
-        div 
-        [ css  [ GameStyle.cardStyle ]
-        , class "player-card"
-        ]
-        [ h2 [ css [ GameStyle.centerText, Css.textAlign Css.textTop ] ] [ text player.name ]
-        , h4 [] [ player.position |> Player.positionToString |> text ]
-        , h4 [] [ player.chemistry |> Player.chemistryToString |> text ]
-        , h4 [] [ text (String.fromInt player.ability ++ " out of " ++ String.fromInt player.potential) ]
-        
-        ]
-    ]
-     
+
