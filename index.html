@@ -4512,33 +4512,33 @@ var $author$project$Club$NewlyPromoted = 0;
 var $author$project$Player$None = 3;
 var $author$project$Player$Player = F7(
 	function (name, position, chemistry, ability, potential, market_value, scout_value) {
-		return {av: ability, aR: chemistry, c0: market_value, aX: name, aI: position, bk: potential, dk: scout_value};
+		return {av: ability, a7: chemistry, c0: market_value, aV: name, a_: position, bk: potential, dk: scout_value};
 	});
 var $author$project$Model$init = function () {
 	var reserves = _List_fromArray(
 		[
-			A7($author$project$Player$Player, 'Eddie Nketiah', 3, 3, 5, 5, 10, 5),
-			A7($author$project$Player$Player, 'Matt Turner', 0, 0, 3, 6, 25, 12),
-			A7($author$project$Player$Player, 'Cedric Soares', 1, 0, 3, 6, 25, 12)
+			A7($author$project$Player$Player, 'Nketiah', 3, 3, 2, 4, 10, 5),
+			A7($author$project$Player$Player, 'Turner', 0, 0, 2, 3, 25, 12),
+			A7($author$project$Player$Player, 'Cedric', 1, 0, 2, 2, 25, 12)
 		]);
 	var midfielders = _List_fromArray(
 		[
-			A7($author$project$Player$Player, 'Martin Odeegard', 2, 3, 5, 5, 10, 5),
-			A7($author$project$Player$Player, 'Granit Xhaka', 2, 0, 3, 6, 25, 12),
-			A7($author$project$Player$Player, 'Thomas Partey', 2, 0, 3, 6, 25, 12)
+			A7($author$project$Player$Player, 'Odeegard', 2, 3, 4, 5, 10, 5),
+			A7($author$project$Player$Player, 'Xhaka', 2, 0, 4, 4, 25, 12),
+			A7($author$project$Player$Player, 'Thomas', 2, 0, 5, 5, 25, 12)
 		]);
 	var defenders = _List_fromArray(
 		[
-			A7($author$project$Player$Player, 'Kieran Tierney', 1, 3, 5, 5, 10, 5),
-			A7($author$project$Player$Player, 'William Saliba', 1, 0, 3, 6, 25, 12),
-			A7($author$project$Player$Player, 'Ben White', 1, 0, 3, 6, 25, 12),
-			A7($author$project$Player$Player, 'Takehiro Tomayisu', 1, 0, 3, 6, 25, 12)
+			A7($author$project$Player$Player, 'Tierney', 1, 3, 4, 5, 10, 5),
+			A7($author$project$Player$Player, 'Saliba', 1, 0, 2, 6, 25, 12),
+			A7($author$project$Player$Player, 'White', 1, 0, 3, 6, 25, 12),
+			A7($author$project$Player$Player, 'Tomayisu', 1, 0, 3, 5, 25, 12)
 		]);
 	var attackers = _List_fromArray(
 		[
-			A7($author$project$Player$Player, 'Gabriel Jesus', 3, 3, 5, 5, 10, 5),
-			A7($author$project$Player$Player, 'Gabriel Martinelli', 3, 0, 3, 6, 25, 12),
-			A7($author$project$Player$Player, 'Bukayo Saka', 3, 0, 3, 6, 25, 12)
+			A7($author$project$Player$Player, 'Jesus', 3, 3, 5, 5, 10, 5),
+			A7($author$project$Player$Player, 'Martinelli', 3, 0, 3, 6, 25, 12),
+			A7($author$project$Player$Player, 'Saka', 3, 0, 4, 6, 25, 12)
 		]);
 	return {
 		ax: attackers,
@@ -4546,7 +4546,7 @@ var $author$project$Model$init = function () {
 		cK: 0,
 		cL: 4,
 		az: defenders,
-		aB: A7($author$project$Player$Player, 'Petr Cech', 0, 3, 1, 1, 0, 0),
+		aB: A7($author$project$Player$Player, 'Cech', 0, 3, 1, 1, 0, 0),
 		aE: midfielders,
 		bn: reserves,
 		dl: 0,
@@ -5492,7 +5492,7 @@ var $rtfeldman$elm_css$Css$Structure$compactHelp = F2(
 			case 6:
 				var record = declaration.a;
 				return $elm$core$String$isEmpty(record.cM) ? _Utils_Tuple2(keyframesByName, declarations) : _Utils_Tuple2(
-					A3($elm$core$Dict$insert, record.aX, record.cM, keyframesByName),
+					A3($elm$core$Dict$insert, record.aV, record.cM, keyframesByName),
 					declarations);
 			case 7:
 				var properties = declaration.a;
@@ -5539,7 +5539,7 @@ var $rtfeldman$elm_css$Css$Structure$withKeyframeDeclarations = F2(
 					var name = _v0.a;
 					var decl = _v0.b;
 					return $rtfeldman$elm_css$Css$Structure$Keyframes(
-						{cM: decl, aX: name});
+						{cM: decl, aV: name});
 				},
 				$elm$core$Dict$toList(keyframesByName)),
 			compactedDeclarations);
@@ -5806,7 +5806,7 @@ var $rtfeldman$elm_css$Css$Structure$Output$prettyPrintDeclaration = function (d
 		case 5:
 			return 'TODO';
 		case 6:
-			var name = decl.a.aX;
+			var name = decl.a.aV;
 			var declaration = decl.a.cM;
 			return '@keyframes ' + (name + ('{' + (declaration + '}')));
 		case 7:
@@ -6896,7 +6896,7 @@ var $rtfeldman$elm_css$Css$Preprocess$Resolve$applyStyles = F2(
 						_List_fromArray(
 							[
 								$rtfeldman$elm_css$Css$Structure$Keyframes(
-								{cM: str, aX: name})
+								{cM: str, aV: name})
 							]));
 				case 4:
 					var _v12 = styles.a;
@@ -7195,7 +7195,7 @@ var $rtfeldman$elm_css$Css$Internal$lengthConverter = F3(
 			O: numericValue,
 			ar: 0,
 			at: unitLabel,
-			aN: units,
+			aM: units,
 			G: _Utils_ap(
 				$elm$core$String$fromFloat(numericValue),
 				unitLabel)
@@ -7212,6 +7212,7 @@ var $rtfeldman$elm_css$Css$float = function (fn) {
 var $rtfeldman$elm_css$Css$batch = $rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
 var $rtfeldman$elm_css$Css$border = $rtfeldman$elm_css$Css$prop1('border');
 var $rtfeldman$elm_css$Css$borderRadius = $rtfeldman$elm_css$Css$prop1('border-radius');
+var $rtfeldman$elm_css$Css$margin = $rtfeldman$elm_css$Css$prop1('margin');
 var $rtfeldman$elm_css$Css$outlineStyle = $rtfeldman$elm_css$Css$prop1('outline-style');
 var $rtfeldman$elm_css$Css$PercentageUnits = 0;
 var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, 0, '%');
@@ -7228,17 +7229,12 @@ var $author$project$GameStyle$folderStyle = $rtfeldman$elm_css$Css$batch(
 			$rtfeldman$elm_css$Css$borderRadius(
 			$rtfeldman$elm_css$Css$px(20)),
 			$rtfeldman$elm_css$Css$width(
-			$rtfeldman$elm_css$Css$pct(40))
+			$rtfeldman$elm_css$Css$pct(40)),
+			$rtfeldman$elm_css$Css$margin(
+			$rtfeldman$elm_css$Css$pct(2.5))
 		]));
 var $rtfeldman$elm_css$Css$inlineFlex = {g: 0, G: 'inline-flex'};
 var $rtfeldman$elm_css$Css$left = $rtfeldman$elm_css$Css$prop1('left');
-var $rtfeldman$elm_css$Css$padding = $rtfeldman$elm_css$Css$prop1('padding');
-var $author$project$GameStyle$paddingStyle = $rtfeldman$elm_css$Css$batch(
-	_List_fromArray(
-		[
-			$rtfeldman$elm_css$Css$padding(
-			$rtfeldman$elm_css$Css$px(10))
-		]));
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
 var $rtfeldman$elm_css$Css$textAlign = function (fn) {
 	return A3(
@@ -7248,18 +7244,6 @@ var $rtfeldman$elm_css$Css$textAlign = function (fn) {
 		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
 };
 var $author$project$GameStyle$centerText = $rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center);
-var $author$project$Player$chemistryToString = function (chem) {
-	switch (chem) {
-		case 0:
-			return 'Half Star on Card';
-		case 1:
-			return 'Right Half Star on Card';
-		case 2:
-			return 'Half Stars on Both Side of Card';
-		default:
-			return '';
-	}
-};
 var $elm$virtual_dom$VirtualDom$property = F2(
 	function (key, value) {
 		return A2(
@@ -7284,23 +7268,17 @@ var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $rtfeldman$elm_css$Html$Styled$Attributes$class = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('className');
-var $rtfeldman$elm_css$Html$Styled$h2 = $rtfeldman$elm_css$Html$Styled$node('h2');
-var $rtfeldman$elm_css$Html$Styled$h4 = $rtfeldman$elm_css$Html$Styled$node('h4');
-var $rtfeldman$elm_css$Css$prop4 = F5(
-	function (key, argA, argB, argC, argD) {
-		return A2($rtfeldman$elm_css$Css$property, key, argA.G + (' ' + (argB.G + (' ' + (argC.G + (' ' + argD.G))))));
-	});
-var $rtfeldman$elm_css$Css$boxShadow4 = $rtfeldman$elm_css$Css$prop4('box-shadow');
-var $author$project$GameStyle$cardStyles = _List_fromArray(
-	[
-		$rtfeldman$elm_css$Css$border(
-		$rtfeldman$elm_css$Css$px(10)),
-		$rtfeldman$elm_css$Css$padding(
-		$rtfeldman$elm_css$Css$px(50)),
-		$rtfeldman$elm_css$Css$outlineStyle($rtfeldman$elm_css$Css$solid),
-		$rtfeldman$elm_css$Css$borderRadius(
-		$rtfeldman$elm_css$Css$px(10))
-	]);
+var $author$project$Player$Current = 1;
+var $author$project$Player$Placeholder = 0;
+var $author$project$Player$Potential = 2;
+var $rtfeldman$elm_css$Css$color = function (c) {
+	return A2($rtfeldman$elm_css$Css$property, 'color', c.G);
+};
+var $rtfeldman$elm_css$Css$fontSize = $rtfeldman$elm_css$Css$prop1('font-size');
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $elm$core$Char$fromCode = _Char_fromCode;
 var $rtfeldman$elm_css$Css$cssFunction = F2(
 	function (funcName, args) {
 		return funcName + ('(' + (A2($elm$core$String$join, ',', args) + ')'));
@@ -7309,7 +7287,7 @@ var $rtfeldman$elm_css$Css$rgb = F3(
 	function (r, g, b) {
 		return {
 			aa: 1,
-			a7: b,
+			a6: b,
 			D: 0,
 			bc: g,
 			bm: r,
@@ -7323,56 +7301,424 @@ var $rtfeldman$elm_css$Css$rgb = F3(
 						[r, g, b])))
 		};
 	});
+var $rtfeldman$elm_css$Html$Styled$span = $rtfeldman$elm_css$Html$Styled$node('span');
+var $rtfeldman$elm_css$VirtualDom$Styled$Unstyled = function (a) {
+	return {$: 4, a: a};
+};
+var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var $rtfeldman$elm_css$VirtualDom$Styled$text = function (str) {
+	return $rtfeldman$elm_css$VirtualDom$Styled$Unstyled(
+		$elm$virtual_dom$VirtualDom$text(str));
+};
+var $rtfeldman$elm_css$Html$Styled$text = $rtfeldman$elm_css$VirtualDom$Styled$text;
+var $author$project$GameStyle$filledStar = function () {
+	var styles = _List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$fontSize(
+			$rtfeldman$elm_css$Css$pct(100)),
+			$rtfeldman$elm_css$Css$color(
+			A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255))
+		]);
+	var starString = $elm$core$String$fromChar(
+		$elm$core$Char$fromCode(9733));
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$span,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$Attributes$css(styles)
+			]),
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$text(starString)
+			]));
+}();
+var $author$project$GameStyle$unfilledStar = function () {
+	var styles = _List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$fontSize(
+			$rtfeldman$elm_css$Css$pct(100)),
+			$rtfeldman$elm_css$Css$color(
+			A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255))
+		]);
+	var starString = $elm$core$String$fromChar(
+		$elm$core$Char$fromCode(9734));
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$span,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$Attributes$css(styles)
+			]),
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$text(starString)
+			]));
+}();
+var $author$project$Player$generateStar = function (star) {
+	switch (star) {
+		case 0:
+			return A2($rtfeldman$elm_css$Html$Styled$span, _List_Nil, _List_Nil);
+		case 1:
+			return $author$project$GameStyle$filledStar;
+		default:
+			return $author$project$GameStyle$unfilledStar;
+	}
+};
+var $author$project$Player$generateStarFromMatrix = function (matrix) {
+	var generateStarsRow = function (list) {
+		return A2(
+			$rtfeldman$elm_css$Html$Styled$div,
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Html$Styled$Attributes$class('star-row'),
+					$rtfeldman$elm_css$Html$Styled$Attributes$css(
+					_List_fromArray(
+						[$author$project$GameStyle$centerText]))
+				]),
+			A2($elm$core$List$map, $author$project$Player$generateStar, list));
+	};
+	return A2($elm$core$List$map, generateStarsRow, matrix);
+};
+var $author$project$Player$displayAbility = function (player) {
+	var stars = function () {
+		var _v0 = _Utils_Tuple2(player.av, player.bk);
+		_v0$21:
+		while (true) {
+			switch (_v0.a) {
+				case 1:
+					switch (_v0.b) {
+						case 1:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[0, 1, 0]),
+										_List_fromArray(
+										[0, 0, 0])
+									]));
+						case 2:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 0, 2]),
+										_List_fromArray(
+										[0, 0, 0])
+									]));
+						case 3:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 2, 2]),
+										_List_fromArray(
+										[0, 0, 0])
+									]));
+						case 4:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 0, 2]),
+										_List_fromArray(
+										[2, 0, 2])
+									]));
+						case 5:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 2, 2]),
+										_List_fromArray(
+										[2, 0, 2])
+									]));
+						case 6:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 2, 2]),
+										_List_fromArray(
+										[2, 2, 2])
+									]));
+						default:
+							break _v0$21;
+					}
+				case 2:
+					switch (_v0.b) {
+						case 2:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 0, 1]),
+										_List_fromArray(
+										[0, 0, 0])
+									]));
+						case 3:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 2]),
+										_List_fromArray(
+										[0, 0, 0])
+									]));
+						case 4:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 0, 1]),
+										_List_fromArray(
+										[2, 0, 2])
+									]));
+						case 5:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 2]),
+										_List_fromArray(
+										[2, 0, 2])
+									]));
+						case 6:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 2]),
+										_List_fromArray(
+										[2, 2, 2])
+									]));
+						default:
+							break _v0$21;
+					}
+				case 3:
+					switch (_v0.b) {
+						case 3:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 1]),
+										_List_fromArray(
+										[0, 0, 0])
+									]));
+						case 4:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 0, 1]),
+										_List_fromArray(
+										[1, 0, 2])
+									]));
+						case 5:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 1]),
+										_List_fromArray(
+										[2, 0, 2])
+									]));
+						case 6:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 1]),
+										_List_fromArray(
+										[2, 2, 2])
+									]));
+						default:
+							break _v0$21;
+					}
+				case 4:
+					switch (_v0.b) {
+						case 4:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 0, 1]),
+										_List_fromArray(
+										[1, 0, 1])
+									]));
+						case 5:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 1]),
+										_List_fromArray(
+										[1, 0, 2])
+									]));
+						case 6:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 1]),
+										_List_fromArray(
+										[1, 2, 2])
+									]));
+						default:
+							break _v0$21;
+					}
+				case 5:
+					switch (_v0.b) {
+						case 5:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 1]),
+										_List_fromArray(
+										[1, 0, 1])
+									]));
+						case 6:
+							return $author$project$Player$generateStarFromMatrix(
+								_List_fromArray(
+									[
+										_List_fromArray(
+										[1, 1, 1]),
+										_List_fromArray(
+										[1, 1, 2])
+									]));
+						default:
+							break _v0$21;
+					}
+				case 6:
+					if (_v0.b === 6) {
+						return $author$project$Player$generateStarFromMatrix(
+							_List_fromArray(
+								[
+									_List_fromArray(
+									[1, 1, 1]),
+									_List_fromArray(
+									[1, 1, 1])
+								]));
+					} else {
+						break _v0$21;
+					}
+				default:
+					break _v0$21;
+			}
+		}
+		return _List_fromArray(
+			[
+				A2(
+				$rtfeldman$elm_css$Html$Styled$div,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$text('ERROR with player.ability or player.potential')
+					]))
+			]);
+	}();
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$div,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$Attributes$class('star_content')
+			]),
+		stars);
+};
+var $rtfeldman$elm_css$Html$Styled$h4 = $rtfeldman$elm_css$Html$Styled$node('h4');
+var $rtfeldman$elm_css$Css$padding = $rtfeldman$elm_css$Css$prop1('padding');
+var $author$project$GameStyle$paddingStyle = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$padding(
+			$rtfeldman$elm_css$Css$px(10))
+		]));
+var $rtfeldman$elm_css$Css$backgroundColor = function (c) {
+	return A2($rtfeldman$elm_css$Css$property, 'background-color', c.G);
+};
+var $rtfeldman$elm_css$Css$prop4 = F5(
+	function (key, argA, argB, argC, argD) {
+		return A2($rtfeldman$elm_css$Css$property, key, argA.G + (' ' + (argB.G + (' ' + (argC.G + (' ' + argD.G))))));
+	});
+var $rtfeldman$elm_css$Css$boxShadow4 = $rtfeldman$elm_css$Css$prop4('box-shadow');
+var $author$project$GameStyle$cardStyles = _List_fromArray(
+	[
+		$rtfeldman$elm_css$Css$border(
+		$rtfeldman$elm_css$Css$px(10)),
+		$rtfeldman$elm_css$Css$padding(
+		$rtfeldman$elm_css$Css$px(50)),
+		$rtfeldman$elm_css$Css$outlineStyle($rtfeldman$elm_css$Css$solid),
+		$rtfeldman$elm_css$Css$borderRadius(
+		$rtfeldman$elm_css$Css$px(10)),
+		$rtfeldman$elm_css$Css$padding(
+		$rtfeldman$elm_css$Css$pct(5))
+	]);
 var $author$project$GameStyle$attackerStyle = function () {
+	var color = A3($rtfeldman$elm_css$Css$rgb, 13, 168, 26);
+	var boxShadowStyle = A4(
+		$rtfeldman$elm_css$Css$boxShadow4,
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(5),
+		color);
+	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
 	var styles = A2(
-		$elm$core$List$cons,
-		A4(
-			$rtfeldman$elm_css$Css$boxShadow4,
-			$rtfeldman$elm_css$Css$px(10),
-			$rtfeldman$elm_css$Css$px(10),
-			$rtfeldman$elm_css$Css$px(5),
-			A3($rtfeldman$elm_css$Css$rgb, 13, 168, 26)),
+		$elm$core$List$append,
+		_List_fromArray(
+			[backgroundColorStyle, boxShadowStyle]),
 		$author$project$GameStyle$cardStyles);
 	return $rtfeldman$elm_css$Css$batch(styles);
 }();
 var $author$project$GameStyle$defenderStyle = function () {
+	var color = A3($rtfeldman$elm_css$Css$rgb, 247, 58, 25);
+	var boxShadowStyle = A4(
+		$rtfeldman$elm_css$Css$boxShadow4,
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(5),
+		color);
+	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
 	var styles = A2(
-		$elm$core$List$cons,
-		A4(
-			$rtfeldman$elm_css$Css$boxShadow4,
-			$rtfeldman$elm_css$Css$px(10),
-			$rtfeldman$elm_css$Css$px(10),
-			$rtfeldman$elm_css$Css$px(5),
-			A3($rtfeldman$elm_css$Css$rgb, 247, 58, 25)),
+		$elm$core$List$append,
+		_List_fromArray(
+			[backgroundColorStyle, boxShadowStyle]),
 		$author$project$GameStyle$cardStyles);
 	return $rtfeldman$elm_css$Css$batch(styles);
 }();
 var $author$project$GameStyle$goalkeeperStyle = function () {
+	var color = A3($rtfeldman$elm_css$Css$rgb, 252, 103, 3);
+	var boxShadowStyle = A4(
+		$rtfeldman$elm_css$Css$boxShadow4,
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(5),
+		color);
+	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
 	var styles = A2(
-		$elm$core$List$cons,
-		A4(
-			$rtfeldman$elm_css$Css$boxShadow4,
-			$rtfeldman$elm_css$Css$px(10),
-			$rtfeldman$elm_css$Css$px(10),
-			$rtfeldman$elm_css$Css$px(5),
-			A3($rtfeldman$elm_css$Css$rgb, 252, 103, 3)),
+		$elm$core$List$append,
+		_List_fromArray(
+			[backgroundColorStyle, boxShadowStyle]),
 		$author$project$GameStyle$cardStyles);
 	return $rtfeldman$elm_css$Css$batch(styles);
 }();
 var $author$project$GameStyle$midfielderStyle = function () {
+	var color = A3($rtfeldman$elm_css$Css$rgb, 252, 227, 3);
+	var boxShadowStyle = A4(
+		$rtfeldman$elm_css$Css$boxShadow4,
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(5),
+		color);
+	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
 	var styles = A2(
-		$elm$core$List$cons,
-		A4(
-			$rtfeldman$elm_css$Css$boxShadow4,
-			$rtfeldman$elm_css$Css$px(10),
-			$rtfeldman$elm_css$Css$px(10),
-			$rtfeldman$elm_css$Css$px(5),
-			A3($rtfeldman$elm_css$Css$rgb, 252, 227, 3)),
+		$elm$core$List$append,
+		_List_fromArray(
+			[backgroundColorStyle, boxShadowStyle]),
 		$author$project$GameStyle$cardStyles);
 	return $rtfeldman$elm_css$Css$batch(styles);
 }();
 var $author$project$Player$playerStyle = function (player) {
-	var _v0 = player.aI;
+	var _v0 = player.a_;
 	switch (_v0) {
 		case 0:
 			return $author$project$GameStyle$goalkeeperStyle;
@@ -7384,34 +7730,13 @@ var $author$project$Player$playerStyle = function (player) {
 			return $author$project$GameStyle$attackerStyle;
 	}
 };
-var $author$project$Player$positionToString = function (pos) {
-	switch (pos) {
-		case 0:
-			return 'Goalkeeper';
-		case 1:
-			return 'Defender';
-		case 2:
-			return 'Midfielder';
-		default:
-			return 'Attacker';
-	}
-};
-var $rtfeldman$elm_css$VirtualDom$Styled$Unstyled = function (a) {
-	return {$: 4, a: a};
-};
-var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var $rtfeldman$elm_css$VirtualDom$Styled$text = function (str) {
-	return $rtfeldman$elm_css$VirtualDom$Styled$Unstyled(
-		$elm$virtual_dom$VirtualDom$text(str));
-};
-var $rtfeldman$elm_css$Html$Styled$text = $rtfeldman$elm_css$VirtualDom$Styled$text;
 var $rtfeldman$elm_css$Css$textTop = $rtfeldman$elm_css$Css$prop1('text-top');
 var $author$project$Player$playerToHtml = function (player) {
 	return A2(
 		$rtfeldman$elm_css$Html$Styled$div,
 		_List_fromArray(
 			[
-				$rtfeldman$elm_css$Html$Styled$Attributes$class(player.aX),
+				$rtfeldman$elm_css$Html$Styled$Attributes$class(player.aV),
 				$rtfeldman$elm_css$Html$Styled$Attributes$css(
 				_List_fromArray(
 					[$author$project$GameStyle$paddingStyle]))
@@ -7432,7 +7757,7 @@ var $author$project$Player$playerToHtml = function (player) {
 				_List_fromArray(
 					[
 						A2(
-						$rtfeldman$elm_css$Html$Styled$h2,
+						$rtfeldman$elm_css$Html$Styled$h4,
 						_List_fromArray(
 							[
 								$rtfeldman$elm_css$Html$Styled$Attributes$css(
@@ -7444,32 +7769,9 @@ var $author$project$Player$playerToHtml = function (player) {
 							]),
 						_List_fromArray(
 							[
-								$rtfeldman$elm_css$Html$Styled$text(player.aX)
+								$rtfeldman$elm_css$Html$Styled$text(player.aV)
 							])),
-						A2(
-						$rtfeldman$elm_css$Html$Styled$h4,
-						_List_Nil,
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Html$Styled$text(
-								$author$project$Player$positionToString(player.aI))
-							])),
-						A2(
-						$rtfeldman$elm_css$Html$Styled$h4,
-						_List_Nil,
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Html$Styled$text(
-								$author$project$Player$chemistryToString(player.aR))
-							])),
-						A2(
-						$rtfeldman$elm_css$Html$Styled$h4,
-						_List_Nil,
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Html$Styled$text(
-								$elm$core$String$fromInt(player.av) + (' out of ' + $elm$core$String$fromInt(player.bk)))
-							]))
+						$author$project$Player$displayAbility(player)
 					]))
 			]));
 };
@@ -7522,7 +7824,7 @@ var $author$project$Player$positionToInt = function (position) {
 	}
 };
 var $author$project$Player$playerPositionToInt = function (player) {
-	return $author$project$Player$positionToInt(player.aI);
+	return $author$project$Player$positionToInt(player.a_);
 };
 var $author$project$Player$positionComparator = $NoRedInk$elm_compare$Compare$by($author$project$Player$playerPositionToInt);
 var $author$project$Player$potentialAbilityComparator = $NoRedInk$elm_compare$Compare$by(
@@ -7536,7 +7838,7 @@ var $elm$core$List$sortWith = _List_sortWith;
 var $author$project$Player$sortPlayers = function (players) {
 	return A2($elm$core$List$sortWith, $author$project$Player$playerComparator, players);
 };
-var $rtfeldman$elm_css$Css$wrap = {aA: 0, aT: 0, G: 'wrap'};
+var $rtfeldman$elm_css$Css$wrap = {aA: 0, aR: 0, G: 'wrap'};
 var $author$project$Club$reservesToHtml = function (club) {
 	var reserves = $author$project$Player$sortPlayers(club.bn);
 	var attributes = _List_fromArray(
@@ -7590,11 +7892,11 @@ var $author$project$Club$goalkeeperToHtml = function (club) {
 				[
 					$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$inlineFlex),
 					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-				]))
+				])),
+			$rtfeldman$elm_css$Html$Styled$Attributes$class('goalkeeper')
 		]);
-	return A3(
-		$rtfeldman$elm_css$Html$Styled$node,
-		'goalkeeper',
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$div,
 		attributes,
 		_List_fromArray(
 			[playersHtml]));
@@ -7635,7 +7937,7 @@ var $author$project$Club$clubFolderHtml = function (club) {
 						$author$project$GameStyle$folderStyle,
 						$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$right),
 						$rtfeldman$elm_css$Css$width(
-						$rtfeldman$elm_css$Css$pct(40))
+						$rtfeldman$elm_css$Css$pct(45))
 					]))
 			]),
 		_List_fromArray(
@@ -7652,7 +7954,7 @@ var $author$project$Club$clubFolderHtml = function (club) {
 						$author$project$GameStyle$folderStyle,
 						$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$left),
 						$rtfeldman$elm_css$Css$width(
-						$rtfeldman$elm_css$Css$pct(40))
+						$rtfeldman$elm_css$Css$pct(45))
 					]))
 			]),
 		_List_fromArray(
@@ -7665,8 +7967,7 @@ var $author$project$Club$clubFolderHtml = function (club) {
 			_List_fromArray(
 				[
 					$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$inlineFlex),
-					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap),
-					$author$project$GameStyle$paddingStyle
+					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
 				]))
 		]);
 	return A3(

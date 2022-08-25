@@ -2,23 +2,11 @@ module Model exposing (..)
 import Club exposing (Club)
 import Player exposing (Player)
 import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
-import String
-import GameStyle
 import Html.Styled.Attributes exposing (attribute, css, class)
 import Html
 import Css
-import Html exposing (section)
 import List exposing (map)
 import Msg exposing (Msg)
-
--- type alias Model = 
---     { clubs : List Club
---     -- , key_staff : List Staff
---     , players : List Player
---     , inactive_players : List Player
---     }
-
-
 
 
 -- UPDATE
