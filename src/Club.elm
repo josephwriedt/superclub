@@ -28,7 +28,7 @@ type alias Club =
   , goalkeeper : Player
   , reserves : List Player
   }
-  
+
 
 toString: Club -> String
 toString club = 
@@ -143,7 +143,9 @@ attackersToHtml club =
   let
       playersHtml = club.attackers |> List.map Player.playerToHtml
       attributes = [ css [ Css.display Css.inlineFlex 
-                         , Css.flexFlow1 Css.wrap 
+                         , Css.flexFlow1 Css.wrap
+                        --  , Css.width (Css.pct 30) 
+                        --  , Css.height (Css.pct 20)
                          ] 
                    ]
   in
@@ -178,9 +180,11 @@ goalkeeperToHtml club =
       attributes = [ css [ Css.display Css.inlineFlex 
                          , Css.flexFlow1 Css.wrap 
                          ] 
+                   , class "goalkeeper"
                    ]
   in
-  StyledHtml.node "goalkeeper" attributes [ playersHtml ]
+  div attributes [ playersHtml ]
+  -- StyledHtml.node "goalkeeper" attributes [ playersHtml ]
 
 startersToHtml: Club -> StyledHtml.Html Msg
 startersToHtml club = 
@@ -195,12 +199,12 @@ startersToHtml club =
 clubFolderHtml: Club -> StyledHtml.Html Msg
 clubFolderHtml club = 
   let
-      reservesHtml = div [ css [ GameStyle.folderStyle, Css.float Css.left, Css.width (Css.pct 40) ] ] [ reservesToHtml club]
-      startersHtml = div [ css [ GameStyle.folderStyle , Css.float Css.right, Css.width (Css.pct 40) ] ] [ startersToHtml club ]
+      reservesHtml = div [ css [ GameStyle.folderStyle, Css.float Css.left, Css.width (Css.pct 45) ] ] [ reservesToHtml club]
+      startersHtml = div [ css [ GameStyle.folderStyle , Css.float Css.right, Css.width (Css.pct 45) ] ] [ startersToHtml club ]
       attributes = [ css 
                     [ Css.display Css.inlineFlex
                     , Css.flexFlow1 Css.wrap
-                    , GameStyle.paddingStyle 
+                    -- , GameStyle.paddingStyle 
                     ]
                   ]
   in
