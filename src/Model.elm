@@ -61,22 +61,22 @@ type alias Model =
 init : Club
 init =
   let
-      attackers = [ Player "Gabriel Jesus" Player.ATT Player.None 5 5 10 5 
-                  , Player "Gabriel Martinelli" Player.ATT Player.Left 3 6 25 12
-                  , Player "Bukayo Saka" Player.ATT Player.Left 3 6 25 12 
+      attackers = [ Player "Jesus" Player.ATT Player.None 5 5 10 5 
+                  , Player "Martinelli" Player.ATT Player.Left 3 6 25 12
+                  , Player "Saka" Player.ATT Player.Left 4 6 25 12 
                   ]
-      midfielders = [ Player "Martin Odeegard" Player.MID Player.None 5 5 10 5 
-                    , Player "Granit Xhaka" Player.MID Player.Left 3 6 25 12
-                    , Player "Thomas Partey" Player.MID Player.Left 3 6 25 12
+      midfielders = [ Player "Odeegard" Player.MID Player.None 4 5 10 5 
+                    , Player "Xhaka" Player.MID Player.Left 4 4 25 12
+                    , Player "Thomas" Player.MID Player.Left 5 5 25 12
                     ]
-      defenders = [ Player "Kieran Tierney" Player.DEF Player.None 5 5 10 5 
-                  , Player "William Saliba" Player.DEF Player.Left 3 6 25 12
-                  , Player "Ben White" Player.DEF Player.Left 3 6 25 12
-                  , Player "Takehiro Tomayisu" Player.DEF Player.Left 3 6 25 12
+      defenders = [ Player "Tierney" Player.DEF Player.None 4 5 10 5 
+                  , Player "Saliba" Player.DEF Player.Left 2 6 25 12
+                  , Player "White" Player.DEF Player.Left 3 6 25 12
+                  , Player "Tomayisu" Player.DEF Player.Left 3 5 25 12
                   ]
-      reserves = [ Player "Eddie Nketiah" Player.ATT Player.None 5 5 10 5 
-                  , Player "Matt Turner" Player.GK Player.Left 3 6 25 12
-                  , Player "Cedric Soares" Player.DEF Player.Left 3 6 25 12
+      reserves = [ Player "Nketiah" Player.ATT Player.None 2 4 10 5 
+                  , Player "Turner" Player.GK Player.Left 2 3 25 12
+                  , Player "Cedric" Player.DEF Player.Left 2 2 25 12
                   ]
   in
   { balance = 100
@@ -88,15 +88,10 @@ init =
   , attackers = attackers
   , midfielders = midfielders
   , defenders = defenders
-  , goalkeeper = Player "Petr Cech" Player.GK Player.None 1 1 0 0
+  , goalkeeper = Player "Cech" Player.GK Player.None 1 1 0 0
   , reserves = reserves
   }
 
-    
-
--- cols: Int -> Css.LengthOrNumberOrAutoOrNoneOrContent
--- flex num = 
---   Css.LengthOrNumberOrAutoOrNoneOrContent
 
 squadToHtml: List Player -> StyledHtml.Html Msg
 squadToHtml players = 
