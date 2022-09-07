@@ -65,6 +65,8 @@ init =
       reserves = [ Player "Nketiah" Player.ATT Player.None 2 4 10 5 
                   , Player "Turner" Player.GK Player.Left 2 3 25 12
                   , Player "Cedric" Player.DEF Player.Left 2 2 25 12
+                  , Player "Erik" Player.DEF Player.Both 6 6 0 0
+                  , Player "Caroline" Player.GK Player.None 6 6 120 80
                   ]
   in
   { balance = 100
@@ -88,12 +90,10 @@ squadToHtml players =
                     [ Css.display Css.inlineFlex
                     , Css.flexFlow1 Css.wrap
                     ]
+                  , class "squad"
                   ]
 
     squadHtml = map Player.playerToHtml players
   in
-  -- Pass attributes to players' html
-  StyledHtml.node "Squad" attributes squadHtml
-
-    
+  StyledHtml.div attributes squadHtml
 

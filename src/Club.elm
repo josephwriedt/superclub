@@ -131,12 +131,13 @@ reservesToHtml club =
       reserves = Player.sortPlayers club.reserves
       -- reservesHtml =   div [ css [ GameStyle.paddingStyle ] ] (List.map Player.playerToHtml reserves)
       attributes = [ css 
-                    [ Css.display Css.inlineFlex
-                    , Css.flexFlow1 Css.wrap
-                    ]
-                  ]
+                      [ Css.display Css.inlineFlex
+                      , Css.flexFlow1 Css.wrap
+                      ]
+                   , class "reserves"
+                   ]
   in
-  StyledHtml.node "reserves" attributes (List.map Player.playerToHtml reserves)
+  StyledHtml.div attributes (List.map Player.playerToHtml reserves)
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
@@ -147,9 +148,11 @@ attackersToHtml club =
                         --  , Css.width (Css.pct 30) 
                         --  , Css.height (Css.pct 20)
                          ] 
+                   , class "attackers"
                    ]
   in
-  StyledHtml.node "attackers" attributes playersHtml
+  StyledHtml.div attributes playersHtml
+
 
 midfieldersToHtml: Club -> StyledHtml.Html Msg
 midfieldersToHtml club = 
@@ -158,9 +161,11 @@ midfieldersToHtml club =
       attributes = [ css [ Css.display Css.inlineFlex 
                          , Css.flexFlow1 Css.wrap 
                          ] 
+                   , class "midfielders"
                    ]
   in
-  StyledHtml.node "midfielders" attributes playersHtml
+  StyledHtml.div attributes playersHtml
+
 
 defendersToHtml: Club -> StyledHtml.Html Msg
 defendersToHtml club = 
@@ -169,9 +174,10 @@ defendersToHtml club =
       attributes = [ css [ Css.display Css.inlineFlex 
                          , Css.flexFlow1 Css.wrap 
                          ] 
+                   , class "defenders"      
                    ]
   in
-  StyledHtml.node "defenders" attributes playersHtml
+  StyledHtml.div attributes playersHtml
 
 goalkeeperToHtml: Club -> StyledHtml.Html Msg
 goalkeeperToHtml club =
@@ -194,7 +200,7 @@ startersToHtml club =
     defendersHtml = defendersToHtml club
     goalkeepHtml = goalkeeperToHtml club
   in
-  StyledHtml.node "starters" [] [ attackersHtml, midfieldersHtml, defendersHtml, goalkeepHtml ]
+  StyledHtml.div [ class "starters" ] [ attackersHtml, midfieldersHtml, defendersHtml, goalkeepHtml ]
 
 clubFolderHtml: Club -> StyledHtml.Html Msg
 clubFolderHtml club = 
