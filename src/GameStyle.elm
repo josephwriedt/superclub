@@ -3,7 +3,6 @@ import Css exposing (..)
 import Html exposing (Attribute)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled as StyledHtml 
-import Msg exposing (Msg)
 
 cardStyles: List Style
 cardStyles = 
@@ -11,9 +10,9 @@ cardStyles =
     , Css.padding (px 50)
     , Css.outlineStyle Css.solid
     , borderRadius (px 10)
-    -- , width (pct 30)
-    -- , height (pct 20)
     , Css.padding (pct 5)
+    , width (inches 1.25)
+    , height (inches 1.75)
     ]
 
 folderStyle: Style
@@ -22,7 +21,7 @@ folderStyle =
               , Css.outlineStyle Css.solid
               , borderRadius (px 20)
             --   , paddingStyle
-              , width (pct 40)
+            --   , width (pct 40)
               , margin (pct 2.5)
               ]
 
@@ -73,20 +72,14 @@ attackerStyle =
 
 paddingStyle: Style
 paddingStyle = 
-    Css.batch 
-    [ 
-        Css.padding (px 10)
-        -- Css.padding (pct 5)
-    ]
+    Css.batch [ Css.padding (px 20) ]
 
 centerText: Style
 centerText = 
     textAlign center
 
--- exposing (Attribute, div, h2, h4, text, toUnstyled, span)
-
 -- Stars 
-filledStar: StyledHtml.Html Msg
+filledStar: StyledHtml.Html msg
 filledStar = 
     let
         starString = String.fromChar (Char.fromCode 0x2605)
@@ -96,7 +89,7 @@ filledStar =
         [ css styles]
         [ StyledHtml.text starString]
     
-unfilledStar: StyledHtml.Html Msg
+unfilledStar: StyledHtml.Html msg
 unfilledStar = 
     let 
         starString = String.fromChar (Char.fromCode 0x2606)
@@ -105,3 +98,7 @@ unfilledStar =
     StyledHtml.span
         [ css styles]
         [ StyledHtml.text starString]
+
+flexStyle: Style
+flexStyle =
+    Css.display Css.table
