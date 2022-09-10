@@ -4,7 +4,7 @@ import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
 import Browser
 import Html.Attributes exposing (start)
-import Player exposing (Player)
+import Player exposing (PlayerOrPlaceholder)
 import Model exposing (init, update, view)
 
 {-

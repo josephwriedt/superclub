@@ -9,46 +9,54 @@ import Html.Styled.Events exposing (onClick)
 import Html.Styled.Events exposing (onMouseDown)
 
 
-playerStyle: Player -> Css.Style
-playerStyle player =
-  case player.position of
-    GK -> GameStyle.goalkeeperStyle
-    DEF -> GameStyle.defenderStyle
-    MID -> GameStyle.midfielderStyle
-    ATT -> GameStyle.attackerStyle
+playerStyle: PlayerOrPlaceholder -> Css.Style
+playerStyle a =
+  case a of
+    PlayerPlaceholder _ -> 
+      Css.display Css.none
+    Player player ->
+      case player.position of
+        GK -> GameStyle.goalkeeperStyle
+        DEF -> GameStyle.defenderStyle
+        MID -> GameStyle.midfielderStyle
+        ATT -> GameStyle.attackerStyle
 
 
-playerToHtml: Player -> StyledHtml.Html msg
-playerToHtml player =
+
+playerToHtml: PlayerOrPlaceholder -> StyledHtml.Html msg
+playerToHtml a =
   let
       textStyle = [ Css.color (Css.rgb 255 255 255)
                   , GameStyle.centerText
                   , Css.textAlign Css.textTop
                   ]
   in
-  div 
-    [ class player.name
-    , css [ GameStyle.paddingStyle, Css.float Css.left ] 
-    ] 
-    [
-      div 
-      [ css  [ playerStyle player ]
-      , class "player-card"
-    --   , onMouseDown (Msg.Select { player = player })
-      ]
-      [ StyledHtml.h4 [ css textStyle ] [ text player.name ]
-      , displayAbility player
-      ]
-    ]
+  case a of
+      PlayerPlaceholder _ -> div [] []
+      Player player ->
+        div 
+          [ class player.name
+          , css [ GameStyle.paddingStyle, Css.float Css.left ] 
+          ] 
+          [
+            div 
+            [ css  [ playerStyle a ]
+            , class "player-card"
+          --   , onMouseDown (Msg.Select { PlayerOrPlaceholder = PlayerOrPlaceholder })
+            ]
+            [ StyledHtml.h4 [ css textStyle ] [ text player.name ]
+            , displayAbility a
+            ]
+          ]
 
 
 -- Star Generation
-type Star = Placeholder | Current | Potential 
+type Star = StarPlaceholder | Current | Potential 
 
 generateStar: Star -> StyledHtml.Html msg
 generateStar star =
   case star of
-    Placeholder ->
+    StarPlaceholder ->
       StyledHtml.span [] []
 
     Current ->
@@ -67,58 +75,58 @@ generateStarFromMatrix matrix =
   matrix |> List.map generateStarsRow
 
 
-displayAbility: Player -> StyledHtml.Html msg
-displayAbility player = 
+displayAbility: PlayerOrPlaceholder -> StyledHtml.Html msg
+displayAbility a = 
   let
       stars = 
-        case (player.ability, player.potential) of
+        case (a |> ability, a |> potential) of
           -- Current Ability of 1
           (1, 1) ->
-            generateStarFromMatrix [ [ Placeholder, Current, Placeholder ], [ Placeholder, Placeholder, Placeholder ] ]
+            generateStarFromMatrix [ [ StarPlaceholder, Current, StarPlaceholder ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
           (1, 2) -> 
-            generateStarFromMatrix [ [ Current, Placeholder, Potential ], [ Placeholder, Placeholder, Placeholder ] ]
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Potential ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
           (1, 3) ->
-            generateStarFromMatrix [ [ Current, Potential, Potential ], [ Placeholder, Placeholder, Placeholder ] ]
+            generateStarFromMatrix [ [ Current, Potential, Potential ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
           (1, 4) ->
-            generateStarFromMatrix [ [ Current, Placeholder, Potential ], [ Potential, Placeholder, Potential ] ]
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Potential ], [ Potential, StarPlaceholder, Potential ] ]
           (1, 5) ->
-            generateStarFromMatrix [ [ Current, Potential, Potential ], [ Potential, Placeholder, Potential ] ]
+            generateStarFromMatrix [ [ Current, Potential, Potential ], [ Potential, StarPlaceholder, Potential ] ]
           (1, 6) ->
             generateStarFromMatrix [ [ Current, Potential, Potential ], [ Potential, Potential, Potential ] ]
           
           -- Current Ability of 2
           (2, 2) ->
-            generateStarFromMatrix [ [ Current, Placeholder, Current ], [ Placeholder, Placeholder, Placeholder ] ]
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Current ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
           (2, 3) ->
-            generateStarFromMatrix [ [ Current, Current, Potential ], [ Placeholder, Placeholder, Placeholder ] ]
+            generateStarFromMatrix [ [ Current, Current, Potential ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
           (2, 4) ->
-            generateStarFromMatrix [ [ Current, Placeholder, Current ], [ Potential, Placeholder, Potential ] ]
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Current ], [ Potential, StarPlaceholder, Potential ] ]
           (2, 5) ->
-            generateStarFromMatrix [ [ Current, Current, Potential ], [ Potential, Placeholder, Potential ] ]
+            generateStarFromMatrix [ [ Current, Current, Potential ], [ Potential, StarPlaceholder, Potential ] ]
           (2, 6) ->
             generateStarFromMatrix [ [ Current, Current, Potential ], [ Potential, Potential, Potential ] ]
 
           -- Current Ability of 3
           (3, 3) ->
-            generateStarFromMatrix [ [ Current, Current, Current ], [ Placeholder, Placeholder, Placeholder ] ]
+            generateStarFromMatrix [ [ Current, Current, Current ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
           (3, 4) ->
-            generateStarFromMatrix [ [ Current, Placeholder, Current ], [ Current, Placeholder, Potential ] ]
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Current ], [ Current, StarPlaceholder, Potential ] ]
           (3, 5) ->
-            generateStarFromMatrix [ [ Current, Current, Current ], [ Potential, Placeholder, Potential ] ]
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Potential, StarPlaceholder, Potential ] ]
           (3, 6) ->
             generateStarFromMatrix [ [ Current, Current, Current ], [ Potential, Potential, Potential ] ]
 
           -- Current Ability of 4
           (4, 4) ->
-            generateStarFromMatrix [ [ Current, Placeholder, Current ], [ Current, Placeholder, Current ] ]
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Current ], [ Current, StarPlaceholder, Current ] ]
           (4, 5) ->
-            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, Placeholder, Potential ] ]
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, StarPlaceholder, Potential ] ]
           (4, 6) ->
             generateStarFromMatrix [ [ Current, Current, Current ], [ Current, Potential, Potential ] ]
 
           -- Current Ability of 5
           (5, 5) ->
-            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, Placeholder, Current ] ]
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, StarPlaceholder, Current ] ]
           (5, 6) ->
             generateStarFromMatrix [ [ Current, Current, Current ], [ Current, Current, Potential ] ]
 
@@ -127,9 +135,11 @@ displayAbility player =
             generateStarFromMatrix [ [ Current, Current, Current ], [ Current, Current, Current ] ]
 
 
+          (0, 0) ->
+            generateStarFromMatrix [ [], [] ]
           -- All other cases
           (_, _ )-> 
-            [ div [] [ StyledHtml.text "ERROR with player.ability or player.potential" ] ]
+            [ div [] [ StyledHtml.text "ERROR with PlayerOrPlaceholder.ability or PlayerOrPlaceholder.potential" ] ]
 
   in
   div [ class "star_content" ] stars

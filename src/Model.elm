@@ -1,6 +1,6 @@
 module Model exposing (..)
 import Club exposing (Club)
-import Player exposing (Player, PlayerOrPlaceHolder)
+import Player exposing (PlayerOrPlaceholder)
 import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
 import Html.Styled.Attributes exposing (attribute, css, class)
 import Html
@@ -8,6 +8,7 @@ import Css
 import List exposing (map)
 import Msg exposing (Msg)
 import PlayerDisplay
+import Player exposing (PlayerOrPlaceholder(..))
 
 -- UPDATE
 update : Msg -> Model -> Model
@@ -19,16 +20,16 @@ update msg model =
     Msg.Decrement ->
       model
 
-    Msg.Select player ->
+    Msg.Select (player) ->
       model
     
-    Msg.Swap {playerA, playerB} ->
+    Msg.Swap playerA playerB ->
       model
 
-    Msg.PlayerA player ->
+    Msg.PlayerA (player) ->
       model
     
-    Msg.PlayerB player ->
+    Msg.PlayerB (player) ->
       model
 
 
@@ -58,32 +59,32 @@ squadView model =
 -- MODEL
 type alias Model = 
     { club : Club 
-    , playerA : PlayerOrPlaceHolder
-    , playerB : PlayerOrPlaceHolder
+    , playerA : PlayerOrPlaceholder
+    , playerB : PlayerOrPlaceholder
     }
 
  
 init : Model
 init =
   let
-      attackers = [ Player "Jesus" Player.ATT Player.None 5 5 10 5 
-                  , Player "Martinelli" Player.ATT Player.Left 3 6 25 12
-                  , Player "Saka" Player.ATT Player.Left 4 6 25 12 
+      attackers = [ Player { name = "Jesus", position = Player.ATT, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 60, scout_value = 40 }
+                  , Player { name = "Martinelli", position = Player.ATT, chemistry = Player.Right, ability = 3, potential = 6, market_value = 40, scout_value = 20 }
+                  , Player { name = "Saka", position = Player.ATT, chemistry = Player.Left, ability = 4, potential = 6, market_value = 25, scout_value = 12 }
                   ]
-      midfielders = [ Player "Odeegard" Player.MID Player.None 4 5 10 5 
-                    , Player "Xhaka" Player.MID Player.Left 4 4 25 12
-                    , Player "Thomas" Player.MID Player.Left 5 5 25 12
+      midfielders = [ Player { name = "Odegaard", position = Player.MID, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
+                    , Player { name = "Xhaka", position = Player.MID, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
+                    , Player { name = "Thomas", position = Player.MID, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
                     ]
-      defenders = [ Player "Tierney" Player.DEF Player.None 4 5 10 5 
-                  , Player "Saliba" Player.DEF Player.Left 2 6 25 12
-                  , Player "White" Player.DEF Player.Left 3 6 25 12
-                  , Player "Tomayisu" Player.DEF Player.Left 3 5 25 12
+      defenders = [ Player { name = "Tierney", position = Player.DEF, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
+                  , Player { name = "Saliba", position = Player.DEF, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
+                  , Player { name = "White", position = Player.DEF, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
+                  , Player { name = "Tomiyasu", position = Player.DEF, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
                   ]
-      reserves = [ Player "Nketiah" Player.ATT Player.None 2 4 10 5 
-                  , Player "Turner" Player.GK Player.Left 2 3 25 12
-                  , Player "Cedric" Player.DEF Player.Left 2 2 25 12
-                  , Player "Erik" Player.DEF Player.Both 6 6 0 0
-                  , Player "Caroline" Player.GK Player.None 6 6 120 80
+      reserves = [ Player { name = "Nketiah", position = Player.ATT, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 } 
+                  , Player { name = "Turner", position = Player.GK, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
+                  , Player { name = "Cedric", position = Player.DEF, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
+                  , Player { name = "Erik", position = Player.DEF, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
+                  , Player { name = "Caroline", position = Player.GK, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
                   ]
       club =   { balance = 100
                 , stadium_level = Club.I
@@ -94,17 +95,17 @@ init =
                 , attackers = attackers
                 , midfielders = midfielders
                 , defenders = defenders
-                , goalkeeper = Player "Cech" Player.GK Player.None 1 1 0 0
+                , goalkeeper = Player { name = "Ramsdale", position = Player.GK, chemistry = Player.NoChemistry, ability = 5, potential = 5, market_value = 10, scout_value = 5 }
                 , reserves = reserves
                 }
   in
   { club = club
-  , playerA = Player.Placeholder ""
-  , playerB = Player.Placeholder "" }
+  , playerA = PlayerPlaceholder ""
+  , playerB = PlayerPlaceholder "" }
 
 
 
-squadToHtml: List Player -> StyledHtml.Html msg
+squadToHtml: List PlayerOrPlaceholder -> StyledHtml.Html msg
 squadToHtml players = 
   let
     attributes = [ css 
