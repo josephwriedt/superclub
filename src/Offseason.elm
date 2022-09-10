@@ -1,6 +1,7 @@
 module Offseason exposing (..)
 import Club exposing (Club, FacilityLevel, ClubLevel)
-import Player exposing (Player)
+import Player exposing (PlayerOrPlaceholder)
+import Player exposing (PlayerOrPlaceholder(..))
 
 
 -- Finance Step
@@ -58,26 +59,30 @@ clubPlacement club =
 -- training a =
 --     case a.training_level of
 --         Club.I ->
---             -- upgrade one player
+--             -- upgrade one PlayerOrPlaceholder
 --         Club.II
 --             -- upgrade two players up to two stars
 --         Club.III
 --             -- upgrade three players up to three stars
 --         Club.IV
---             -- upgrade 4 players up to 4 stars with one player guaranteed one star increase
---     -- Select player and improve
+--             -- upgrade 4 players up to 4 stars with one PlayerOrPlaceholder guaranteed one star increase
+--     -- Select PlayerOrPlaceholder and improve
 --     {a | squad = "placeholder"}
 
-increaseAbility: Player -> Int -> Int -> Player
-increaseAbility player max_increase roll =
+increaseAbility: PlayerOrPlaceholder -> Int -> Int -> PlayerOrPlaceholder
+increaseAbility a max_increase roll =
     let
-        increase = (roll - player.ability) |> clamp 0 max_increase
-        new_ability = increase + player.ability
+        increase = (roll - Player.ability a) |> clamp 0 max_increase
+        new_ability = increase + Player.ability a
     in
-    if new_ability < player.potential then
-        {player | ability = new_ability}
-    else 
-        {player | ability = player.potential}
+    case a of
+        PlayerPlaceholder id -> 
+            PlayerPlaceholder id
+        Player player ->
+            if new_ability < player.potential then
+                Player {player | ability = new_ability}
+            else 
+                Player {player | ability = player.potential}
 
 -- Scouting Step
 -- scouting: Club -> Model -> 

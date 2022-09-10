@@ -24,14 +24,14 @@ simGame =
 hasChemistry : Test
 hasChemistry = 
     let
-        right = Main.Player "" Main.DEF Main.Right 0 0 0 0
-        left = Main.Player "" Main.GK Main.Left 0 0 0 0
-        both = Main.Player "" Main.ATT Main.Both 0 0 0 0
-        none = Main.Player "" Main.ATT Main.None 0 0 0 0
+        right = Main.PlayerOrPlaceholder "" Main.DEF Main.Right 0 0 0 0
+        left = Main.PlayerOrPlaceholder "" Main.GK Main.Left 0 0 0 0
+        both = Main.PlayerOrPlaceholder "" Main.ATT Main.Both 0 0 0 0
+        NoChemistry = Main.PlayerOrPlaceholder "" Main.ATT Main.NoChemistry 0 0 0 0
     in 
     describe "Test Chemistry"
         [ test "No Chemistry" <|
-            \() -> Main.hasChemistry none none 
+            \() -> Main.hasChemistry NoChemistry NoChemistry 
                 |> Expect.equal False
         , test "Opposite Chemistry" <|
             \() -> Main.hasChemistry left right

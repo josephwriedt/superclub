@@ -4,7 +4,7 @@ import Compare exposing (Comparator)
 
 -- Types
 type Position = GK | DEF | MID | ATT
-type Chemistry = Left | Right | Both | None
+type Chemistry = Left | Right | Both | NoChemistry
 
 
 -- Position
@@ -31,39 +31,82 @@ chemistryToString chem =
     Left -> "Half Star on Card"
     Right -> "Right Half Star on Card"
     Both -> "Half Stars on Both Side of Card"
-    None -> ""
+    NoChemistry -> ""
 
 roll: Random.Generator Int
 roll = 
   Random.int 1 6
 
 -- Player
-type alias Player =
-  { name : String
-  , position : Position
-  , chemistry : Chemistry
-  , ability : Int
-  , potential : Int
-  , market_value : Int
-  , scout_value : Int
-  }
+-- type alias Player =
+--   { name : String
+--   , position : Position
+--   , chemistry : Chemistry
+--   , ability : Int
+--   , potential : Int
+--   , market_value : Int
+--   , scout_value : Int
+--   }
 
-type PlayerOrPlaceHolder 
-  = Real Player
-  | Placeholder String
- 
-playerToString: Player -> String
-playerToString player =
-    String.join " " [.name player, String.fromInt <| .ability player, positionToString <| .position player]
+type PlayerOrPlaceholder 
+  = Player { name : String
+           , position : Position
+           , chemistry : Chemistry
+           , ability : Int
+           , potential : Int
+           , market_value : Int
+           , scout_value : Int
+           }
+  | PlayerPlaceholder String
 
-playerPositionToInt: Player -> Int
-playerPositionToInt player =
-  player.position |> positionToInt
+potential: PlayerOrPlaceholder -> Int
+potential a =
+  case a of
+    PlayerPlaceholder _ -> 0
+    Player player -> .potential player
 
- 
-hasChemistry: Player -> Player -> Bool
+ability: PlayerOrPlaceholder -> Int
+ability a = 
+  case a of
+    PlayerPlaceholder _ -> 0
+    Player player ->
+      player.ability
+
+chemistry: PlayerOrPlaceholder -> Chemistry
+chemistry a = 
+  case a of
+    PlayerPlaceholder _ -> 
+      NoChemistry
+    Player player ->
+      player.chemistry
+
+
+isPlayer: PlayerOrPlaceholder -> Bool
+isPlayer a = 
+  case a of
+    PlayerPlaceholder _ -> False
+    Player _ -> True
+
+
+playerToString: PlayerOrPlaceholder -> String
+playerToString a =
+  case a of
+    PlayerPlaceholder id -> "placeholder-" ++ id
+    Player player ->
+      String.join " " [.name player, String.fromInt <| .ability player, positionToString <| .position player]
+
+playerPositionToInt: PlayerOrPlaceholder -> Int
+playerPositionToInt a =
+  case a of
+    PlayerPlaceholder _ -> 0
+    Player player ->
+      player.position |> positionToInt
+
+
+
+hasChemistry: PlayerOrPlaceholder -> PlayerOrPlaceholder -> Bool
 hasChemistry a b =
-  case (a.chemistry, b.chemistry) of
+  case (a |> chemistry, b |> chemistry) of
     (Right, Left) -> True
     (Right, Both) -> True
     (Both, Left) -> True
@@ -71,7 +114,7 @@ hasChemistry a b =
     (_, _) -> False
  
  
-chemistryScore: List Player -> Int
+chemistryScore: List PlayerOrPlaceholder -> Int
 chemistryScore line  =
   case line of
     l :: r :: rest ->
@@ -82,42 +125,41 @@ chemistryScore line  =
     _ ->
       0
 
-sumAbility: List Player -> Int
+sumAbility: List PlayerOrPlaceholder -> Int
 sumAbility players =
   List.sum
-    <| List.map .ability players
+    <| List.map ability 
+    <| List.filter isPlayer players
  
  
-lineStrength: List Player -> Int
+lineStrength: List PlayerOrPlaceholder -> Int
 lineStrength players =
   sumAbility players + chemistryScore players
- 
 
-
-comparePlayers: List Player -> List Player -> Int
+comparePlayers: List PlayerOrPlaceholder -> List PlayerOrPlaceholder -> Int
 comparePlayers home away =
   clamp -1 1 
     <| lineStrength home - lineStrength away
 
 
 -- Comparator for players
-positionComparator: Comparator Player
+positionComparator: Comparator PlayerOrPlaceholder
 positionComparator =
   Compare.by playerPositionToInt
 
-currentAbilityComparator: Comparator Player
+currentAbilityComparator: Comparator PlayerOrPlaceholder
 currentAbilityComparator =
-  Compare.by .ability
+  Compare.by ability
 
-potentialAbilityComparator: Comparator Player
+potentialAbilityComparator: Comparator PlayerOrPlaceholder
 potentialAbilityComparator = 
-  Compare.by .potential
+  Compare.by potential
 
-playerComparator: Comparator Player
+playerComparator: Comparator PlayerOrPlaceholder
 playerComparator = 
   Compare.concat [ positionComparator, currentAbilityComparator, potentialAbilityComparator ]
 
-sortPlayers: List Player -> List Player
+sortPlayers: List PlayerOrPlaceholder -> List PlayerOrPlaceholder
 sortPlayers players =
   players |> List.sortWith playerComparator
 

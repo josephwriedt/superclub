@@ -1,5 +1,5 @@
 module Club exposing (..)
-import Player exposing (Player, comparePlayers, PlayerOrPlaceHolder)
+import Player exposing (PlayerOrPlaceholder, comparePlayers)
 import Array exposing (empty)
 import Html.Attributes exposing (start)
 import Msg exposing (Msg)
@@ -23,11 +23,11 @@ type alias Club =
   , training_level : FacilityLevel
   , club_level : ClubLevel
   , club_position : Placement
-  , attackers : List Player
-  , midfielders : List Player
-  , defenders : List Player
-  , goalkeeper : Player
-  , reserves : List Player
+  , attackers : List PlayerOrPlaceholder
+  , midfielders : List PlayerOrPlaceholder
+  , defenders : List PlayerOrPlaceholder
+  , goalkeeper : PlayerOrPlaceholder
+  , reserves : List PlayerOrPlaceholder
   }
 
 
@@ -39,10 +39,10 @@ toString club =
     ] 
 
 -- type alias Starters = 
---   { goalkeeper : Player
---   , defenders : List Player
---   , midfielders : List Player
---   , attackers : List Player
+--   { goalkeeper : PlayerOrPlaceholder
+--   , defenders : List PlayerOrPlaceholder
+--   , midfielders : List PlayerOrPlaceholder
+--   , attackers : List PlayerOrPlaceholder
 --   }
 
 -- validEleven: Starters -> Bool
@@ -77,7 +77,7 @@ toString club =
 -- isPlayer: PlayerSlot -> Bool
 -- isPlayer slot = 
 --   case slot of
---     Player -> True
+--     PlayerOrPlaceholder -> True
 --     EmptySlot -> False
 
 
@@ -116,7 +116,7 @@ simGame a b =
     Win
 
 
-squad: Club -> List Player
+squad: Club -> List PlayerOrPlaceholder
 squad club =
   List.concat [club.attackers, club.midfielders, club.defenders, [ club.goalkeeper ], club.reserves]
   
@@ -130,7 +130,7 @@ reservesToHtml: Club -> StyledHtml.Html Msg
 reservesToHtml club = 
   let
       reserves = Player.sortPlayers club.reserves
-      -- reservesHtml =   div [ css [ GameStyle.paddingStyle ] ] (List.map Player.playerToHtml reserves)
+      -- reservesHtml =   div [ css [ GameStyle.paddingStyle ] ] (List.map PlayerplayerToHtml reserves)
       attributes = [ css 
                       [ Css.display Css.inlineFlex
                       , Css.flexFlow1 Css.wrap
@@ -215,4 +215,4 @@ clubFolderHtml club =
                     ]
                   ]
   in
-  StyledHtml.node "player-folder" attributes [ reservesHtml, startersHtml ]
+  StyledHtml.node "PlayerOrPlaceholder-folder" attributes [ reservesHtml, startersHtml ]
