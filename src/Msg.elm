@@ -8,3 +8,4 @@ type Msg
   | Swap PlayerOrPlaceholder PlayerOrPlaceholder
   | PlayerA PlayerOrPlaceholder
   | PlayerB PlayerOrPlaceholder
+  | Draft PlayerOrPlaceholder

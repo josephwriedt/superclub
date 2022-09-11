@@ -40,7 +40,7 @@ goalkeeperStyle =
 defenderStyle: Style
 defenderStyle = 
     let
-        color = (rgb 247 58 25)
+        color = (hex "#e01e26")
         backgroundColorStyle = Css.backgroundColor color
         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
         styles = List.append [ backgroundColorStyle, boxShadowStyle ] cardStyles
@@ -51,7 +51,7 @@ defenderStyle =
 midfielderStyle: Style
 midfielderStyle = 
     let
-        color = rgb 252 227 3
+        color = (hex "#fcc800")
         backgroundColorStyle = Css.backgroundColor color
         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
         styles = List.append [ backgroundColorStyle, boxShadowStyle ] cardStyles
@@ -62,7 +62,7 @@ midfielderStyle =
 attackerStyle: Style
 attackerStyle = 
     let
-        color = (rgb 13 168 26)
+        color = (hex "#00913c")
         backgroundColorStyle = Css.backgroundColor color
         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
         styles = List.append [ backgroundColorStyle, boxShadowStyle ] cardStyles
