@@ -13,7 +13,7 @@ playerStyle: PlayerOrPlaceholder -> Css.Style
 playerStyle a =
   case a of
     PlayerPlaceholder _ -> 
-      Css.display Css.none
+      GameStyle.playerPlaceholderStyle
     Player player ->
       case player.position of
         GK -> GameStyle.goalkeeperStyle
@@ -31,23 +31,36 @@ playerToHtml a =
                   , Css.textAlign Css.textTop
                   ]
   in
-  case a of
-      PlayerPlaceholder _ -> div [] []
-      Player player ->
-        div 
-          [ class player.name
-          , css [ GameStyle.paddingStyle, Css.float Css.left ] 
-          ] 
-          [
-            div 
-            [ css  [ playerStyle a ]
-            , class "player-card"
-          --   , onMouseDown (Msg.Select { PlayerOrPlaceholder = PlayerOrPlaceholder })
-            ]
-            [ StyledHtml.h4 [ css textStyle ] [ text player.name ]
-            , displayAbility a
-            ]
-          ]
+  div 
+    [ class <| playerId a
+    , css [ GameStyle.paddingStyle, Css.float Css.left ]
+    ]
+    [ div 
+      [ css [ playerStyle a ] 
+      , class "player-card"
+      -- , onMouseDown (Msg.Swap a)
+      ]
+      [ StyledHtml.h4 [ css textStyle ] [ a |> name |> text ] 
+      , displayAbility a
+      ]
+    ]
+  -- case a of
+  --     PlayerPlaceholder _ -> div [] []
+  --     Player player ->
+  --       div 
+  --         [ class player.name
+  --         , css [ GameStyle.paddingStyle, Css.float Css.left ] 
+  --         ] 
+  --         [
+  --           div 
+  --           [ css  [ playerStyle a ]
+  --           , class "player-card"
+  --         --   , onMouseDown (Msg.Select { PlayerOrPlaceholder = PlayerOrPlaceholder })
+  --           ]
+  --           [ StyledHtml.h4 [ css textStyle ] [ text player.name ]
+  --           , displayAbility a
+  --           ]
+  --         ]
 
 
 -- Star Generation

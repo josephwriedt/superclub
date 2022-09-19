@@ -4529,7 +4529,10 @@ var $author$project$Model$init = function () {
 			$author$project$Player$Player(
 			{ability: 6, chemistry: $author$project$Player$Left, market_value: 100, name: 'Erik', position: $author$project$Player$DEF, potential: 6, scout_value: 5}),
 			$author$project$Player$Player(
-			{ability: 6, chemistry: $author$project$Player$NoChemistry, market_value: 10, name: 'Caroline', position: $author$project$Player$GK, potential: 6, scout_value: 5})
+			{ability: 6, chemistry: $author$project$Player$NoChemistry, market_value: 10, name: 'Caroline', position: $author$project$Player$GK, potential: 6, scout_value: 5}),
+			$author$project$Player$PlayerPlaceholder('6'),
+			$author$project$Player$PlayerPlaceholder('7'),
+			$author$project$Player$PlayerPlaceholder('8')
 		]);
 	var midfielders = _List_fromArray(
 		[
@@ -4538,7 +4541,9 @@ var $author$project$Model$init = function () {
 			$author$project$Player$Player(
 			{ability: 3, chemistry: $author$project$Player$Right, market_value: 20, name: 'Xhaka', position: $author$project$Player$MID, potential: 3, scout_value: 10}),
 			$author$project$Player$Player(
-			{ability: 5, chemistry: $author$project$Player$NoChemistry, market_value: 35, name: 'Thomas', position: $author$project$Player$MID, potential: 5, scout_value: 24})
+			{ability: 5, chemistry: $author$project$Player$NoChemistry, market_value: 35, name: 'Thomas', position: $author$project$Player$MID, potential: 5, scout_value: 24}),
+			$author$project$Player$PlayerPlaceholder('3'),
+			$author$project$Player$PlayerPlaceholder('4')
 		]);
 	var defenders = _List_fromArray(
 		[
@@ -4549,7 +4554,8 @@ var $author$project$Model$init = function () {
 			$author$project$Player$Player(
 			{ability: 3, chemistry: $author$project$Player$Right, market_value: 10, name: 'White', position: $author$project$Player$DEF, potential: 4, scout_value: 5}),
 			$author$project$Player$Player(
-			{ability: 3, chemistry: $author$project$Player$NoChemistry, market_value: 20, name: 'Tomiyasu', position: $author$project$Player$DEF, potential: 3, scout_value: 10})
+			{ability: 3, chemistry: $author$project$Player$NoChemistry, market_value: 20, name: 'Tomiyasu', position: $author$project$Player$DEF, potential: 3, scout_value: 10}),
+			$author$project$Player$PlayerPlaceholder('5')
 		]);
 	var attackers = _List_fromArray(
 		[
@@ -4558,7 +4564,9 @@ var $author$project$Model$init = function () {
 			$author$project$Player$Player(
 			{ability: 3, chemistry: $author$project$Player$Right, market_value: 40, name: 'Martinelli', position: $author$project$Player$ATT, potential: 5, scout_value: 20}),
 			$author$project$Player$Player(
-			{ability: 3, chemistry: $author$project$Player$Left, market_value: 25, name: 'Saka', position: $author$project$Player$ATT, potential: 6, scout_value: 12})
+			{ability: 3, chemistry: $author$project$Player$Left, market_value: 25, name: 'Saka', position: $author$project$Player$ATT, potential: 6, scout_value: 12}),
+			$author$project$Player$PlayerPlaceholder('1'),
+			$author$project$Player$PlayerPlaceholder('2')
 		]);
 	var club = {
 		attackers: attackers,
@@ -4574,11 +4582,7 @@ var $author$project$Model$init = function () {
 		stadium_level: $author$project$Club$I,
 		training_level: $author$project$Club$I
 	};
-	return {
-		club: club,
-		playerA: $author$project$Player$PlayerPlaceholder(''),
-		playerB: $author$project$Player$PlayerPlaceholder('')
-	};
+	return {club: club, swapPlayers: _List_Nil};
 }();
 var $elm$core$Result$Err = function (a) {
 	return {$: 'Err', a: a};
@@ -5310,6 +5314,14 @@ var $elm$browser$Browser$sandbox = function (impl) {
 			view: impl.view
 		});
 };
+var $author$project$Model$swapPlayersWithinClub = function (model) {
+	var _v0 = $elm$core$List$length(model.swapPlayers);
+	if (_v0 === 2) {
+		return model;
+	} else {
+		return model;
+	}
+};
 var $author$project$Model$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -5321,12 +5333,13 @@ var $author$project$Model$update = F2(
 				var player = msg.a;
 				return model;
 			case 'Swap':
-				var playerA = msg.a;
-				var playerB = msg.b;
-				return model;
-			case 'PlayerA':
 				var player = msg.a;
-				return model;
+				return $author$project$Model$swapPlayersWithinClub(
+					_Utils_update(
+						model,
+						{
+							swapPlayers: A2($elm$core$List$cons, player, model.swapPlayers)
+						}));
 			default:
 				var player = msg.a;
 				return model;
@@ -7704,6 +7717,14 @@ var $author$project$PlayerDisplay$displayAbility = function (a) {
 		stars);
 };
 var $rtfeldman$elm_css$Html$Styled$h4 = $rtfeldman$elm_css$Html$Styled$node('h4');
+var $author$project$Player$name = function (a) {
+	if (a.$ === 'Player') {
+		var player = a.a;
+		return player.name;
+	} else {
+		return '';
+	}
+};
 var $rtfeldman$elm_css$Css$padding = $rtfeldman$elm_css$Css$prop1('padding');
 var $author$project$GameStyle$paddingStyle = $rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
@@ -7711,6 +7732,15 @@ var $author$project$GameStyle$paddingStyle = $rtfeldman$elm_css$Css$batch(
 			$rtfeldman$elm_css$Css$padding(
 			$rtfeldman$elm_css$Css$px(20))
 		]));
+var $author$project$Player$playerId = function (a) {
+	if (a.$ === 'Player') {
+		var player = a.a;
+		return player.name;
+	} else {
+		var id = a.a;
+		return id;
+	}
+};
 var $rtfeldman$elm_css$Css$backgroundColor = function (c) {
 	return A2($rtfeldman$elm_css$Css$property, 'background-color', c.value);
 };
@@ -7723,22 +7753,28 @@ var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
 var $rtfeldman$elm_css$Css$InchUnits = {$: 'InchUnits'};
 var $rtfeldman$elm_css$Css$inches = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$InchUnits, 'in');
 var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
-var $author$project$GameStyle$cardStyles = _List_fromArray(
-	[
-		$rtfeldman$elm_css$Css$border(
-		$rtfeldman$elm_css$Css$px(10)),
-		$rtfeldman$elm_css$Css$padding(
-		$rtfeldman$elm_css$Css$px(50)),
-		$rtfeldman$elm_css$Css$outlineStyle($rtfeldman$elm_css$Css$solid),
-		$rtfeldman$elm_css$Css$borderRadius(
-		$rtfeldman$elm_css$Css$px(10)),
-		$rtfeldman$elm_css$Css$padding(
-		$rtfeldman$elm_css$Css$pct(5)),
-		$rtfeldman$elm_css$Css$width(
-		$rtfeldman$elm_css$Css$inches(1.25)),
-		$rtfeldman$elm_css$Css$height(
-		$rtfeldman$elm_css$Css$inches(1.75))
-	]);
+var $author$project$GameStyle$cardDimensions = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$width(
+			$rtfeldman$elm_css$Css$inches(1.25)),
+			$rtfeldman$elm_css$Css$height(
+			$rtfeldman$elm_css$Css$inches(1.75))
+		]));
+var $author$project$GameStyle$cardStyle = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$border(
+			$rtfeldman$elm_css$Css$px(10)),
+			$rtfeldman$elm_css$Css$padding(
+			$rtfeldman$elm_css$Css$px(50)),
+			$rtfeldman$elm_css$Css$outlineStyle($rtfeldman$elm_css$Css$solid),
+			$rtfeldman$elm_css$Css$borderRadius(
+			$rtfeldman$elm_css$Css$px(10)),
+			$rtfeldman$elm_css$Css$padding(
+			$rtfeldman$elm_css$Css$pct(5)),
+			$author$project$GameStyle$cardDimensions
+		]));
 var $rtfeldman$elm_css$Css$withPrecedingHash = function (str) {
 	return A2($elm$core$String$startsWith, '#', str) ? str : A2(
 		$elm$core$String$cons,
@@ -8127,11 +8163,8 @@ var $author$project$GameStyle$attackerStyle = function () {
 		$rtfeldman$elm_css$Css$px(5),
 		color);
 	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = A2(
-		$elm$core$List$append,
-		_List_fromArray(
-			[backgroundColorStyle, boxShadowStyle]),
-		$author$project$GameStyle$cardStyles);
+	var styles = _List_fromArray(
+		[backgroundColorStyle, boxShadowStyle, $author$project$GameStyle$cardStyle]);
 	return $rtfeldman$elm_css$Css$batch(styles);
 }();
 var $author$project$GameStyle$defenderStyle = function () {
@@ -8143,11 +8176,8 @@ var $author$project$GameStyle$defenderStyle = function () {
 		$rtfeldman$elm_css$Css$px(5),
 		color);
 	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = A2(
-		$elm$core$List$append,
-		_List_fromArray(
-			[backgroundColorStyle, boxShadowStyle]),
-		$author$project$GameStyle$cardStyles);
+	var styles = _List_fromArray(
+		[backgroundColorStyle, boxShadowStyle, $author$project$GameStyle$cardStyle]);
 	return $rtfeldman$elm_css$Css$batch(styles);
 }();
 var $author$project$GameStyle$goalkeeperStyle = function () {
@@ -8159,11 +8189,8 @@ var $author$project$GameStyle$goalkeeperStyle = function () {
 		$rtfeldman$elm_css$Css$px(5),
 		color);
 	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = A2(
-		$elm$core$List$append,
-		_List_fromArray(
-			[backgroundColorStyle, boxShadowStyle]),
-		$author$project$GameStyle$cardStyles);
+	var styles = _List_fromArray(
+		[backgroundColorStyle, boxShadowStyle, $author$project$GameStyle$cardStyle]);
 	return $rtfeldman$elm_css$Css$batch(styles);
 }();
 var $author$project$GameStyle$midfielderStyle = function () {
@@ -8175,17 +8202,26 @@ var $author$project$GameStyle$midfielderStyle = function () {
 		$rtfeldman$elm_css$Css$px(5),
 		color);
 	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = A2(
-		$elm$core$List$append,
-		_List_fromArray(
-			[backgroundColorStyle, boxShadowStyle]),
-		$author$project$GameStyle$cardStyles);
+	var styles = _List_fromArray(
+		[backgroundColorStyle, boxShadowStyle, $author$project$GameStyle$cardStyle]);
 	return $rtfeldman$elm_css$Css$batch(styles);
 }();
-var $rtfeldman$elm_css$Css$none = {backgroundImage: $rtfeldman$elm_css$Css$Structure$Compatible, blockAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, display: $rtfeldman$elm_css$Css$Structure$Compatible, hoverCapability: $rtfeldman$elm_css$Css$Structure$Compatible, inlineAxisOverflow: $rtfeldman$elm_css$Css$Structure$Compatible, keyframes: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNone: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNoneOrMinMaxDimension: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleType: $rtfeldman$elm_css$Css$Structure$Compatible, listStyleTypeOrPositionOrImage: $rtfeldman$elm_css$Css$Structure$Compatible, none: $rtfeldman$elm_css$Css$Structure$Compatible, outline: $rtfeldman$elm_css$Css$Structure$Compatible, pointerDevice: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, resize: $rtfeldman$elm_css$Css$Structure$Compatible, scriptingSupport: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationLine: $rtfeldman$elm_css$Css$Structure$Compatible, textTransform: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, transform: $rtfeldman$elm_css$Css$Structure$Compatible, updateFrequency: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'none'};
+var $author$project$GameStyle$playerPlaceholderStyle = function () {
+	var color = $rtfeldman$elm_css$Css$hex('#e0e0e0');
+	var boxShadowStyle = A4(
+		$rtfeldman$elm_css$Css$boxShadow4,
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(5),
+		color);
+	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
+	var styles = _List_fromArray(
+		[backgroundColorStyle, boxShadowStyle, $author$project$GameStyle$cardStyle]);
+	return $rtfeldman$elm_css$Css$batch(styles);
+}();
 var $author$project$PlayerDisplay$playerStyle = function (a) {
 	if (a.$ === 'PlayerPlaceholder') {
-		return $rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$none);
+		return $author$project$GameStyle$playerPlaceholderStyle;
 	} else {
 		var player = a.a;
 		var _v1 = player.position;
@@ -8210,117 +8246,52 @@ var $author$project$PlayerDisplay$playerToHtml = function (a) {
 			$author$project$GameStyle$centerText,
 			$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$textTop)
 		]);
-	if (a.$ === 'PlayerPlaceholder') {
-		return A2($rtfeldman$elm_css$Html$Styled$div, _List_Nil, _List_Nil);
-	} else {
-		var player = a.a;
-		return A2(
-			$rtfeldman$elm_css$Html$Styled$div,
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Html$Styled$Attributes$class(player.name),
-					$rtfeldman$elm_css$Html$Styled$Attributes$css(
-					_List_fromArray(
-						[
-							$author$project$GameStyle$paddingStyle,
-							$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$left)
-						]))
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$rtfeldman$elm_css$Html$Styled$div,
-					_List_fromArray(
-						[
-							$rtfeldman$elm_css$Html$Styled$Attributes$css(
-							_List_fromArray(
-								[
-									$author$project$PlayerDisplay$playerStyle(a)
-								])),
-							$rtfeldman$elm_css$Html$Styled$Attributes$class('player-card')
-						]),
-					_List_fromArray(
-						[
-							A2(
-							$rtfeldman$elm_css$Html$Styled$h4,
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Html$Styled$Attributes$css(textStyle)
-								]),
-							_List_fromArray(
-								[
-									$rtfeldman$elm_css$Html$Styled$text(player.name)
-								])),
-							$author$project$PlayerDisplay$displayAbility(a)
-						]))
-				]));
-	}
-};
-var $NoRedInk$elm_compare$Compare$concat = F3(
-	function (comparators, a, b) {
-		concat:
-		while (true) {
-			if (!comparators.b) {
-				return $elm$core$Basics$EQ;
-			} else {
-				var comparator = comparators.a;
-				var rest = comparators.b;
-				var _v1 = A2(comparator, a, b);
-				if (_v1.$ === 'EQ') {
-					var $temp$comparators = rest,
-						$temp$a = a,
-						$temp$b = b;
-					comparators = $temp$comparators;
-					a = $temp$a;
-					b = $temp$b;
-					continue concat;
-				} else {
-					var order = _v1;
-					return order;
-				}
-			}
-		}
-	});
-var $NoRedInk$elm_compare$Compare$by = F3(
-	function (fn, a, b) {
-		return A2(
-			$elm$core$Basics$compare,
-			fn(a),
-			fn(b));
-	});
-var $author$project$Player$currentAbilityComparator = $NoRedInk$elm_compare$Compare$by($author$project$Player$ability);
-var $author$project$Player$positionToInt = function (position) {
-	switch (position.$) {
-		case 'GK':
-			return 4;
-		case 'DEF':
-			return 3;
-		case 'MID':
-			return 2;
-		default:
-			return 1;
-	}
-};
-var $author$project$Player$playerPositionToInt = function (a) {
-	if (a.$ === 'PlayerPlaceholder') {
-		return 0;
-	} else {
-		var player = a.a;
-		return $author$project$Player$positionToInt(player.position);
-	}
-};
-var $author$project$Player$positionComparator = $NoRedInk$elm_compare$Compare$by($author$project$Player$playerPositionToInt);
-var $author$project$Player$potentialAbilityComparator = $NoRedInk$elm_compare$Compare$by($author$project$Player$potential);
-var $author$project$Player$playerComparator = $NoRedInk$elm_compare$Compare$concat(
-	_List_fromArray(
-		[$author$project$Player$positionComparator, $author$project$Player$currentAbilityComparator, $author$project$Player$potentialAbilityComparator]));
-var $elm$core$List$sortWith = _List_sortWith;
-var $author$project$Player$sortPlayers = function (players) {
-	return A2($elm$core$List$sortWith, $author$project$Player$playerComparator, players);
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$div,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$Attributes$class(
+				$author$project$Player$playerId(a)),
+				$rtfeldman$elm_css$Html$Styled$Attributes$css(
+				_List_fromArray(
+					[
+						$author$project$GameStyle$paddingStyle,
+						$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$left)
+					]))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$rtfeldman$elm_css$Html$Styled$div,
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$Attributes$css(
+						_List_fromArray(
+							[
+								$author$project$PlayerDisplay$playerStyle(a)
+							])),
+						$rtfeldman$elm_css$Html$Styled$Attributes$class('player-card')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$rtfeldman$elm_css$Html$Styled$h4,
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$Attributes$css(textStyle)
+							]),
+						_List_fromArray(
+							[
+								$rtfeldman$elm_css$Html$Styled$text(
+								$author$project$Player$name(a))
+							])),
+						$author$project$PlayerDisplay$displayAbility(a)
+					]))
+			]));
 };
 var $rtfeldman$elm_css$Css$wrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'wrap'};
 var $author$project$Club$reservesToHtml = function (club) {
-	var reserves = $author$project$Player$sortPlayers(club.reserves);
+	var reserves = club.reserves;
 	var attributes = _List_fromArray(
 		[
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(

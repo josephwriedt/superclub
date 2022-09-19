@@ -5,7 +5,5 @@ type Msg
   = Increment
   | Decrement
   | Select PlayerOrPlaceholder
-  | Swap PlayerOrPlaceholder PlayerOrPlaceholder
-  | PlayerA PlayerOrPlaceholder
-  | PlayerB PlayerOrPlaceholder
+  | Swap PlayerOrPlaceholder
   | Draft PlayerOrPlaceholder

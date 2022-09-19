@@ -129,7 +129,8 @@ squadStrength club =
 reservesToHtml: Club -> StyledHtml.Html Msg
 reservesToHtml club = 
   let
-      reserves = Player.sortPlayers club.reserves
+      reserves = club.reserves
+      -- reserves = Player.sortPlayers club.reserves
       -- reservesHtml =   div [ css [ GameStyle.paddingStyle ] ] (List.map PlayerplayerToHtml reserves)
       attributes = [ css 
                       [ Css.display Css.inlineFlex

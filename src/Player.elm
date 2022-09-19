@@ -59,6 +59,21 @@ type PlayerOrPlaceholder
            }
   | PlayerPlaceholder String
 
+playerId: PlayerOrPlaceholder -> String
+playerId a = 
+  case a of
+    Player player ->
+      player.name
+    PlayerPlaceholder id ->
+      id
+
+
+name: PlayerOrPlaceholder -> String
+name a =
+  case a of
+    Player player -> player.name
+    PlayerPlaceholder _ -> ""
+
 potential: PlayerOrPlaceholder -> Int
 potential a =
   case a of

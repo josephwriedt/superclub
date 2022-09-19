@@ -4,16 +4,23 @@ import Html exposing (Attribute)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled as StyledHtml 
 
-cardStyles: List Style
-cardStyles = 
-    [ Css.border (px 10)
-    , Css.padding (px 50)
-    , Css.outlineStyle Css.solid
-    , borderRadius (px 10)
-    , Css.padding (pct 5)
-    , width (inches 1.25)
-    , height (inches 1.75)
-    ]
+cardDimensions: Style
+cardDimensions =
+    Css.batch [ width (inches 1.25)
+              , height (inches 1.75)
+              ]
+
+
+cardStyle: Style
+cardStyle = 
+    Css.batch 
+        [ Css.border (px 10)
+        , Css.padding (px 50)
+        , Css.outlineStyle Css.solid
+        , borderRadius (px 10)
+        , Css.padding (pct 5)
+        , cardDimensions
+        ]
 
 folderStyle: Style
 folderStyle = 
@@ -25,6 +32,15 @@ folderStyle =
               , margin (pct 2.5)
               ]
 
+playerPlaceholderStyle: Style
+playerPlaceholderStyle = 
+    let
+        color = (hex "#e0e0e0")
+        backgroundColorStyle = Css.backgroundColor color
+        boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
+        styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ]
+    in
+    Css.batch styles
 
 goalkeeperStyle: Style
 goalkeeperStyle = 
@@ -32,7 +48,7 @@ goalkeeperStyle =
         color = rgb 252 103 3
         backgroundColorStyle = Css.backgroundColor color
         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
-        styles =  List.append [ backgroundColorStyle, boxShadowStyle ] cardStyles
+        styles =  [ backgroundColorStyle, boxShadowStyle, cardStyle ] 
     in
     
     Css.batch styles
@@ -43,7 +59,7 @@ defenderStyle =
         color = (hex "#e01e26")
         backgroundColorStyle = Css.backgroundColor color
         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
-        styles = List.append [ backgroundColorStyle, boxShadowStyle ] cardStyles
+        styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ] 
     in
     
     Css.batch styles
@@ -54,7 +70,7 @@ midfielderStyle =
         color = (hex "#fcc800")
         backgroundColorStyle = Css.backgroundColor color
         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
-        styles = List.append [ backgroundColorStyle, boxShadowStyle ] cardStyles
+        styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ] 
     in
     
     Css.batch styles
@@ -65,7 +81,7 @@ attackerStyle =
         color = (hex "#00913c")
         backgroundColorStyle = Css.backgroundColor color
         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
-        styles = List.append [ backgroundColorStyle, boxShadowStyle ] cardStyles
+        styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ]
     in
     
     Css.batch styles
