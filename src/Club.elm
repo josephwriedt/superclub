@@ -1,6 +1,6 @@
 module Club exposing (..)
 import Player exposing (PlayerOrPlaceholder, comparePlayers)
-import Array exposing (empty)
+import Array exposing (..)
 import Html.Attributes exposing (start)
 import Msg exposing (Msg)
 import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
@@ -8,6 +8,7 @@ import Html.Styled.Attributes exposing (attribute, css, class)
 import Css
 import GameStyle
 import PlayerDisplay
+import Debug
 
 type Placement = First | Second | Third | Fourth | Fifth | Sixth
 type ClubLevel = NewlyPromoted | MidTable | Established | TitleContenders
@@ -16,6 +17,7 @@ type Winner = Home | Away | Tie
 type Result = Win | Loss | Draw
 
 
+-- TODO consider using an Array instead of list
 type alias Club = 
   { balance : Int
   , stadium_level : FacilityLevel
@@ -28,8 +30,20 @@ type alias Club =
   , defenders : List PlayerOrPlaceholder
   , goalkeeper : PlayerOrPlaceholder
   , reserves : List PlayerOrPlaceholder
+  , starters : List PlayerOrPlaceholder
   }
 
+clubAttackers: Club -> List PlayerOrPlaceholder
+clubAttackers club =
+  List.take 5 club.starters
+
+clubMidfielders: Club -> List PlayerOrPlaceholder
+clubMidfielders club = 
+  club.starters |> List.drop 5 |> List.take 5
+
+clubDefenders: Club -> List PlayerOrPlaceholder
+clubDefenders club =
+  club.starters |> List.drop 10 |> List.take 5
 
 toString: Club -> String
 toString club = 
