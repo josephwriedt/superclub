@@ -1,6 +1,7 @@
 module Player exposing (..)
 import Random
 import Compare exposing (Comparator)
+import Html exposing (a)
 
 -- Types
 type Position = GK | DEF | MID | ATT 
@@ -17,8 +18,8 @@ positionToString pos =
         ATT -> "Attacker"
 
 positionToInt: Position -> Int
-positionToInt position =
-  case position of
+positionToInt pos =
+  case pos of
       GK -> 4
       DEF -> 3
       MID -> 2
@@ -36,17 +37,6 @@ chemistryToString chem =
 roll: Random.Generator Int
 roll = 
   Random.int 1 6
-
--- Player
--- type alias Player =
---   { name : String
---   , position : Position
---   , chemistry : Chemistry
---   , ability : Int
---   , potential : Int
---   , market_value : Int
---   , scout_value : Int
---   }
 
 defaultGoalkeeper: PlayerOrPlaceholder
 defaultGoalkeeper = 
@@ -98,6 +88,12 @@ ability a =
     PlayerPlaceholder _ -> 0
     Player player ->
       player.ability
+
+position: PlayerOrPlaceholder -> Maybe Position
+position a = 
+  case a of 
+    Player player -> Just player.position
+    PlayerPlaceholder _ -> Nothing
 
 chemistry: PlayerOrPlaceholder -> Chemistry
 chemistry a = 

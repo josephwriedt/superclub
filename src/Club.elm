@@ -1,5 +1,5 @@
 module Club exposing (..)
-import Player exposing (PlayerOrPlaceholder, comparePlayers)
+import Player exposing (PlayerOrPlaceholder, comparePlayers, Position)
 import Array exposing (..)
 import Html.Attributes exposing (start)
 import Msg exposing (Msg)
@@ -8,7 +8,8 @@ import Html.Styled.Attributes exposing (attribute, css, class)
 import Css
 import GameStyle
 import PlayerDisplay
-import Debug
+import Array
+import Player exposing (isPlayer)
 
 type Placement = First | Second | Third | Fourth | Fifth | Sixth
 type ClubLevel = NewlyPromoted | MidTable | Established | TitleContenders
@@ -17,7 +18,6 @@ type Winner = Home | Away | Tie
 type Result = Win | Loss | Draw
 
 
--- TODO consider using an Array instead of list
 type alias Club = 
   { balance : Int
   , stadium_level : FacilityLevel
@@ -25,25 +25,28 @@ type alias Club =
   , training_level : FacilityLevel
   , club_level : ClubLevel
   , club_position : Placement
-  , attackers : List PlayerOrPlaceholder
-  , midfielders : List PlayerOrPlaceholder
-  , defenders : List PlayerOrPlaceholder
-  , goalkeeper : PlayerOrPlaceholder
-  , reserves : List PlayerOrPlaceholder
-  , starters : List PlayerOrPlaceholder
+  , reserves : Array PlayerOrPlaceholder
+  , starters : Array PlayerOrPlaceholder
   }
 
-clubAttackers: Club -> List PlayerOrPlaceholder
+clubAttackers: Club -> Array PlayerOrPlaceholder
 clubAttackers club =
-  List.take 5 club.starters
+  Array.slice 0 5 club.starters
 
-clubMidfielders: Club -> List PlayerOrPlaceholder
+clubMidfielders: Club -> Array PlayerOrPlaceholder
 clubMidfielders club = 
-  club.starters |> List.drop 5 |> List.take 5
+  Array.slice 5 10 club.starters
 
-clubDefenders: Club -> List PlayerOrPlaceholder
+clubDefenders: Club -> Array PlayerOrPlaceholder
 clubDefenders club =
-  club.starters |> List.drop 10 |> List.take 5
+  Array.slice 11 15 club.starters
+
+clubGoalkeeper: Club -> PlayerOrPlaceholder
+clubGoalkeeper club =
+  case Array.get 10 club.starters of
+    Just player -> player
+    Nothing -> Player.defaultGoalkeeper
+  
 
 toString: Club -> String
 toString club = 
@@ -52,54 +55,6 @@ toString club =
     , "Squad: " ++ String.join ", " (List.map Player.playerToString <| squad club)
     ] 
 
--- type alias Starters = 
---   { goalkeeper : PlayerOrPlaceholder
---   , defenders : List PlayerOrPlaceholder
---   , midfielders : List PlayerOrPlaceholder
---   , attackers : List PlayerOrPlaceholder
---   }
-
--- validEleven: Starters -> Bool
--- validEleven starters =
---   let
-
---     d = List.length <| .defenders starters
---     m = List.length <| .midfielders starters
---     o = List.length <| .attackers starters
---   in
---   if d + m + o /= 10 then
---       False
---   else
---     not <| List.member False 
---       [ inRange starters.defenders 3 4
---       , inRange starters.midfielders 3 5
---       , inRange starters.attackers 2 4]
-
--- TODO: Change this to use result instead of winner
--- playGame: Starters -> Starters -> Winner
--- playGame home away = 
---   let
---       mid = comparePlayers home.midfielders away.midfielders
---       def = comparePlayers (home.goalkeeper :: home.defenders) away.attackers
---       off = comparePlayers home.attackers (away.goalkeeper :: away.defenders)
---       sum = mid + def + off
---   in
---   if sum > 0 then Home
---   else if sum < 0 then Away
---   else Tie
-
--- isPlayer: PlayerSlot -> Bool
--- isPlayer slot = 
---   case slot of
---     PlayerOrPlaceholder -> True
---     EmptySlot -> False
-
-
--- lengthPlayerSlots: List PlayerSlot -> Int
--- lengthPlayerSlots players = 
---   List.filter isPlayer players |> List.length
-
-
 inRange: Int -> Int -> Int -> Bool
 inRange players min max =
   (min <= players) && (players <= max)
@@ -107,13 +62,15 @@ inRange players min max =
 startersValid: Club -> Bool
 startersValid club = 
   let 
-    attackers = inRange (club.attackers |> List.length) 2 4
-    midfielders = inRange ( club.midfielders |> List.length) 3 5 
-    defenders =  inRange (club.defenders |> List.length) 3 5
-    goalkeeper = ([ club.goalkeeper ] |> List.length) == 1
-    starters = List.map List.length [club.attackers, club.midfielders, club.defenders, [ club.goalkeeper ] ]
+    attackers = inRange (clubAttackers club |> Array.filter isPlayer |>  Array.length) 2 4
+    midfielders = inRange (clubMidfielders club |> Array.filter isPlayer |> Array.length) 3 5 
+    defenders =  inRange (clubDefenders club |> Array.filter isPlayer |> Array.length) 3 5
+    goalkeeper = case clubGoalkeeper club |> Player.position of
+                    Just pos -> pos == Player.GK
+                    Nothing -> False
+    startersLength = (Array.filter isPlayer club.starters |> Array.length) == 11
   in 
-  (List.sum starters == 11)  && (List.any not [attackers, midfielders, defenders, goalkeeper])
+  List.any not [ attackers, midfielders, defenders, goalkeeper, startersLength ]
     
 
 
@@ -132,7 +89,8 @@ simGame a b =
 
 squad: Club -> List PlayerOrPlaceholder
 squad club =
-  List.concat [club.attackers, club.midfielders, club.defenders, [ club.goalkeeper ], club.reserves]
+  [ club.reserves, club.starters ] |> List.map Array.toList |> List.concat
+
   
 
 squadStrength: Club -> Int
@@ -144,8 +102,6 @@ reservesToHtml: Club -> StyledHtml.Html Msg
 reservesToHtml club = 
   let
       reserves = club.reserves
-      -- reserves = Player.sortPlayers club.reserves
-      -- reservesHtml =   div [ css [ GameStyle.paddingStyle ] ] (List.map PlayerplayerToHtml reserves)
       attributes = [ css 
                       [ Css.display Css.inlineFlex
                       , Css.flexFlow1 Css.wrap
@@ -153,16 +109,14 @@ reservesToHtml club =
                    , class "reserves"
                    ]
   in
-  StyledHtml.div attributes (List.map PlayerDisplay.playerToHtml reserves)
+  StyledHtml.div attributes <| Array.toList (Array.map PlayerDisplay.playerToHtml reserves)
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
   let
-      playersHtml = club.attackers |> List.map PlayerDisplay.playerToHtml
+      playersHtml = clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap
-                        --  , Css.width (Css.pct 30) 
-                        --  , Css.height (Css.pct 20)
                          ] 
                    , class "attackers"
                    ]
@@ -173,7 +127,7 @@ attackersToHtml club =
 midfieldersToHtml: Club -> StyledHtml.Html Msg
 midfieldersToHtml club = 
   let
-      playersHtml = club.midfielders |> List.map PlayerDisplay.playerToHtml
+      playersHtml = clubMidfielders club |> Array.toList |> List.map PlayerDisplay.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap 
                          ] 
@@ -183,10 +137,21 @@ midfieldersToHtml club =
   StyledHtml.div attributes playersHtml
 
 
+defenseToHtml: Club -> StyledHtml.Html Msg
+defenseToHtml club =
+  let
+      defendersHtml = StyledHtml.div [ class "defenders" ] (clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml)
+      goalkeeperHtml = StyledHtml.div [ class "goalkeeper" ] [ clubGoalkeeper club |> PlayerDisplay.playerToHtml ] 
+      attributes = [ css [ GameStyle.flexStyle, Css.flexFlow1 Css.wrap ] ]
+      playersHtml = [ goalkeeperHtml, defendersHtml ]
+  in
+  StyledHtml.div attributes playersHtml
+  
+
 defendersToHtml: Club -> StyledHtml.Html Msg
 defendersToHtml club = 
   let
-      playersHtml = club.defenders |> List.map PlayerDisplay.playerToHtml
+      playersHtml = clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap 
                          ] 
@@ -198,7 +163,7 @@ defendersToHtml club =
 goalkeeperToHtml: Club -> StyledHtml.Html Msg
 goalkeeperToHtml club =
   let
-      playersHtml = club.goalkeeper |> PlayerDisplay.playerToHtml
+      playersHtml = clubGoalkeeper club |> PlayerDisplay.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap 
                          ] 
@@ -206,17 +171,15 @@ goalkeeperToHtml club =
                    ]
   in
   div attributes [ playersHtml ]
-  -- StyledHtml.node "goalkeeper" attributes [ playersHtml ]
 
 startersToHtml: Club -> StyledHtml.Html Msg
 startersToHtml club = 
   let
     attackersHtml = attackersToHtml club
     midfieldersHtml = midfieldersToHtml club
-    defendersHtml = defendersToHtml club
-    goalkeepHtml = goalkeeperToHtml club
+    defenseHtml = defenseToHtml club
   in
-  StyledHtml.div [ class "starters" ] [ attackersHtml, midfieldersHtml, defendersHtml, goalkeepHtml ]
+  StyledHtml.div [ class "starters" ] [ attackersHtml, midfieldersHtml, defenseHtml ]
 
 clubFolderHtml: Club -> StyledHtml.Html Msg
 clubFolderHtml club = 
@@ -226,7 +189,6 @@ clubFolderHtml club =
       attributes = [ css 
                     [ Css.display Css.inlineFlex
                     , Css.flexFlow1 Css.wrap
-                    -- , GameStyle.paddingStyle 
                     ]
                   ]
   in
