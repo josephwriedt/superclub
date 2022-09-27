@@ -3,7 +3,7 @@ import Random
 import Compare exposing (Comparator)
 
 -- Types
-type Position = GK | DEF | MID | ATT
+type Position = GK | DEF | MID | ATT 
 type Chemistry = Left | Right | Both | NoChemistry
 
 
@@ -47,6 +47,18 @@ roll =
 --   , market_value : Int
 --   , scout_value : Int
 --   }
+
+defaultGoalkeeper: PlayerOrPlaceholder
+defaultGoalkeeper = 
+  Player {
+    name = "Woods",
+    position = GK,
+    chemistry = NoChemistry,
+    ability = 1,
+    potential = 1,
+    market_value = 0,
+    scout_value = 0
+  }
 
 type PlayerOrPlaceholder 
   = Player { name : String
