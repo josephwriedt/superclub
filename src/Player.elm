@@ -40,9 +40,23 @@ chemistryToString chem =
     Both -> "Half Stars on Both Side of Card"
     NoChemistry -> ""
 
-roll: Random.Generator Int
-roll = 
-  Random.int 1 6
+
+
+type PlayerOrPlaceholder 
+  = Player { name : String
+           , position : Position
+           , chemistry : Chemistry
+           , ability : Int
+           , potential : Int
+           , market_value : Int
+           , scout_value : Int
+           }
+  | PlayerPlaceholder String
+
+-- Generate Player or PlayerPlaceholder
+playerPlaceHolderName: String -> Int -> PlayerOrPlaceholder
+playerPlaceHolderName positionName id =
+  String.join "-" [ positionName, String.fromInt id ] |> PlayerPlaceholder 
 
 defaultGoalkeeper: PlayerOrPlaceholder
 defaultGoalkeeper = 
@@ -56,17 +70,7 @@ defaultGoalkeeper =
     scout_value = 0
   }
 
-type PlayerOrPlaceholder 
-  = Player { name : String
-           , position : Position
-           , chemistry : Chemistry
-           , ability : Int
-           , potential : Int
-           , market_value : Int
-           , scout_value : Int
-           }
-  | PlayerPlaceholder String
-
+-- Get attributes from PlayerOrPlaceholder Type
 playerId: PlayerOrPlaceholder -> String
 playerId a = 
   case a of
@@ -110,6 +114,7 @@ chemistry a =
       player.chemistry
 
 
+-- Functions on PlayerOrPlaceholder
 isPlayer: PlayerOrPlaceholder -> Bool
 isPlayer a = 
   case a of
@@ -132,7 +137,7 @@ playerPositionToInt a =
       player.position |> positionToInt
 
 
-
+-- Functions between PlayerOrPlaceholder types
 hasChemistry: PlayerOrPlaceholder -> PlayerOrPlaceholder -> Bool
 hasChemistry a b =
   case (a |> chemistry, b |> chemistry) of

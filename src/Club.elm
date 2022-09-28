@@ -113,7 +113,7 @@ reservesToHtml club =
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
   let
-      playersHtml = clubDefenders club |> Array.toList |> List.map Player.playerToHtml
+      playersHtml = clubAttackers club |> Array.toList |> List.map Player.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap
                          ] 

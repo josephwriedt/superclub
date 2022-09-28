@@ -117,4 +117,5 @@ unfilledStar =
 
 flexStyle: Style
 flexStyle =
-    Css.display Css.table
+    Css.display Css.block
+    -- Css.display Css.table
