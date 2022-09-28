@@ -1,9 +1,16 @@
 module Player exposing (..)
 import Random
 import Compare exposing (Comparator)
+import Html exposing (a)
+import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
+import Css exposing (position)
+import Html.Styled.Attributes exposing (attribute, css, class)
+import GameStyle
+import Html.Styled.Events exposing (onClick)
+import Html.Styled.Events exposing (onMouseDown)
 
 -- Types
-type Position = GK | DEF | MID | ATT
+type Position = GK | DEF | MID | ATT 
 type Chemistry = Left | Right | Both | NoChemistry
 
 
@@ -17,8 +24,8 @@ positionToString pos =
         ATT -> "Attacker"
 
 positionToInt: Position -> Int
-positionToInt position =
-  case position of
+positionToInt pos =
+  case pos of
       GK -> 4
       DEF -> 3
       MID -> 2
@@ -33,20 +40,7 @@ chemistryToString chem =
     Both -> "Half Stars on Both Side of Card"
     NoChemistry -> ""
 
-roll: Random.Generator Int
-roll = 
-  Random.int 1 6
 
--- Player
--- type alias Player =
---   { name : String
---   , position : Position
---   , chemistry : Chemistry
---   , ability : Int
---   , potential : Int
---   , market_value : Int
---   , scout_value : Int
---   }
 
 type PlayerOrPlaceholder 
   = Player { name : String
@@ -59,6 +53,24 @@ type PlayerOrPlaceholder
            }
   | PlayerPlaceholder String
 
+-- Generate Player or PlayerPlaceholder
+playerPlaceHolderName: String -> Int -> PlayerOrPlaceholder
+playerPlaceHolderName positionName id =
+  String.join "-" [ positionName, String.fromInt id ] |> PlayerPlaceholder 
+
+defaultGoalkeeper: PlayerOrPlaceholder
+defaultGoalkeeper = 
+  Player {
+    name = "Woods",
+    position = GK,
+    chemistry = NoChemistry,
+    ability = 1,
+    potential = 1,
+    market_value = 0,
+    scout_value = 0
+  }
+
+-- Get attributes from PlayerOrPlaceholder Type
 playerId: PlayerOrPlaceholder -> String
 playerId a = 
   case a of
@@ -87,6 +99,12 @@ ability a =
     Player player ->
       player.ability
 
+position: PlayerOrPlaceholder -> Maybe Position
+position a = 
+  case a of 
+    Player player -> Just player.position
+    PlayerPlaceholder _ -> Nothing
+
 chemistry: PlayerOrPlaceholder -> Chemistry
 chemistry a = 
   case a of
@@ -96,6 +114,7 @@ chemistry a =
       player.chemistry
 
 
+-- Functions on PlayerOrPlaceholder
 isPlayer: PlayerOrPlaceholder -> Bool
 isPlayer a = 
   case a of
@@ -118,7 +137,7 @@ playerPositionToInt a =
       player.position |> positionToInt
 
 
-
+-- Functions between PlayerOrPlaceholder types
 hasChemistry: PlayerOrPlaceholder -> PlayerOrPlaceholder -> Bool
 hasChemistry a b =
   case (a |> chemistry, b |> chemistry) of
@@ -178,6 +197,155 @@ sortPlayers: List PlayerOrPlaceholder -> List PlayerOrPlaceholder
 sortPlayers players =
   players |> List.sortWith playerComparator
 
+
+-- Display for PlayerOrPlaceholder
+playerStyle: PlayerOrPlaceholder -> Css.Style
+playerStyle a =
+  case a of
+    PlayerPlaceholder _ -> 
+      GameStyle.playerPlaceholderStyle
+    Player player ->
+      case player.position of
+        GK -> GameStyle.goalkeeperStyle
+        DEF -> GameStyle.defenderStyle
+        MID -> GameStyle.midfielderStyle
+        ATT -> GameStyle.attackerStyle
+
+
+
+playerToHtml: PlayerOrPlaceholder -> StyledHtml.Html msg
+playerToHtml a =
+  let
+      textStyle = [ Css.color (Css.rgb 255 255 255)
+                  , GameStyle.centerText
+                  , Css.textAlign Css.textTop
+                  ]
+  in
+  div 
+    [ class <| playerId a
+    , css [ GameStyle.paddingStyle, Css.float Css.left ]
+    ]
+    [ div 
+      [ css [ playerStyle a ] 
+      , class "player-card"
+      -- , onMouseDown (Msg.Swap a)
+      ]
+      [ StyledHtml.h4 [ css textStyle ] [ a |> name |> text ] 
+      , displayAbility a
+      ]
+    ]
+  -- case a of
+  --     PlayerPlaceholder _ -> div [] []
+  --     Player player ->
+  --       div 
+  --         [ class player.name
+  --         , css [ GameStyle.paddingStyle, Css.float Css.left ] 
+  --         ] 
+  --         [
+  --           div 
+  --           [ css  [ playerStyle a ]
+  --           , class "player-card"
+  --         --   , onMouseDown (Msg.Select { PlayerOrPlaceholder = PlayerOrPlaceholder })
+  --           ]
+  --           [ StyledHtml.h4 [ css textStyle ] [ text player.name ]
+  --           , displayAbility a
+  --           ]
+  --         ]
+
+
+-- Star Generation
+type Star = StarPlaceholder | Current | Potential 
+
+generateStar: Star -> StyledHtml.Html msg
+generateStar star =
+  case star of
+    StarPlaceholder ->
+      StyledHtml.span [] []
+
+    Current ->
+      GameStyle.filledStar
+
+    Potential ->
+      GameStyle.unfilledStar
+
+generateStarFromMatrix: List (List Star) -> List(StyledHtml.Html msg)
+generateStarFromMatrix matrix =
+  let
+      generateStarsRow list = 
+        div [ class "star-row", css [ GameStyle.centerText ] ] 
+          <| List.map generateStar list   
+  in
+  matrix |> List.map generateStarsRow
+
+
+displayAbility: PlayerOrPlaceholder -> StyledHtml.Html msg
+displayAbility a = 
+  let
+      stars = 
+        case (a |> ability, a |> potential) of
+          -- Current Ability of 1
+          (1, 1) ->
+            generateStarFromMatrix [ [ StarPlaceholder, Current, StarPlaceholder ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
+          (1, 2) -> 
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Potential ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
+          (1, 3) ->
+            generateStarFromMatrix [ [ Current, Potential, Potential ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
+          (1, 4) ->
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Potential ], [ Potential, StarPlaceholder, Potential ] ]
+          (1, 5) ->
+            generateStarFromMatrix [ [ Current, Potential, Potential ], [ Potential, StarPlaceholder, Potential ] ]
+          (1, 6) ->
+            generateStarFromMatrix [ [ Current, Potential, Potential ], [ Potential, Potential, Potential ] ]
+          
+          -- Current Ability of 2
+          (2, 2) ->
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Current ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
+          (2, 3) ->
+            generateStarFromMatrix [ [ Current, Current, Potential ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
+          (2, 4) ->
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Current ], [ Potential, StarPlaceholder, Potential ] ]
+          (2, 5) ->
+            generateStarFromMatrix [ [ Current, Current, Potential ], [ Potential, StarPlaceholder, Potential ] ]
+          (2, 6) ->
+            generateStarFromMatrix [ [ Current, Current, Potential ], [ Potential, Potential, Potential ] ]
+
+          -- Current Ability of 3
+          (3, 3) ->
+            generateStarFromMatrix [ [ Current, Current, Current ], [ StarPlaceholder, StarPlaceholder, StarPlaceholder ] ]
+          (3, 4) ->
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Current ], [ Current, StarPlaceholder, Potential ] ]
+          (3, 5) ->
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Potential, StarPlaceholder, Potential ] ]
+          (3, 6) ->
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Potential, Potential, Potential ] ]
+
+          -- Current Ability of 4
+          (4, 4) ->
+            generateStarFromMatrix [ [ Current, StarPlaceholder, Current ], [ Current, StarPlaceholder, Current ] ]
+          (4, 5) ->
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, StarPlaceholder, Potential ] ]
+          (4, 6) ->
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, Potential, Potential ] ]
+
+          -- Current Ability of 5
+          (5, 5) ->
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, StarPlaceholder, Current ] ]
+          (5, 6) ->
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, Current, Potential ] ]
+
+          -- Current Ability of 6
+          (6, 6) ->
+            generateStarFromMatrix [ [ Current, Current, Current ], [ Current, Current, Current ] ]
+
+
+          (0, 0) ->
+            generateStarFromMatrix [ [], [] ]
+          -- All other cases
+          (_, _ )-> 
+            [ div [] [ StyledHtml.text "ERROR with PlayerOrPlaceholder.ability or PlayerOrPlaceholder.potential" ] ]
+
+  in
+  div [ class "star_content" ] stars
 
 
 
