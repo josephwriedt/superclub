@@ -7,7 +7,6 @@ import Html
 import Css
 import List exposing (map)
 import Msg exposing (Msg)
-import PlayerDisplay
 import Player exposing (PlayerOrPlaceholder(..))
 import Array exposing (Array)
 
@@ -135,7 +134,7 @@ squadToHtml players =
                   , class "squad"
                   ]
 
-    squadHtml = map PlayerDisplay.playerToHtml players
+    squadHtml = map Player.playerToHtml players
   in
   StyledHtml.div attributes squadHtml
 
