@@ -6,4 +6,6 @@ type Msg
   | Decrement
   | Select PlayerOrPlaceholder
   | Swap PlayerOrPlaceholder
+  | RandomDeckPlayer
+  | RandomPlayer (Maybe PlayerOrPlaceholder, List PlayerOrPlaceholder)
   | Draft PlayerOrPlaceholder

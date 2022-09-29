@@ -1,11 +1,12 @@
 module Main exposing(..)
 
 import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
 import Browser
 import Html.Attributes exposing (start)
 import Player exposing (PlayerOrPlaceholder)
-import Model exposing (init, update, view, subscriptions)
+import Model exposing (init, subscriptions)
+import View exposing (view)
+import Update exposing (update)
 
 {-
 Flow of game:

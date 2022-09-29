@@ -4,14 +4,14 @@ import Html exposing (Attribute)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled as StyledHtml 
 
-cardDimensions: Style
+cardDimensions : Style
 cardDimensions =
     Css.batch [ width (inches 1.25)
               , height (inches 1.75)
               ]
 
 
-cardStyle: Style
+cardStyle : Style
 cardStyle = 
     Css.batch 
         [ Css.border (px 10)
@@ -22,7 +22,7 @@ cardStyle =
         , cardDimensions
         ]
 
-folderStyle: Style
+folderStyle : Style
 folderStyle = 
     Css.batch [ Css.border (px 20) 
               , Css.outlineStyle Css.solid
@@ -32,7 +32,7 @@ folderStyle =
               , margin (pct 2.5)
               ]
 
-playerPlaceholderStyle: Style
+playerPlaceholderStyle : Style
 playerPlaceholderStyle = 
     let
         color = (hex "#e0e0e0")
@@ -42,7 +42,7 @@ playerPlaceholderStyle =
     in
     Css.batch styles
 
-goalkeeperStyle: Style
+goalkeeperStyle : Style
 goalkeeperStyle = 
     let
         color = rgb 252 103 3
@@ -53,7 +53,7 @@ goalkeeperStyle =
     
     Css.batch styles
 
-defenderStyle: Style
+defenderStyle : Style
 defenderStyle = 
     let
         color = (hex "#e01e26")
@@ -64,7 +64,7 @@ defenderStyle =
     
     Css.batch styles
 
-midfielderStyle: Style
+midfielderStyle : Style
 midfielderStyle = 
     let
         color = (hex "#fcc800")
@@ -75,7 +75,7 @@ midfielderStyle =
     
     Css.batch styles
 
-attackerStyle: Style
+attackerStyle : Style
 attackerStyle = 
     let
         color = (hex "#00913c")
@@ -86,7 +86,17 @@ attackerStyle =
     
     Css.batch styles
 
-paddingStyle: Style
+deckStyle : Style
+deckStyle = 
+    let
+        color = (hex "#0c5a99")
+        backgroundColorStyle = Css.backgroundColor color
+        boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
+        styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ]
+    in
+    Css.batch styles
+
+paddingStyle : Style
 paddingStyle = 
     Css.batch [ Css.padding (px 20) ]
 

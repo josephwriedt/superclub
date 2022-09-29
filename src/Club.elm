@@ -9,6 +9,7 @@ import Css
 import GameStyle
 import Array
 import Player exposing (isPlayer)
+import PlayerDisplay
 
 type Placement = First | Second | Third | Fourth | Fifth | Sixth
 type ClubLevel = NewlyPromoted | MidTable | Established | TitleContenders
@@ -108,12 +109,12 @@ reservesToHtml club =
                    , class "reserves"
                    ]
   in
-  StyledHtml.div attributes <| Array.toList (Array.map Player.playerToHtml reserves)
+  StyledHtml.div attributes <| Array.toList (Array.map PlayerDisplay.playerToHtml reserves)
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
   let
-      playersHtml = clubAttackers club |> Array.toList |> List.map Player.playerToHtml
+      playersHtml = clubAttackers club |> Array.toList |> List.map PlayerDisplay.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap
                          ] 
@@ -126,7 +127,7 @@ attackersToHtml club =
 midfieldersToHtml: Club -> StyledHtml.Html Msg
 midfieldersToHtml club = 
   let
-      playersHtml = clubMidfielders club |> Array.toList |> List.map Player.playerToHtml
+      playersHtml = clubMidfielders club |> Array.toList |> List.map PlayerDisplay.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap 
                          ] 
@@ -139,8 +140,8 @@ midfieldersToHtml club =
 defenseToHtml: Club -> StyledHtml.Html Msg
 defenseToHtml club =
   let
-      defendersHtml = StyledHtml.div [ class "defenders" ] (clubDefenders club |> Array.toList |> List.map Player.playerToHtml)
-      goalkeeperHtml = StyledHtml.div [ class "goalkeeper" ] [ clubGoalkeeper club |> Player.playerToHtml ] 
+      defendersHtml = StyledHtml.div [ class "defenders" ] (clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml)
+      goalkeeperHtml = StyledHtml.div [ class "goalkeeper" ] [ clubGoalkeeper club |> PlayerDisplay.playerToHtml ] 
       attributes = [ css [ GameStyle.flexStyle, Css.flexFlow1 Css.wrap ] ]
       playersHtml = [ goalkeeperHtml, defendersHtml ]
   in
@@ -150,7 +151,7 @@ defenseToHtml club =
 defendersToHtml: Club -> StyledHtml.Html Msg
 defendersToHtml club = 
   let
-      playersHtml = clubDefenders club |> Array.toList |> List.map Player.playerToHtml
+      playersHtml = clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap 
                          ] 
@@ -162,7 +163,7 @@ defendersToHtml club =
 goalkeeperToHtml: Club -> StyledHtml.Html Msg
 goalkeeperToHtml club =
   let
-      playersHtml = clubGoalkeeper club |> Player.playerToHtml
+      playersHtml = clubGoalkeeper club |> PlayerDisplay.playerToHtml
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap 
                          ] 
