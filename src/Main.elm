@@ -5,7 +5,7 @@ import Html.Events exposing (onClick)
 import Browser
 import Html.Attributes exposing (start)
 import Player exposing (PlayerOrPlaceholder)
-import Model exposing (init, update, view)
+import Model exposing (init, update, view, subscriptions)
 
 {-
 Flow of game:
@@ -26,9 +26,15 @@ Flow of game:
   Season
 
 -}
-main =
-  Browser.sandbox { init = init, update = update, view = view }
 
+
+
+main =
+  Browser.element { init = init
+                  , view = view
+                  , update = update
+                  , subscriptions = subscriptions
+                  }
 
 
 
