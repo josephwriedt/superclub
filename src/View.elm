@@ -33,7 +33,7 @@ view model =
 
 deckView : Model -> StyledHtml.Html Msg 
 deckView model =
-    div [ class "player-decks", css [ GameStyle.flexStyle, Css.flexFlow1 Css.wrap ] ]
+    div [ class "player-decks", css [ GameStyle.flexStyle ] ]
         [ deck "Europe", deck "Asia", deck "South America", deck "North America", deck "Australia" ]
 
 deck : String -> StyledHtml.Html Msg 

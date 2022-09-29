@@ -8646,6 +8646,8 @@ var $author$project$PlayerDisplay$playerToHtml = function (a) {
 var $rtfeldman$elm_css$Css$wrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'wrap'};
 var $author$project$Club$reservesToHtml = function (club) {
 	var reserves = club.reserves;
+	var playersHtml = $elm$core$Array$toList(
+		A2($elm$core$Array$map, $author$project$PlayerDisplay$playerToHtml, reserves));
 	var attributes = _List_fromArray(
 		[
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
@@ -8656,11 +8658,7 @@ var $author$project$Club$reservesToHtml = function (club) {
 				])),
 			$rtfeldman$elm_css$Html$Styled$Attributes$class('reserves')
 		]);
-	return A2(
-		$rtfeldman$elm_css$Html$Styled$div,
-		attributes,
-		$elm$core$Array$toList(
-			A2($elm$core$Array$map, $author$project$PlayerDisplay$playerToHtml, reserves)));
+	return A3($rtfeldman$elm_css$Html$Styled$node, 'reserves', attributes, playersHtml);
 };
 var $rtfeldman$elm_css$Css$right = $rtfeldman$elm_css$Css$prop1('right');
 var $elm$core$Elm$JsArray$appendN = _JsArray_appendN;
@@ -8890,10 +8888,9 @@ var $author$project$Club$attackersToHtml = function (club) {
 				[
 					$author$project$GameStyle$flexStyle,
 					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-				])),
-			$rtfeldman$elm_css$Html$Styled$Attributes$class('attackers')
+				]))
 		]);
-	return A2($rtfeldman$elm_css$Html$Styled$div, attributes, playersHtml);
+	return A3($rtfeldman$elm_css$Html$Styled$node, 'attack', attributes, playersHtml);
 };
 var $author$project$Club$clubDefenders = function (club) {
 	return A3($elm$core$Array$slice, 11, 15, club.starters);
@@ -8976,7 +8973,7 @@ var $author$project$Club$defenseToHtml = function (club) {
 					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
 				]))
 		]);
-	return A2($rtfeldman$elm_css$Html$Styled$div, attributes, playersHtml);
+	return A3($rtfeldman$elm_css$Html$Styled$node, 'defense', attributes, playersHtml);
 };
 var $author$project$Club$clubMidfielders = function (club) {
 	return A3($elm$core$Array$slice, 5, 10, club.starters);
@@ -8994,21 +8991,18 @@ var $author$project$Club$midfieldersToHtml = function (club) {
 				[
 					$author$project$GameStyle$flexStyle,
 					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-				])),
-			$rtfeldman$elm_css$Html$Styled$Attributes$class('midfielders')
+				]))
 		]);
-	return A2($rtfeldman$elm_css$Html$Styled$div, attributes, playersHtml);
+	return A3($rtfeldman$elm_css$Html$Styled$node, 'midfield', attributes, playersHtml);
 };
 var $author$project$Club$startersToHtml = function (club) {
 	var midfieldersHtml = $author$project$Club$midfieldersToHtml(club);
 	var defenseHtml = $author$project$Club$defenseToHtml(club);
 	var attackersHtml = $author$project$Club$attackersToHtml(club);
-	return A2(
-		$rtfeldman$elm_css$Html$Styled$div,
-		_List_fromArray(
-			[
-				$rtfeldman$elm_css$Html$Styled$Attributes$class('starters')
-			]),
+	return A3(
+		$rtfeldman$elm_css$Html$Styled$node,
+		'starters',
+		_List_Nil,
 		_List_fromArray(
 			[attackersHtml, midfieldersHtml, defenseHtml]));
 };
@@ -9058,7 +9052,7 @@ var $author$project$Club$clubFolderHtml = function (club) {
 		]);
 	return A3(
 		$rtfeldman$elm_css$Html$Styled$node,
-		'PlayerOrPlaceholder-folder',
+		'player-folder',
 		attributes,
 		_List_fromArray(
 			[reservesHtml, startersHtml]));
@@ -9144,10 +9138,7 @@ var $author$project$View$deckView = function (model) {
 				$rtfeldman$elm_css$Html$Styled$Attributes$class('player-decks'),
 				$rtfeldman$elm_css$Html$Styled$Attributes$css(
 				_List_fromArray(
-					[
-						$author$project$GameStyle$flexStyle,
-						$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-					]))
+					[$author$project$GameStyle$flexStyle]))
 			]),
 		_List_fromArray(
 			[

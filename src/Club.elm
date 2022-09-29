@@ -108,8 +108,10 @@ reservesToHtml club =
                       ]
                    , class "reserves"
                    ]
+      playersHtml = Array.map PlayerDisplay.playerToHtml reserves |> Array.toList
   in
-  StyledHtml.div attributes <| Array.toList (Array.map PlayerDisplay.playerToHtml reserves)
+  StyledHtml.node "reserves" attributes playersHtml
+  -- StyledHtml.div attributes <| Array.toList (Array.map PlayerDisplay.playerToHtml reserves)
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
@@ -118,10 +120,11 @@ attackersToHtml club =
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap
                          ] 
-                   , class "attackers"
+                  --  , class "attackers"
                    ]
   in
-  StyledHtml.div attributes playersHtml
+  StyledHtml.node "attack" attributes playersHtml
+  -- StyledHtml.div attributes playersHtml
 
 
 midfieldersToHtml: Club -> StyledHtml.Html Msg
@@ -131,10 +134,11 @@ midfieldersToHtml club =
       attributes = [ css [ GameStyle.flexStyle 
                          , Css.flexFlow1 Css.wrap 
                          ] 
-                   , class "midfielders"
+                  --  , class "midfielders"
                    ]
   in
-  StyledHtml.div attributes playersHtml
+  StyledHtml.node "midfield" attributes playersHtml
+  -- StyledHtml.div attributes playersHtml
 
 
 defenseToHtml: Club -> StyledHtml.Html Msg
@@ -145,7 +149,8 @@ defenseToHtml club =
       attributes = [ css [ GameStyle.flexStyle, Css.flexFlow1 Css.wrap ] ]
       playersHtml = [ goalkeeperHtml, defendersHtml ]
   in
-  StyledHtml.div attributes playersHtml
+  StyledHtml.node "defense" attributes playersHtml
+  -- StyledHtml.div attributes playersHtml
   
 
 defendersToHtml: Club -> StyledHtml.Html Msg
@@ -179,7 +184,8 @@ startersToHtml club =
     midfieldersHtml = midfieldersToHtml club
     defenseHtml = defenseToHtml club
   in
-  StyledHtml.div [ class "starters" ] [ attackersHtml, midfieldersHtml, defenseHtml ]
+  StyledHtml.node "starters" [] [ attackersHtml, midfieldersHtml, defenseHtml ]
+  -- StyledHtml.div [ class "starters" ] [ attackersHtml, midfieldersHtml, defenseHtml ]
 
 clubFolderHtml: Club -> StyledHtml.Html Msg
 clubFolderHtml club = 
@@ -192,4 +198,4 @@ clubFolderHtml club =
                     ]
                   ]
   in
-  StyledHtml.node "PlayerOrPlaceholder-folder" attributes [ reservesHtml, startersHtml ]
+  StyledHtml.node "player-folder" attributes [ reservesHtml, startersHtml ]
