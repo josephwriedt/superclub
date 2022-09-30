@@ -27,8 +27,6 @@ folderStyle =
     Css.batch [ Css.border (px 20) 
               , Css.outlineStyle Css.solid
               , borderRadius (px 20)
-            --   , paddingStyle
-            --   , width (pct 40)
               , margin (pct 2.5)
               ]
 

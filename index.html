@@ -9114,7 +9114,11 @@ var $author$project$View$deck = function (region) {
 				$rtfeldman$elm_css$Html$Styled$Events$onClick($author$project$Msg$RandomDeckPlayer),
 				$rtfeldman$elm_css$Html$Styled$Attributes$css(
 				_List_fromArray(
-					[$author$project$GameStyle$deckStyle]))
+					[
+						$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$inlineFlex),
+						$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap),
+						$author$project$GameStyle$deckStyle
+					]))
 			]),
 		_List_fromArray(
 			[
@@ -9135,10 +9139,7 @@ var $author$project$View$deckView = function (model) {
 		$rtfeldman$elm_css$Html$Styled$div,
 		_List_fromArray(
 			[
-				$rtfeldman$elm_css$Html$Styled$Attributes$class('player-decks'),
-				$rtfeldman$elm_css$Html$Styled$Attributes$css(
-				_List_fromArray(
-					[$author$project$GameStyle$flexStyle]))
+				$rtfeldman$elm_css$Html$Styled$Attributes$class('player-decks')
 			]),
 		_List_fromArray(
 			[

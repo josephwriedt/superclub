@@ -33,7 +33,7 @@ view model =
 
 deckView : Model -> StyledHtml.Html Msg 
 deckView model =
-    div [ class "player-decks", css [ GameStyle.flexStyle ] ]
+    div [ class "player-decks" ]
         [ deck "Europe", deck "Asia", deck "South America", deck "North America", deck "Australia" ]
 
 deck : String -> StyledHtml.Html Msg 
@@ -48,7 +48,8 @@ deck region =
     
     div [ class className
         , onClick Msg.RandomDeckPlayer
-        , css [ GameStyle.deckStyle ]
+        -- , css [ GameStyle.deckStyle ]
+        , css [ Css.display Css.inlineFlex, Css.flexFlow1 Css.wrap, GameStyle.deckStyle ]
         ]
         [ StyledHtml.h3 [ css textStyle ] [ StyledHtml.text region ]
         ]
