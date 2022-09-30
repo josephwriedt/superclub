@@ -2,7 +2,7 @@ module View exposing (..)
 import Model exposing (Model)
 import Club
 import Player exposing (PlayerOrPlaceholder)
-import GameStyle
+import Gamestyle
 import PlayerDisplay
 -- Display Packages
 import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
@@ -41,15 +41,15 @@ deck region =
     let
         className = region ++ "-deck" 
         textStyle = [ Css.color (Css.rgb 255 255 255)
-                    , GameStyle.centerText
+                    , Gamestyle.centerText
                     , Css.textAlign Css.textTop
                     ]
     in
     
     div [ class className
         , onClick Msg.RandomDeckPlayer
-        -- , css [ GameStyle.deckStyle ]
-        , css [ Css.display Css.inlineFlex, Css.flexFlow1 Css.wrap, GameStyle.deckStyle ]
+        -- , css [ Gamestyle.deckStyle ]
+        , css [ Css.display Css.inlineFlex, Css.flexFlow1 Css.wrap, Gamestyle.deckStyle ]
         ]
         [ StyledHtml.h3 [ css textStyle ] [ StyledHtml.text region ]
         ]

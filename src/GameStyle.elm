@@ -1,4 +1,4 @@
-module GameStyle exposing (..)
+module Gamestyle exposing (..)
 import Css exposing (..)
 import Html exposing (Attribute)
 import Html.Styled.Attributes exposing (css)

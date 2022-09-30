@@ -1,6 +1,6 @@
 module PlayerDisplay exposing (..)
 import Player exposing (..)
-import GameStyle
+import Gamestyle
 import Msg exposing (Msg)
 -- Display Packages
 import Css
@@ -14,13 +14,13 @@ playerStyle: PlayerOrPlaceholder -> Css.Style
 playerStyle a =
   case a of
     PlayerPlaceholder _ -> 
-      GameStyle.playerPlaceholderStyle
+      Gamestyle.playerPlaceholderStyle
     Player player ->
       case player.position of
-        GK -> GameStyle.goalkeeperStyle
-        DEF -> GameStyle.defenderStyle
-        MID -> GameStyle.midfielderStyle
-        ATT -> GameStyle.attackerStyle
+        GK -> Gamestyle.goalkeeperStyle
+        DEF -> Gamestyle.defenderStyle
+        MID -> Gamestyle.midfielderStyle
+        ATT -> Gamestyle.attackerStyle
 
 
 
@@ -28,13 +28,13 @@ playerToHtml: PlayerOrPlaceholder -> StyledHtml.Html Msg
 playerToHtml a =
   let
       textStyle = [ Css.color (Css.rgb 255 255 255)
-                  , GameStyle.centerText
+                  , Gamestyle.centerText
                   , Css.textAlign Css.textTop
                   ]
   in
   div 
     [ class <| playerId a
-    , css [ GameStyle.paddingStyle, Css.float Css.left ]
+    , css [ Gamestyle.paddingStyle, Css.float Css.left ]
     ]
     [ div 
       [ css [ playerStyle a ] 
@@ -50,7 +50,7 @@ playerToHtml a =
   --     Player player ->
   --       div 
   --         [ class player.name
-  --         , css [ GameStyle.paddingStyle, Css.float Css.left ] 
+  --         , css [ Gamestyle.paddingStyle, Css.float Css.left ] 
   --         ] 
   --         [
   --           div 

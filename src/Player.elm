@@ -4,7 +4,7 @@ import Html exposing (a)
 import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
 import Css exposing (position)
 import Html.Styled.Attributes exposing (attribute, css, class)
-import GameStyle
+import Gamestyle
 
 
 -- Types
@@ -207,16 +207,16 @@ generateStar star =
       StyledHtml.span [] []
 
     Current ->
-      GameStyle.filledStar
+      Gamestyle.filledStar
 
     Potential ->
-      GameStyle.unfilledStar
+      Gamestyle.unfilledStar
 
 generateStarFromMatrix: List (List Star) -> List(StyledHtml.Html msg)
 generateStarFromMatrix matrix =
   let
       generateStarsRow list = 
-        div [ class "star-row", css [ GameStyle.centerText ] ] 
+        div [ class "star-row", css [ Gamestyle.centerText ] ] 
           <| List.map generateStar list   
   in
   matrix |> List.map generateStarsRow
