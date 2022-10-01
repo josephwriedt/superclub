@@ -5,10 +5,10 @@ import Player exposing (PlayerOrPlaceholder)
 import Gamestyle
 import PlayerDisplay
 -- Display Packages
-import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
+import Html.Styled as StyledHtml exposing (..)
 import Html.Styled.Attributes exposing (attribute, css, class)
 import Html
-import Css
+import Css exposing (..)
 -- Helper Packages
 import List exposing (map)
 import Msg exposing (Msg)
@@ -26,30 +26,54 @@ view model =
   
     toUnstyled <|
       div []
-          [ deckView model, randomPlayerHtml, Club.clubFolderHtml model.club]
-    -- model |> squadView |>  toUnstyled
-    -- model.club |> Club.clubFolderHtml |> toUnstyled
+          [ deckView
+          , randomPlayerHtml
+          , inspectPlayer model
+          , Club.clubFolderHtml model.club
+          ]
 
 
-deckView : Model -> StyledHtml.Html Msg 
-deckView model =
+inspectPlayer : Model -> StyledHtml.Html Msg
+inspectPlayer model = 
+  StyledHtml.node "inspect-player" 
+    -- [ css [ Css.display Css.inlineBlock, Css.flexFlow1 Css.wrap ] ] 
+    []
+    [ PlayerDisplay.playerToHtml model.inspectedPlayer
+    , inspectPlayerButtons model
+    ]
+
+inspectPlayerButtons : Model -> StyledHtml.Html Msg
+inspectPlayerButtons model = 
+  let
+      buttonStyle = css [ display block, margin (px 10) ]
+  in
+  div  
+    [  ]
+    [ button [ buttonStyle ] [ text "Aquire" ]
+    , button [ buttonStyle ] [ text "Sell" ]
+    , button [ buttonStyle ] [ text "Train" ]
+    ]
+
+deckView : StyledHtml.Html Msg 
+deckView =
     div [ class "player-decks" ]
-        [ deck "Europe", deck "Asia", deck "South America", deck "North America", deck "Australia" ]
+        [ deck "Europe", deck "Asia", deck "South America", deck "Australia", deck "North" ]
 
 deck : String -> StyledHtml.Html Msg 
 deck region = 
     let
         className = region ++ "-deck" 
+        marginStyle = Css.margin Css.auto
         textStyle = [ Css.color (Css.rgb 255 255 255)
                     , Gamestyle.centerText
-                    , Css.textAlign Css.textTop
+                    , marginStyle
                     ]
     in
     
     div [ class className
         , onClick Msg.RandomDeckPlayer
         -- , css [ Gamestyle.deckStyle ]
-        , css [ Css.display Css.inlineFlex, Css.flexFlow1 Css.wrap, Gamestyle.deckStyle ]
+        , css [ Css.display Css.inlineBlock, Css.flexFlow1 Css.wrap, Gamestyle.deckStyle, Css.margin (Css.px 20) ]
         ]
         [ StyledHtml.h3 [ css textStyle ] [ StyledHtml.text region ]
         ]
@@ -76,7 +100,7 @@ squadToHtml players =
                   , class "squad"
                   ]
 
-    squadHtml = map PlayerDisplay.playerToHtml players
+    squadHtml = List.map PlayerDisplay.playerToHtml players
   in
   StyledHtml.div attributes squadHtml
 

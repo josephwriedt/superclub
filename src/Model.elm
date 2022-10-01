@@ -19,6 +19,7 @@ type alias Model =
     , swapPlayers : List PlayerOrPlaceholder
     , playerDeck : List PlayerOrPlaceholder
     , randomPlayer : Maybe PlayerOrPlaceholder
+    , inspectedPlayer : PlayerOrPlaceholder
     }
 
 
@@ -38,7 +39,8 @@ init _ =
             , reserves = reserves
             , starters = starters
             }
-    model =   { club = club, swapPlayers = [], playerDeck = Init.playerDeck, randomPlayer = Nothing }
+    player = Player { name = "Nketiah", position = Player.ATT, chemistry = Player.Left, ability = 2, potential = 5, market_value = 25, scout_value = 15 } 
+    model =   { club = club, swapPlayers = [], playerDeck = Init.playerDeck, randomPlayer = Nothing, inspectedPlayer = player }
   in
   ( model
   , Cmd.none

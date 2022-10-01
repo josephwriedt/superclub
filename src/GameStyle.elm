@@ -6,9 +6,13 @@ import Html.Styled as StyledHtml
 
 cardDimensions : Style
 cardDimensions =
-    Css.batch [ width (inches 1.25)
-              , height (inches 1.75)
+    Css.batch [ width (px 120)
+              , height (px 170)
               ]
+
+    -- Css.batch [ width (inches 1.25)
+    --           , height (inches 1.75)
+    --           ]
 
 
 cardStyle : Style
@@ -90,7 +94,14 @@ deckStyle =
         color = (hex "#0c5a99")
         backgroundColorStyle = Css.backgroundColor color
         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
-        styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ]
+        cStyle = Css.batch [ Css.border (px 10)
+                            , Css.padding (px 50)
+                            , Css.outlineStyle Css.solid
+                            , borderRadius (px 10)
+                            -- , Css.padding (px 10) 
+                            , cardDimensions
+                            ]
+        styles = [ backgroundColorStyle, boxShadowStyle, cStyle ]
     in
     Css.batch styles
 
