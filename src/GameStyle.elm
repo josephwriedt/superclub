@@ -4,15 +4,37 @@ import Html exposing (Attribute)
 import Html.Styled.Attributes exposing (css)
 import Html.Styled as StyledHtml 
 
+-- Element Size Styles
+marginStyle : Style
+marginStyle =
+    Css.batch [ margin (px 20) ]
+
+paddingStyle : Style 
+paddingStyle =
+    Css.batch [ padding (px 10) ]
+
+borderStyle : Style
+borderStyle = 
+    Css.batch [ border (px 10) ]
+
+
+-- Reminder to apply this to the children elements that want to be in a row
+flexStyle : Style
+flexStyle =
+    display Css.block
+
+-- Player Card Styles
 cardDimensions : Style
-cardDimensions =
-    Css.batch [ width (px 120)
-              , height (px 170)
+cardDimensions = 
+    Css.batch [ height (px 170)
+              , width (px 120)
               ]
 
-    -- Css.batch [ width (inches 1.25)
-    --           , height (inches 1.75)
-    --           ]
+
+cardStyle : Style
+cardStyle =
+    Css.batch [ 
+              ]
 
 
 cardStyle : Style
@@ -105,10 +127,6 @@ deckStyle =
     in
     Css.batch styles
 
-paddingStyle : Style
-paddingStyle = 
-    Css.batch [ Css.padding (px 20) ]
-
 centerText: Style
 centerText = 
     textAlign center
@@ -134,7 +152,3 @@ unfilledStar =
         [ css styles]
         [ StyledHtml.text starString]
 
-flexStyle: Style
-flexStyle =
-    Css.display Css.block
-    -- Css.display Css.table
