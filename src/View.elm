@@ -94,7 +94,7 @@ squadToHtml: List PlayerOrPlaceholder -> StyledHtml.Html Msg
 squadToHtml players = 
   let
     attributes = [ css 
-                    [ Css.display Css.inlineFlex
+                    [ Gamestyle.displayStyle
                     , Css.flexFlow1 Css.wrap
                     ]
                   , class "squad"
@@ -103,4 +103,3 @@ squadToHtml players =
     squadHtml = List.map PlayerDisplay.playerToHtml players
   in
   StyledHtml.div attributes squadHtml
-

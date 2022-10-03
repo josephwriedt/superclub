@@ -7499,6 +7499,9 @@ var $rtfeldman$elm_css$Css$prop1 = F2(
 		return A2($rtfeldman$elm_css$Css$property, key, arg.value);
 	});
 var $rtfeldman$elm_css$Css$display = $rtfeldman$elm_css$Css$prop1('display');
+var $rtfeldman$elm_css$Css$Structure$Compatible = {$: 'Compatible'};
+var $rtfeldman$elm_css$Css$inlineFlex = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'inline-flex'};
+var $author$project$Gamestyle$displayStyle = $rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$inlineFlex);
 var $rtfeldman$elm_css$VirtualDom$Styled$Node = F3(
 	function (a, b, c) {
 		return {$: 'Node', a: a, b: b, c: c};
@@ -7572,7 +7575,6 @@ var $rtfeldman$elm_css$Css$Internal$getOverloadedProperty = F3(
 		}
 	});
 var $rtfeldman$elm_css$Css$Internal$IncompatibleUnits = {$: 'IncompatibleUnits'};
-var $rtfeldman$elm_css$Css$Structure$Compatible = {$: 'Compatible'};
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $rtfeldman$elm_css$Css$Internal$lengthConverter = F3(
 	function (units, unitLabel, numericValue) {
@@ -7608,51 +7610,33 @@ var $rtfeldman$elm_css$Css$float = function (fn) {
 };
 var $rtfeldman$elm_css$Css$batch = $rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
 var $rtfeldman$elm_css$Css$border = $rtfeldman$elm_css$Css$prop1('border');
-var $rtfeldman$elm_css$Css$borderRadius = $rtfeldman$elm_css$Css$prop1('border-radius');
-var $rtfeldman$elm_css$Css$margin = $rtfeldman$elm_css$Css$prop1('margin');
-var $rtfeldman$elm_css$Css$outlineStyle = $rtfeldman$elm_css$Css$prop1('outline-style');
-var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
-var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
 var $rtfeldman$elm_css$Css$PxUnits = {$: 'PxUnits'};
 var $rtfeldman$elm_css$Css$px = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PxUnits, 'px');
-var $rtfeldman$elm_css$Css$solid = {borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationStyle: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'solid'};
-var $author$project$Gamestyle$folderStyle = $rtfeldman$elm_css$Css$batch(
+var $author$project$Gamestyle$borderStyle = $rtfeldman$elm_css$Css$batch(
 	_List_fromArray(
 		[
 			$rtfeldman$elm_css$Css$border(
-			$rtfeldman$elm_css$Css$px(20)),
-			$rtfeldman$elm_css$Css$outlineStyle($rtfeldman$elm_css$Css$solid),
-			$rtfeldman$elm_css$Css$borderRadius(
-			$rtfeldman$elm_css$Css$px(20)),
-			$rtfeldman$elm_css$Css$margin(
-			$rtfeldman$elm_css$Css$pct(2.5))
+			$rtfeldman$elm_css$Css$px(10))
 		]));
-var $rtfeldman$elm_css$Css$inlineFlex = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'inline-flex'};
+var $rtfeldman$elm_css$Css$borderRadius = $rtfeldman$elm_css$Css$prop1('border-radius');
+var $author$project$Gamestyle$cardBorderRadiusStyle = $rtfeldman$elm_css$Css$borderRadius(
+	$rtfeldman$elm_css$Css$px(10));
+var $rtfeldman$elm_css$Css$outlineStyle = $rtfeldman$elm_css$Css$prop1('outline-style');
+var $rtfeldman$elm_css$Css$solid = {borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationStyle: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'solid'};
+var $author$project$Gamestyle$cardOutlineStyle = $rtfeldman$elm_css$Css$outlineStyle($rtfeldman$elm_css$Css$solid);
+var $rtfeldman$elm_css$Css$margin = $rtfeldman$elm_css$Css$prop1('margin');
+var $author$project$Gamestyle$marginStyle = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$margin(
+			$rtfeldman$elm_css$Css$px(20))
+		]));
+var $author$project$Gamestyle$folderStyle = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[$author$project$Gamestyle$borderStyle, $author$project$Gamestyle$cardOutlineStyle, $author$project$Gamestyle$cardBorderRadiusStyle, $author$project$Gamestyle$marginStyle]));
 var $rtfeldman$elm_css$Css$left = $rtfeldman$elm_css$Css$prop1('left');
-var $elm$virtual_dom$VirtualDom$property = F2(
-	function (key, value) {
-		return A2(
-			_VirtualDom_property,
-			_VirtualDom_noInnerHtmlOrFormAction(key),
-			_VirtualDom_noJavaScriptOrHtmlJson(value));
-	});
-var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
-	function (key, value) {
-		return A3(
-			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
-			A2($elm$virtual_dom$VirtualDom$property, key, value),
-			false,
-			'');
-	});
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
-	function (key, string) {
-		return A2(
-			$rtfeldman$elm_css$VirtualDom$Styled$property,
-			key,
-			$elm$json$Json$Encode$string(string));
-	});
-var $rtfeldman$elm_css$Html$Styled$Attributes$class = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('className');
+var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
+var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
 var $elm$core$Elm$JsArray$map = _JsArray_map;
 var $elm$core$Array$map = F2(
 	function (func, _v0) {
@@ -7687,6 +7671,30 @@ var $rtfeldman$elm_css$Css$textAlign = function (fn) {
 		fn($rtfeldman$elm_css$Css$Internal$lengthForOverloadedProperty));
 };
 var $author$project$Gamestyle$centerText = $rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$center);
+var $elm$virtual_dom$VirtualDom$property = F2(
+	function (key, value) {
+		return A2(
+			_VirtualDom_property,
+			_VirtualDom_noInnerHtmlOrFormAction(key),
+			_VirtualDom_noJavaScriptOrHtmlJson(value));
+	});
+var $rtfeldman$elm_css$VirtualDom$Styled$property = F2(
+	function (key, value) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$property, key, value),
+			false,
+			'');
+	});
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty = F2(
+	function (key, string) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$property,
+			key,
+			$elm$json$Json$Encode$string(string));
+	});
+var $rtfeldman$elm_css$Html$Styled$Attributes$class = $rtfeldman$elm_css$Html$Styled$Attributes$stringProperty('className');
 var $rtfeldman$elm_css$Css$color = function (c) {
 	return A2($rtfeldman$elm_css$Css$property, 'color', c.value);
 };
@@ -8081,13 +8089,6 @@ var $author$project$Player$name = function (a) {
 		return '';
 	}
 };
-var $rtfeldman$elm_css$Css$padding = $rtfeldman$elm_css$Css$prop1('padding');
-var $author$project$Gamestyle$paddingStyle = $rtfeldman$elm_css$Css$batch(
-	_List_fromArray(
-		[
-			$rtfeldman$elm_css$Css$padding(
-			$rtfeldman$elm_css$Css$px(20))
-		]));
 var $author$project$Player$playerId = function (a) {
 	if (a.$ === 'Player') {
 		var player = a.a;
@@ -8097,38 +8098,6 @@ var $author$project$Player$playerId = function (a) {
 		return id;
 	}
 };
-var $rtfeldman$elm_css$Css$backgroundColor = function (c) {
-	return A2($rtfeldman$elm_css$Css$property, 'background-color', c.value);
-};
-var $rtfeldman$elm_css$Css$prop4 = F5(
-	function (key, argA, argB, argC, argD) {
-		return A2($rtfeldman$elm_css$Css$property, key, argA.value + (' ' + (argB.value + (' ' + (argC.value + (' ' + argD.value))))));
-	});
-var $rtfeldman$elm_css$Css$boxShadow4 = $rtfeldman$elm_css$Css$prop4('box-shadow');
-var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
-var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
-var $author$project$Gamestyle$cardDimensions = $rtfeldman$elm_css$Css$batch(
-	_List_fromArray(
-		[
-			$rtfeldman$elm_css$Css$width(
-			$rtfeldman$elm_css$Css$px(120)),
-			$rtfeldman$elm_css$Css$height(
-			$rtfeldman$elm_css$Css$px(170))
-		]));
-var $author$project$Gamestyle$cardStyle = $rtfeldman$elm_css$Css$batch(
-	_List_fromArray(
-		[
-			$rtfeldman$elm_css$Css$border(
-			$rtfeldman$elm_css$Css$px(10)),
-			$rtfeldman$elm_css$Css$padding(
-			$rtfeldman$elm_css$Css$px(50)),
-			$rtfeldman$elm_css$Css$outlineStyle($rtfeldman$elm_css$Css$solid),
-			$rtfeldman$elm_css$Css$borderRadius(
-			$rtfeldman$elm_css$Css$px(10)),
-			$rtfeldman$elm_css$Css$padding(
-			$rtfeldman$elm_css$Css$pct(5)),
-			$author$project$Gamestyle$cardDimensions
-		]));
 var $rtfeldman$elm_css$Css$withPrecedingHash = function (str) {
 	return A2($elm$core$String$startsWith, '#', str) ? str : A2(
 		$elm$core$String$cons,
@@ -8508,88 +8477,68 @@ var $rtfeldman$elm_css$Css$hex = function (str) {
 	}
 	return $rtfeldman$elm_css$Css$erroneousHex(str);
 };
-var $author$project$Gamestyle$attackerStyle = function () {
-	var color = $rtfeldman$elm_css$Css$hex('#00913c');
-	var boxShadowStyle = A4(
-		$rtfeldman$elm_css$Css$boxShadow4,
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(5),
-		color);
-	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = _List_fromArray(
-		[backgroundColorStyle, boxShadowStyle, $author$project$Gamestyle$cardStyle]);
-	return $rtfeldman$elm_css$Css$batch(styles);
-}();
-var $author$project$Gamestyle$defenderStyle = function () {
-	var color = $rtfeldman$elm_css$Css$hex('#e01e26');
-	var boxShadowStyle = A4(
-		$rtfeldman$elm_css$Css$boxShadow4,
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(5),
-		color);
-	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = _List_fromArray(
-		[backgroundColorStyle, boxShadowStyle, $author$project$Gamestyle$cardStyle]);
-	return $rtfeldman$elm_css$Css$batch(styles);
-}();
-var $author$project$Gamestyle$goalkeeperStyle = function () {
-	var color = A3($rtfeldman$elm_css$Css$rgb, 252, 103, 3);
-	var boxShadowStyle = A4(
-		$rtfeldman$elm_css$Css$boxShadow4,
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(5),
-		color);
-	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = _List_fromArray(
-		[backgroundColorStyle, boxShadowStyle, $author$project$Gamestyle$cardStyle]);
-	return $rtfeldman$elm_css$Css$batch(styles);
-}();
-var $author$project$Gamestyle$midfielderStyle = function () {
-	var color = $rtfeldman$elm_css$Css$hex('#fcc800');
-	var boxShadowStyle = A4(
-		$rtfeldman$elm_css$Css$boxShadow4,
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(5),
-		color);
-	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = _List_fromArray(
-		[backgroundColorStyle, boxShadowStyle, $author$project$Gamestyle$cardStyle]);
-	return $rtfeldman$elm_css$Css$batch(styles);
-}();
-var $author$project$Gamestyle$playerPlaceholderStyle = function () {
-	var color = $rtfeldman$elm_css$Css$hex('#e0e0e0');
-	var boxShadowStyle = A4(
-		$rtfeldman$elm_css$Css$boxShadow4,
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(10),
-		$rtfeldman$elm_css$Css$px(5),
-		color);
-	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
-	var styles = _List_fromArray(
-		[backgroundColorStyle, boxShadowStyle, $author$project$Gamestyle$cardStyle]);
-	return $rtfeldman$elm_css$Css$batch(styles);
-}();
+var $rtfeldman$elm_css$Css$backgroundColor = function (c) {
+	return A2($rtfeldman$elm_css$Css$property, 'background-color', c.value);
+};
+var $rtfeldman$elm_css$Css$prop4 = F5(
+	function (key, argA, argB, argC, argD) {
+		return A2($rtfeldman$elm_css$Css$property, key, argA.value + (' ' + (argB.value + (' ' + (argC.value + (' ' + argD.value))))));
+	});
+var $rtfeldman$elm_css$Css$boxShadow4 = $rtfeldman$elm_css$Css$prop4('box-shadow');
+var $rtfeldman$elm_css$Css$height = $rtfeldman$elm_css$Css$prop1('height');
+var $rtfeldman$elm_css$Css$width = $rtfeldman$elm_css$Css$prop1('width');
+var $author$project$Gamestyle$cardDimensions = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$height(
+			$rtfeldman$elm_css$Css$px(170)),
+			$rtfeldman$elm_css$Css$width(
+			$rtfeldman$elm_css$Css$px(120))
+		]));
+var $rtfeldman$elm_css$Css$padding = $rtfeldman$elm_css$Css$prop1('padding');
+var $author$project$Gamestyle$paddingStyle = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$padding(
+			$rtfeldman$elm_css$Css$px(10))
+		]));
+var $author$project$Gamestyle$cardStyle = $rtfeldman$elm_css$Css$batch(
+	_List_fromArray(
+		[$author$project$Gamestyle$marginStyle, $author$project$Gamestyle$borderStyle, $author$project$Gamestyle$paddingStyle, $author$project$Gamestyle$cardDimensions, $author$project$Gamestyle$cardOutlineStyle, $author$project$Gamestyle$cardBorderRadiusStyle]));
+var $author$project$Gamestyle$playerPlaceholderStyle = function (color) {
+	return $rtfeldman$elm_css$Css$batch(
+		_List_fromArray(
+			[
+				$author$project$Gamestyle$cardStyle,
+				$rtfeldman$elm_css$Css$backgroundColor(color),
+				A4(
+				$rtfeldman$elm_css$Css$boxShadow4,
+				$rtfeldman$elm_css$Css$px(10),
+				$rtfeldman$elm_css$Css$px(10),
+				$rtfeldman$elm_css$Css$px(5),
+				color)
+			]));
+};
 var $author$project$PlayerDisplay$playerStyle = function (a) {
-	if (a.$ === 'PlayerPlaceholder') {
-		return $author$project$Gamestyle$playerPlaceholderStyle;
-	} else {
-		var player = a.a;
-		var _v1 = player.position;
-		switch (_v1.$) {
-			case 'GK':
-				return $author$project$Gamestyle$goalkeeperStyle;
-			case 'DEF':
-				return $author$project$Gamestyle$defenderStyle;
-			case 'MID':
-				return $author$project$Gamestyle$midfielderStyle;
-			default:
-				return $author$project$Gamestyle$attackerStyle;
+	var color = function () {
+		if (a.$ === 'PlayerPlaceholder') {
+			return $rtfeldman$elm_css$Css$hex('#e0e0e0');
+		} else {
+			var player = a.a;
+			var _v1 = player.position;
+			switch (_v1.$) {
+				case 'GK':
+					return A3($rtfeldman$elm_css$Css$rgb, 252, 103, 3);
+				case 'DEF':
+					return $rtfeldman$elm_css$Css$hex('#e01e26');
+				case 'MID':
+					return $rtfeldman$elm_css$Css$hex('#fcc800');
+				default:
+					return $rtfeldman$elm_css$Css$hex('#00913c');
+			}
 		}
-	}
+	}();
+	return $author$project$Gamestyle$playerPlaceholderStyle(color);
 };
 var $rtfeldman$elm_css$Css$textTop = $rtfeldman$elm_css$Css$prop1('text-top');
 var $author$project$PlayerDisplay$playerToHtml = function (a) {
@@ -8609,38 +8558,23 @@ var $author$project$PlayerDisplay$playerToHtml = function (a) {
 				$rtfeldman$elm_css$Html$Styled$Attributes$css(
 				_List_fromArray(
 					[
-						$author$project$Gamestyle$paddingStyle,
-						$rtfeldman$elm_css$Css$float($rtfeldman$elm_css$Css$left)
+						$author$project$PlayerDisplay$playerStyle(a)
 					]))
 			]),
 		_List_fromArray(
 			[
 				A2(
-				$rtfeldman$elm_css$Html$Styled$div,
+				$rtfeldman$elm_css$Html$Styled$h4,
 				_List_fromArray(
 					[
-						$rtfeldman$elm_css$Html$Styled$Attributes$css(
-						_List_fromArray(
-							[
-								$author$project$PlayerDisplay$playerStyle(a)
-							])),
-						$rtfeldman$elm_css$Html$Styled$Attributes$class('player-card')
+						$rtfeldman$elm_css$Html$Styled$Attributes$css(textStyle)
 					]),
 				_List_fromArray(
 					[
-						A2(
-						$rtfeldman$elm_css$Html$Styled$h4,
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Html$Styled$Attributes$css(textStyle)
-							]),
-						_List_fromArray(
-							[
-								$rtfeldman$elm_css$Html$Styled$text(
-								$author$project$Player$name(a))
-							])),
-						$author$project$Player$displayAbility(a)
-					]))
+						$rtfeldman$elm_css$Html$Styled$text(
+						$author$project$Player$name(a))
+					])),
+				$author$project$Player$displayAbility(a)
 			]));
 };
 var $rtfeldman$elm_css$Css$wrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'wrap'};
@@ -8653,10 +8587,9 @@ var $author$project$Club$reservesToHtml = function (club) {
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$inlineFlex),
+					$author$project$Gamestyle$displayStyle,
 					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-				])),
-			$rtfeldman$elm_css$Html$Styled$Attributes$class('reserves')
+				]))
 		]);
 	return A3($rtfeldman$elm_css$Html$Styled$node, 'reserves', attributes, playersHtml);
 };
@@ -8873,8 +8806,6 @@ var $elm$core$Array$slice = F3(
 var $author$project$Club$clubAttackers = function (club) {
 	return A3($elm$core$Array$slice, 0, 5, club.starters);
 };
-var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
-var $author$project$Gamestyle$flexStyle = $rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block);
 var $author$project$Club$attackersToHtml = function (club) {
 	var playersHtml = A2(
 		$elm$core$List$map,
@@ -8885,10 +8816,7 @@ var $author$project$Club$attackersToHtml = function (club) {
 		[
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
 			_List_fromArray(
-				[
-					$author$project$Gamestyle$flexStyle,
-					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-				]))
+				[$author$project$Gamestyle$displayStyle]))
 		]);
 	return A3($rtfeldman$elm_css$Html$Styled$node, 'attack', attributes, playersHtml);
 };
@@ -8955,7 +8883,10 @@ var $author$project$Club$defenseToHtml = function (club) {
 		$rtfeldman$elm_css$Html$Styled$div,
 		_List_fromArray(
 			[
-				$rtfeldman$elm_css$Html$Styled$Attributes$class('defenders')
+				$rtfeldman$elm_css$Html$Styled$Attributes$class('defenders'),
+				$rtfeldman$elm_css$Html$Styled$Attributes$css(
+				_List_fromArray(
+					[$author$project$Gamestyle$displayStyle]))
 			]),
 		A2(
 			$elm$core$List$map,
@@ -8968,10 +8899,7 @@ var $author$project$Club$defenseToHtml = function (club) {
 		[
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
 			_List_fromArray(
-				[
-					$author$project$Gamestyle$flexStyle,
-					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-				]))
+				[$author$project$Gamestyle$displayStyle]))
 		]);
 	return A3($rtfeldman$elm_css$Html$Styled$node, 'defense', attributes, playersHtml);
 };
@@ -8988,10 +8916,7 @@ var $author$project$Club$midfieldersToHtml = function (club) {
 		[
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
 			_List_fromArray(
-				[
-					$author$project$Gamestyle$flexStyle,
-					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-				]))
+				[$author$project$Gamestyle$displayStyle]))
 		]);
 	return A3($rtfeldman$elm_css$Html$Styled$node, 'midfield', attributes, playersHtml);
 };
@@ -9046,7 +8971,7 @@ var $author$project$Club$clubFolderHtml = function (club) {
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
 			_List_fromArray(
 				[
-					$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$inlineFlex),
+					$author$project$Gamestyle$displayStyle,
 					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
 				]))
 		]);
@@ -9165,6 +9090,7 @@ var $author$project$View$deckView = A2(
 			$author$project$View$deck('Australia'),
 			$author$project$View$deck('North')
 		]));
+var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
 var $rtfeldman$elm_css$Html$Styled$button = $rtfeldman$elm_css$Html$Styled$node('button');
 var $author$project$View$inspectPlayerButtons = function (model) {
 	var buttonStyle = $rtfeldman$elm_css$Html$Styled$Attributes$css(

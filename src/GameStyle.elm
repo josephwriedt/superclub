@@ -21,7 +21,11 @@ borderStyle =
 -- Reminder to apply this to the children elements that want to be in a row
 flexStyle : Style
 flexStyle =
-    display Css.block
+    display Css.inline
+
+displayStyle : Style
+displayStyle =
+    display inlineFlex
 
 -- Player Card Styles
 cardDimensions : Style
@@ -30,41 +34,68 @@ cardDimensions =
               , width (px 120)
               ]
 
+cardOutlineStyle : Style
+cardOutlineStyle = 
+    Css.outlineStyle solid
+
+cardBorderRadiusStyle : Style
+cardBorderRadiusStyle =
+    borderRadius (px 10)
 
 cardStyle : Style
 cardStyle =
-    Css.batch [ 
+    Css.batch [ marginStyle
+              , borderStyle
+              , paddingStyle
+              , cardDimensions
+              , cardOutlineStyle
+              , cardBorderRadiusStyle
               ]
 
 
-cardStyle : Style
-cardStyle = 
-    Css.batch 
-        [ Css.border (px 10)
-        , Css.padding (px 50)
-        , Css.outlineStyle Css.solid
-        , borderRadius (px 10)
-        , Css.padding (pct 5)
-        , cardDimensions
-        ]
+-- cardStyle : Style
+-- cardStyle = 
+--     Css.batch 
+--         [ Css.border (px 10)
+--         , Css.padding (px 50)
+--         , Css.outlineStyle Css.solid
+--         , borderRadius (px 10)
+--         , Css.padding (pct 5)
+--         , cardDimensions
+--         ]
+
+-- Folder Style
+folderMarginStyle : Style
+folderMarginStyle = 
+    margin (pct 2.5)
+
+
 
 folderStyle : Style
 folderStyle = 
-    Css.batch [ Css.border (px 20) 
-              , Css.outlineStyle Css.solid
-              , borderRadius (px 20)
-              , margin (pct 2.5)
+    Css.batch [ borderStyle
+              , cardOutlineStyle
+              , cardBorderRadiusStyle
+              , marginStyle
               ]
 
-playerPlaceholderStyle : Style
-playerPlaceholderStyle = 
-    let
-        color = (hex "#e0e0e0")
-        backgroundColorStyle = Css.backgroundColor color
-        boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
-        styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ]
-    in
-    Css.batch styles
+playerPlaceholderStyle : Color -> Style
+playerPlaceholderStyle color =
+    Css.batch [ cardStyle
+              , backgroundColor color
+              , boxShadow4 (px 10) (px 10) (px 5) color
+              ]
+
+
+-- playerPlaceholderStyle : Style
+-- playerPlaceholderStyle = 
+--     let
+--         color = (hex "#e0e0e0")
+--         backgroundColorStyle = Css.backgroundColor color
+--         boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
+--         styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ]
+--     in
+--     Css.batch styles
 
 goalkeeperStyle : Style
 goalkeeperStyle = 

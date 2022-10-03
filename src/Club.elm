@@ -103,10 +103,9 @@ reservesToHtml club =
   let
       reserves = club.reserves
       attributes = [ css 
-                      [ Css.display Css.inlineFlex
+                      [ Gamestyle.displayStyle
                       , Css.flexFlow1 Css.wrap
                       ]
-                   , class "reserves"
                    ]
       playersHtml = Array.map PlayerDisplay.playerToHtml reserves |> Array.toList
   in
@@ -117,10 +116,10 @@ attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
   let
       playersHtml = clubAttackers club |> Array.toList |> List.map PlayerDisplay.playerToHtml
-      attributes = [ css [ Gamestyle.flexStyle 
-                         , Css.flexFlow1 Css.wrap
+      attributes = [ css [ Gamestyle.displayStyle
+                        --  , Css.flexFlow1 Css.wrap
+                        --  , Css.float Css.left
                          ] 
-                  --  , class "attackers"
                    ]
   in
   StyledHtml.node "attack" attributes playersHtml
@@ -131,8 +130,8 @@ midfieldersToHtml: Club -> StyledHtml.Html Msg
 midfieldersToHtml club = 
   let
       playersHtml = clubMidfielders club |> Array.toList |> List.map PlayerDisplay.playerToHtml
-      attributes = [ css [ Gamestyle.flexStyle 
-                         , Css.flexFlow1 Css.wrap 
+      attributes = [ css [ Gamestyle.displayStyle 
+                        --  , Css.flexFlow1 Css.wrap 
                          ] 
                   --  , class "midfielders"
                    ]
@@ -144,38 +143,17 @@ midfieldersToHtml club =
 defenseToHtml: Club -> StyledHtml.Html Msg
 defenseToHtml club =
   let
-      defendersHtml = StyledHtml.div [ class "defenders" ] (clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml)
+      defendersHtml = StyledHtml.div [ class "defenders", css [ Gamestyle.displayStyle ] ] (clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml)
       goalkeeperHtml = StyledHtml.div [ class "goalkeeper" ] [ clubGoalkeeper club |> PlayerDisplay.playerToHtml ] 
-      attributes = [ css [ Gamestyle.flexStyle, Css.flexFlow1 Css.wrap ] ]
+      attributes = [ css [ Gamestyle.displayStyle
+                        --  , Css.flexFlow1 Css.wrap 
+                         ] 
+                   ]
       playersHtml = [ goalkeeperHtml, defendersHtml ]
   in
   StyledHtml.node "defense" attributes playersHtml
   -- StyledHtml.div attributes playersHtml
   
-
-defendersToHtml: Club -> StyledHtml.Html Msg
-defendersToHtml club = 
-  let
-      playersHtml = clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml
-      attributes = [ css [ Gamestyle.flexStyle 
-                         , Css.flexFlow1 Css.wrap 
-                         ] 
-                   , class "defenders"      
-                   ]
-  in
-  StyledHtml.div attributes playersHtml
-
-goalkeeperToHtml: Club -> StyledHtml.Html Msg
-goalkeeperToHtml club =
-  let
-      playersHtml = clubGoalkeeper club |> PlayerDisplay.playerToHtml
-      attributes = [ css [ Gamestyle.flexStyle 
-                         , Css.flexFlow1 Css.wrap 
-                         ] 
-                   , class "goalkeeper"
-                   ]
-  in
-  div attributes [ playersHtml ]
 
 startersToHtml: Club -> StyledHtml.Html Msg
 startersToHtml club = 
@@ -185,7 +163,6 @@ startersToHtml club =
     defenseHtml = defenseToHtml club
   in
   StyledHtml.node "starters" [] [ attackersHtml, midfieldersHtml, defenseHtml ]
-  -- StyledHtml.div [ class "starters" ] [ attackersHtml, midfieldersHtml, defenseHtml ]
 
 clubFolderHtml: Club -> StyledHtml.Html Msg
 clubFolderHtml club = 
@@ -193,7 +170,7 @@ clubFolderHtml club =
       reservesHtml = div [ css [ Gamestyle.folderStyle, Css.float Css.left, Css.width (Css.pct 45) ] ] [ reservesToHtml club]
       startersHtml = div [ css [ Gamestyle.folderStyle , Css.float Css.right, Css.width (Css.pct 45) ] ] [ startersToHtml club ]
       attributes = [ css 
-                    [ Css.display Css.inlineFlex
+                    [ Gamestyle.displayStyle
                     , Css.flexFlow1 Css.wrap
                     ]
                   ]
