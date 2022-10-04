@@ -26,16 +26,6 @@ playerStyle a =
   in
   Gamestyle.playerPlaceholderStyle color
 
-  -- case a of
-  --   PlayerPlaceholder _ -> 
-  --     (hex "#e0e0e0") |> Gamestyle.playerPlaceholderStyle
-  --   Player player ->
-  --     case player.position of
-  --       GK -> rgb 252 103 3 |> Gamestyle.playerPlaceholderStyle
-  --       DEF -> (hex "#e01e26") 
-  --       MID -> Gamestyle.midfielderStyle
-  --       ATT -> Gamestyle.attackerStyle
-
 
 
 playerToHtml: PlayerOrPlaceholder -> StyledHtml.Html Msg
@@ -46,7 +36,7 @@ playerToHtml a =
                   , Css.textAlign Css.textTop
                   ]
   in
-  div 
+  StyledHtml.node "player" 
     [ playerId a |> class
     , css [ playerStyle a ] 
     ]

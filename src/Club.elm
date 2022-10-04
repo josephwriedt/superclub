@@ -110,7 +110,6 @@ reservesToHtml club =
       playersHtml = Array.map PlayerDisplay.playerToHtml reserves |> Array.toList
   in
   StyledHtml.node "reserves" attributes playersHtml
-  -- StyledHtml.div attributes <| Array.toList (Array.map PlayerDisplay.playerToHtml reserves)
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
@@ -123,7 +122,6 @@ attackersToHtml club =
                    ]
   in
   StyledHtml.node "attack" attributes playersHtml
-  -- StyledHtml.div attributes playersHtml
 
 
 midfieldersToHtml: Club -> StyledHtml.Html Msg
@@ -152,7 +150,6 @@ defenseToHtml club =
       playersHtml = [ goalkeeperHtml, defendersHtml ]
   in
   StyledHtml.node "defense" attributes playersHtml
-  -- StyledHtml.div attributes playersHtml
   
 
 startersToHtml: Club -> StyledHtml.Html Msg
