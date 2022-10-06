@@ -7662,6 +7662,7 @@ var $elm$core$Array$map = F2(
 			A2($elm$core$Elm$JsArray$map, helper, tree),
 			A2($elm$core$Elm$JsArray$map, func, tail));
 	});
+var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
 var $rtfeldman$elm_css$Css$textAlign = function (fn) {
 	return A3(
@@ -8559,7 +8560,8 @@ var $author$project$PlayerDisplay$playerToHtml = function (a) {
 				$rtfeldman$elm_css$Html$Styled$Attributes$css(
 				_List_fromArray(
 					[
-						$author$project$PlayerDisplay$playerStyle(a)
+						$author$project$PlayerDisplay$playerStyle(a),
+						$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block)
 					]))
 			]),
 		_List_fromArray(
@@ -9091,7 +9093,6 @@ var $author$project$View$deckView = A2(
 			$author$project$View$deck('Australia'),
 			$author$project$View$deck('North')
 		]));
-var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
 var $rtfeldman$elm_css$Html$Styled$button = $rtfeldman$elm_css$Html$Styled$node('button');
 var $author$project$View$inspectPlayerButtons = function (model) {
 	var buttonStyle = $rtfeldman$elm_css$Html$Styled$Attributes$css(
@@ -9136,7 +9137,12 @@ var $author$project$View$inspectPlayer = function (model) {
 	return A3(
 		$rtfeldman$elm_css$Html$Styled$node,
 		'inspect-player',
-		_List_Nil,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$Attributes$css(
+				_List_fromArray(
+					[$author$project$Gamestyle$displayStyle]))
+			]),
 		_List_fromArray(
 			[
 				$author$project$PlayerDisplay$playerToHtml(model.inspectedPlayer),
