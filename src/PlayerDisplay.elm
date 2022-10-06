@@ -38,7 +38,7 @@ playerToHtml a =
   in
   StyledHtml.node "player" 
     [ playerId a |> class
-    , css [ playerStyle a ] 
+    , css [ playerStyle a, Css.display Css.block ] 
     ]
     [ StyledHtml.h4 [ css textStyle ] [ a |> name |> text ] 
     , displayAbility a

@@ -35,9 +35,8 @@ view model =
 
 inspectPlayer : Model -> StyledHtml.Html Msg
 inspectPlayer model = 
-  StyledHtml.node "inspect-player" 
-    -- [ css [ Css.display Css.inlineBlock, Css.flexFlow1 Css.wrap ] ] 
-    []
+  StyledHtml.node "inspect-player"  
+    [ css [ Gamestyle.displayStyle ] ]
     [ PlayerDisplay.playerToHtml model.inspectedPlayer
     , inspectPlayerButtons model
     ]
