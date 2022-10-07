@@ -98,28 +98,33 @@ squadStrength club =
   Player.sumAbility (squad club)
 
 
-reservesToHtml: Club -> StyledHtml.Html Msg
-reservesToHtml club = 
+reservesSliceToHtmlList : Array PlayerOrPlaceholder -> StyledHtml.Html Msg
+reservesSliceToHtmlList players = 
+  div 
+    [ css [ Css.displayFlex, Css.flexFlow1 Css.noWrap ] ]
+    (players |> Array.toList |> List.map PlayerDisplay.playerToHtmlDefault)
+  
+
+
+reservesToHtml : Club -> StyledHtml.Html Msg
+reservesToHtml club =
   let
-      reserves = club.reserves
-      attributes = [ css 
-                      [ Gamestyle.displayStyle
-                      , Css.flexFlow1 Css.wrap
-                      ]
-                   ]
-      playersHtml = Array.map PlayerDisplay.playerToHtml reserves |> Array.toList
+    reserves0 = Array.slice 0 5 club.reserves
+    reserves1 = Array.slice 5 10 club.reserves
+    reserves2 = Array.slice 10 15 club.reserves
   in
-  StyledHtml.node "reserves" attributes playersHtml
+  StyledHtml.node "reserves" 
+    []
+    [ reserves0 |> reservesSliceToHtmlList
+    , reserves1 |> reservesSliceToHtmlList
+    , reserves2 |> reservesSliceToHtmlList
+    ]
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
   let
-      playersHtml = clubAttackers club |> Array.toList |> List.map PlayerDisplay.playerToHtml
-      attributes = [ css [ Gamestyle.displayStyle
-                        --  , Css.flexFlow1 Css.wrap
-                        --  , Css.float Css.left
-                         ] 
-                   ]
+      playersHtml = clubAttackers club |> Array.toList |> List.map PlayerDisplay.playerToHtmlDefault
+      attributes = [ css [ Css.displayFlex, Css.flexFlow1 Css.noWrap ] ]
   in
   StyledHtml.node "attack" attributes playersHtml
 
@@ -127,27 +132,19 @@ attackersToHtml club =
 midfieldersToHtml: Club -> StyledHtml.Html Msg
 midfieldersToHtml club = 
   let
-      playersHtml = clubMidfielders club |> Array.toList |> List.map PlayerDisplay.playerToHtml
-      attributes = [ css [ Gamestyle.displayStyle 
-                        --  , Css.flexFlow1 Css.wrap 
-                         ] 
-                  --  , class "midfielders"
-                   ]
+      playersHtml = clubMidfielders club |> Array.toList |> List.map PlayerDisplay.playerToHtmlDefault
+      attributes = [ css [ Css.displayFlex, Css.flexFlow1 Css.noWrap ] ]
   in
   StyledHtml.node "midfield" attributes playersHtml
-  -- StyledHtml.div attributes playersHtml
 
 
 defenseToHtml: Club -> StyledHtml.Html Msg
 defenseToHtml club =
   let
-      defendersHtml = StyledHtml.div [ class "defenders", css [ Gamestyle.displayStyle ] ] (clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtml)
-      goalkeeperHtml = StyledHtml.div [ class "goalkeeper" ] [ clubGoalkeeper club |> PlayerDisplay.playerToHtml ] 
-      attributes = [ css [ Gamestyle.displayStyle
-                        --  , Css.flexFlow1 Css.wrap 
-                         ] 
-                   ]
-      playersHtml = [ goalkeeperHtml, defendersHtml ]
+      defendersHtml = (clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtmlDefault)
+      goalkeeperHtml = clubGoalkeeper club |> PlayerDisplay.playerToHtmlDefault
+      attributes = [ css [ Css.displayFlex, Css.flexFlow1 Css.noWrap ] ]
+      playersHtml = goalkeeperHtml :: defendersHtml
   in
   StyledHtml.node "defense" attributes playersHtml
   

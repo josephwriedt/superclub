@@ -26,51 +26,22 @@ playerStyle a =
   in
   Gamestyle.playerPlaceholderStyle color
 
-
-
-playerToHtml: PlayerOrPlaceholder -> StyledHtml.Html Msg
-playerToHtml a =
+playerToHtml : List Css.Style -> PlayerOrPlaceholder -> StyledHtml.Html Msg
+playerToHtml styles player =
   let
-      textStyle = [ Css.color (Css.rgb 255 255 255)
-                  , Gamestyle.centerText
-                  , Css.textAlign Css.textTop
-                  ]
+      textStyle = [ Css.color (Css.rgb 255 255 255), Gamestyle.centerText ]
   in
-  StyledHtml.node "player" 
-    [ playerId a |> class
-    , css [ playerStyle a, Css.display Css.block ] 
+  StyledHtml.node "player"
+    [ playerId player |> class
+    , css <| List.append styles [ playerStyle player, Css.display Css.block ]
+    , Html.Styled.Attributes.draggable "true"
     ]
-    [ StyledHtml.h4 [ css textStyle ] [ a |> name |> text ] 
-    , displayAbility a
+    [ StyledHtml.h4 [ css textStyle ] [ player |> name |> text ] 
+    , displayAbility player
     ]
-  -- div 
-  --   [ class <| playerId a
-  --   , css [ Gamestyle.paddingStyle, Css.float Css.left ]
-  --   ]
-  --   [ div 
-  --     [ css [ playerStyle a ] 
-  --     , class "player-card"
-  --     -- , onMouseDown (Msg.Swap a)
-  --     ]
-  --     [ StyledHtml.h4 [ css textStyle ] [ a |> name |> text ] 
-  --     , displayAbility a
-  --     ]
-  --   ]
-  -- case a of
-  --     PlayerPlaceholder _ -> div [] []
-  --     Player player ->
-  --       div 
-  --         [ class player.name
-  --         , css [ Gamestyle.paddingStyle, Css.float Css.left ] 
-  --         ] 
-  --         [
-  --           div 
-  --           [ css  [ playerStyle a ]
-  --           , class "player-card"
-  --         --   , onMouseDown (Msg.Select { PlayerOrPlaceholder = PlayerOrPlaceholder })
-  --           ]
-  --           [ StyledHtml.h4 [ css textStyle ] [ text player.name ]
-  --           , displayAbility a
-  --           ]
-  --         ]
 
+
+playerToHtmlDefault: PlayerOrPlaceholder -> StyledHtml.Html Msg
+playerToHtmlDefault player =
+  playerToHtml [] player
+  

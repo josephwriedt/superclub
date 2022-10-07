@@ -5284,7 +5284,14 @@ var $author$project$Init$arsenalReserves = _List_fromArray(
 		{ability: 6, chemistry: $author$project$Player$NoChemistry, market_value: 10, name: 'Caroline', position: $author$project$Player$GK, potential: 6, scout_value: 5}),
 		$author$project$Player$PlayerPlaceholder('6'),
 		$author$project$Player$PlayerPlaceholder('7'),
-		$author$project$Player$PlayerPlaceholder('8')
+		$author$project$Player$PlayerPlaceholder('8'),
+		$author$project$Player$PlayerPlaceholder('9'),
+		$author$project$Player$PlayerPlaceholder('10'),
+		$author$project$Player$PlayerPlaceholder('11'),
+		$author$project$Player$PlayerPlaceholder('12'),
+		$author$project$Player$PlayerPlaceholder('13'),
+		$author$project$Player$PlayerPlaceholder('14'),
+		$author$project$Player$PlayerPlaceholder('15')
 	]);
 var $author$project$Player$Right = {$: 'Right'};
 var $author$project$Player$playerPlaceHolderName = F2(
@@ -7637,31 +7644,8 @@ var $author$project$Gamestyle$folderStyle = $rtfeldman$elm_css$Css$batch(
 var $rtfeldman$elm_css$Css$left = $rtfeldman$elm_css$Css$prop1('left');
 var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
 var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
-var $elm$core$Elm$JsArray$map = _JsArray_map;
-var $elm$core$Array$map = F2(
-	function (func, _v0) {
-		var len = _v0.a;
-		var startShift = _v0.b;
-		var tree = _v0.c;
-		var tail = _v0.d;
-		var helper = function (node) {
-			if (node.$ === 'SubTree') {
-				var subTree = node.a;
-				return $elm$core$Array$SubTree(
-					A2($elm$core$Elm$JsArray$map, helper, subTree));
-			} else {
-				var values = node.a;
-				return $elm$core$Array$Leaf(
-					A2($elm$core$Elm$JsArray$map, func, values));
-			}
-		};
-		return A4(
-			$elm$core$Array$Array_elm_builtin,
-			len,
-			startShift,
-			A2($elm$core$Elm$JsArray$map, helper, tree),
-			A2($elm$core$Elm$JsArray$map, func, tail));
-	});
+var $rtfeldman$elm_css$Css$displayFlex = A2($rtfeldman$elm_css$Css$property, 'display', 'flex');
+var $rtfeldman$elm_css$Css$noWrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'nowrap', whiteSpace: $rtfeldman$elm_css$Css$Structure$Compatible};
 var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
 var $rtfeldman$elm_css$Css$textAlign = function (fn) {
@@ -8081,6 +8065,15 @@ var $author$project$Player$displayAbility = function (a) {
 			]),
 		stars);
 };
+var $rtfeldman$elm_css$VirtualDom$Styled$attribute = F2(
+	function (key, value) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$attribute, key, value),
+			false,
+			'');
+	});
+var $rtfeldman$elm_css$Html$Styled$Attributes$draggable = $rtfeldman$elm_css$VirtualDom$Styled$attribute('draggable');
 var $rtfeldman$elm_css$Html$Styled$h4 = $rtfeldman$elm_css$Html$Styled$node('h4');
 var $author$project$Player$name = function (a) {
 	if (a.$ === 'Player') {
@@ -8541,62 +8534,68 @@ var $author$project$PlayerDisplay$playerStyle = function (a) {
 	}();
 	return $author$project$Gamestyle$playerPlaceholderStyle(color);
 };
-var $rtfeldman$elm_css$Css$textTop = $rtfeldman$elm_css$Css$prop1('text-top');
-var $author$project$PlayerDisplay$playerToHtml = function (a) {
-	var textStyle = _List_fromArray(
-		[
-			$rtfeldman$elm_css$Css$color(
-			A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255)),
-			$author$project$Gamestyle$centerText,
-			$rtfeldman$elm_css$Css$textAlign($rtfeldman$elm_css$Css$textTop)
-		]);
-	return A3(
-		$rtfeldman$elm_css$Html$Styled$node,
-		'player',
+var $author$project$PlayerDisplay$playerToHtml = F2(
+	function (styles, player) {
+		var textStyle = _List_fromArray(
+			[
+				$rtfeldman$elm_css$Css$color(
+				A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255)),
+				$author$project$Gamestyle$centerText
+			]);
+		return A3(
+			$rtfeldman$elm_css$Html$Styled$node,
+			'player',
+			_List_fromArray(
+				[
+					$rtfeldman$elm_css$Html$Styled$Attributes$class(
+					$author$project$Player$playerId(player)),
+					$rtfeldman$elm_css$Html$Styled$Attributes$css(
+					A2(
+						$elm$core$List$append,
+						styles,
+						_List_fromArray(
+							[
+								$author$project$PlayerDisplay$playerStyle(player),
+								$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block)
+							]))),
+					$rtfeldman$elm_css$Html$Styled$Attributes$draggable('true')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$rtfeldman$elm_css$Html$Styled$h4,
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$Attributes$css(textStyle)
+						]),
+					_List_fromArray(
+						[
+							$rtfeldman$elm_css$Html$Styled$text(
+							$author$project$Player$name(player))
+						])),
+					$author$project$Player$displayAbility(player)
+				]));
+	});
+var $author$project$PlayerDisplay$playerToHtmlDefault = function (player) {
+	return A2($author$project$PlayerDisplay$playerToHtml, _List_Nil, player);
+};
+var $author$project$Club$reservesSliceToHtmlList = function (players) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$div,
 		_List_fromArray(
 			[
-				$rtfeldman$elm_css$Html$Styled$Attributes$class(
-				$author$project$Player$playerId(a)),
 				$rtfeldman$elm_css$Html$Styled$Attributes$css(
 				_List_fromArray(
 					[
-						$author$project$PlayerDisplay$playerStyle(a),
-						$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block)
+						$rtfeldman$elm_css$Css$displayFlex,
+						$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$noWrap)
 					]))
 			]),
-		_List_fromArray(
-			[
-				A2(
-				$rtfeldman$elm_css$Html$Styled$h4,
-				_List_fromArray(
-					[
-						$rtfeldman$elm_css$Html$Styled$Attributes$css(textStyle)
-					]),
-				_List_fromArray(
-					[
-						$rtfeldman$elm_css$Html$Styled$text(
-						$author$project$Player$name(a))
-					])),
-				$author$project$Player$displayAbility(a)
-			]));
+		A2(
+			$elm$core$List$map,
+			$author$project$PlayerDisplay$playerToHtmlDefault,
+			$elm$core$Array$toList(players)));
 };
-var $rtfeldman$elm_css$Css$wrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'wrap'};
-var $author$project$Club$reservesToHtml = function (club) {
-	var reserves = club.reserves;
-	var playersHtml = $elm$core$Array$toList(
-		A2($elm$core$Array$map, $author$project$PlayerDisplay$playerToHtml, reserves));
-	var attributes = _List_fromArray(
-		[
-			$rtfeldman$elm_css$Html$Styled$Attributes$css(
-			_List_fromArray(
-				[
-					$author$project$Gamestyle$displayStyle,
-					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap)
-				]))
-		]);
-	return A3($rtfeldman$elm_css$Html$Styled$node, 'reserves', attributes, playersHtml);
-};
-var $rtfeldman$elm_css$Css$right = $rtfeldman$elm_css$Css$prop1('right');
 var $elm$core$Elm$JsArray$appendN = _JsArray_appendN;
 var $elm$core$Elm$JsArray$slice = _JsArray_slice;
 var $elm$core$Array$appendHelpBuilder = F2(
@@ -8806,20 +8805,39 @@ var $elm$core$Array$slice = F3(
 			correctFrom,
 			A2($elm$core$Array$sliceRight, correctTo, array));
 	});
+var $author$project$Club$reservesToHtmlTest = function (club) {
+	var reserves2 = A3($elm$core$Array$slice, 10, 15, club.reserves);
+	var reserves1 = A3($elm$core$Array$slice, 5, 10, club.reserves);
+	var reserves0 = A3($elm$core$Array$slice, 0, 5, club.reserves);
+	return A3(
+		$rtfeldman$elm_css$Html$Styled$node,
+		'reserves',
+		_List_Nil,
+		_List_fromArray(
+			[
+				$author$project$Club$reservesSliceToHtmlList(reserves0),
+				$author$project$Club$reservesSliceToHtmlList(reserves1),
+				$author$project$Club$reservesSliceToHtmlList(reserves2)
+			]));
+};
+var $rtfeldman$elm_css$Css$right = $rtfeldman$elm_css$Css$prop1('right');
 var $author$project$Club$clubAttackers = function (club) {
 	return A3($elm$core$Array$slice, 0, 5, club.starters);
 };
 var $author$project$Club$attackersToHtml = function (club) {
 	var playersHtml = A2(
 		$elm$core$List$map,
-		$author$project$PlayerDisplay$playerToHtml,
+		$author$project$PlayerDisplay$playerToHtmlDefault,
 		$elm$core$Array$toList(
 			$author$project$Club$clubAttackers(club)));
 	var attributes = _List_fromArray(
 		[
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
 			_List_fromArray(
-				[$author$project$Gamestyle$displayStyle]))
+				[
+					$rtfeldman$elm_css$Css$displayFlex,
+					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$noWrap)
+				]))
 		]);
 	return A3($rtfeldman$elm_css$Html$Styled$node, 'attack', attributes, playersHtml);
 };
@@ -8871,38 +8889,22 @@ var $author$project$Club$clubGoalkeeper = function (club) {
 	}
 };
 var $author$project$Club$defenseToHtml = function (club) {
-	var goalkeeperHtml = A2(
-		$rtfeldman$elm_css$Html$Styled$div,
-		_List_fromArray(
-			[
-				$rtfeldman$elm_css$Html$Styled$Attributes$class('goalkeeper')
-			]),
-		_List_fromArray(
-			[
-				$author$project$PlayerDisplay$playerToHtml(
-				$author$project$Club$clubGoalkeeper(club))
-			]));
+	var goalkeeperHtml = $author$project$PlayerDisplay$playerToHtmlDefault(
+		$author$project$Club$clubGoalkeeper(club));
 	var defendersHtml = A2(
-		$rtfeldman$elm_css$Html$Styled$div,
-		_List_fromArray(
-			[
-				$rtfeldman$elm_css$Html$Styled$Attributes$class('defenders'),
-				$rtfeldman$elm_css$Html$Styled$Attributes$css(
-				_List_fromArray(
-					[$author$project$Gamestyle$displayStyle]))
-			]),
-		A2(
-			$elm$core$List$map,
-			$author$project$PlayerDisplay$playerToHtml,
-			$elm$core$Array$toList(
-				$author$project$Club$clubDefenders(club))));
-	var playersHtml = _List_fromArray(
-		[goalkeeperHtml, defendersHtml]);
+		$elm$core$List$map,
+		$author$project$PlayerDisplay$playerToHtmlDefault,
+		$elm$core$Array$toList(
+			$author$project$Club$clubDefenders(club)));
+	var playersHtml = A2($elm$core$List$cons, goalkeeperHtml, defendersHtml);
 	var attributes = _List_fromArray(
 		[
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
 			_List_fromArray(
-				[$author$project$Gamestyle$displayStyle]))
+				[
+					$rtfeldman$elm_css$Css$displayFlex,
+					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$noWrap)
+				]))
 		]);
 	return A3($rtfeldman$elm_css$Html$Styled$node, 'defense', attributes, playersHtml);
 };
@@ -8912,14 +8914,17 @@ var $author$project$Club$clubMidfielders = function (club) {
 var $author$project$Club$midfieldersToHtml = function (club) {
 	var playersHtml = A2(
 		$elm$core$List$map,
-		$author$project$PlayerDisplay$playerToHtml,
+		$author$project$PlayerDisplay$playerToHtmlDefault,
 		$elm$core$Array$toList(
 			$author$project$Club$clubMidfielders(club)));
 	var attributes = _List_fromArray(
 		[
 			$rtfeldman$elm_css$Html$Styled$Attributes$css(
 			_List_fromArray(
-				[$author$project$Gamestyle$displayStyle]))
+				[
+					$rtfeldman$elm_css$Css$displayFlex,
+					$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$noWrap)
+				]))
 		]);
 	return A3($rtfeldman$elm_css$Html$Styled$node, 'midfield', attributes, playersHtml);
 };
@@ -8934,6 +8939,7 @@ var $author$project$Club$startersToHtml = function (club) {
 		_List_fromArray(
 			[attackersHtml, midfieldersHtml, defenseHtml]));
 };
+var $rtfeldman$elm_css$Css$wrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'wrap'};
 var $author$project$Club$clubFolderHtml = function (club) {
 	var startersHtml = A2(
 		$rtfeldman$elm_css$Html$Styled$div,
@@ -8967,7 +8973,7 @@ var $author$project$Club$clubFolderHtml = function (club) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$Club$reservesToHtml(club)
+				$author$project$Club$reservesToHtmlTest(club)
 			]));
 	var attributes = _List_fromArray(
 		[
@@ -9145,7 +9151,7 @@ var $author$project$View$inspectPlayer = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$PlayerDisplay$playerToHtml(model.inspectedPlayer),
+				$author$project$PlayerDisplay$playerToHtmlDefault(model.inspectedPlayer),
 				$author$project$View$inspectPlayerButtons(model)
 			]));
 };
@@ -9748,7 +9754,7 @@ var $author$project$View$view = function (model) {
 		var _v0 = model.randomPlayer;
 		if (_v0.$ === 'Just') {
 			var player = _v0.a;
-			return $author$project$PlayerDisplay$playerToHtml(player);
+			return $author$project$PlayerDisplay$playerToHtmlDefault(player);
 		} else {
 			return A2($rtfeldman$elm_css$Html$Styled$div, _List_Nil, _List_Nil);
 		}
