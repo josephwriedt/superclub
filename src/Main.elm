@@ -1,11 +1,12 @@
 module Main exposing(..)
 
 import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
 import Browser
 import Html.Attributes exposing (start)
 import Player exposing (PlayerOrPlaceholder)
-import Model exposing (init, update, view)
+import Model exposing (init, subscriptions)
+import View exposing (view)
+import Update exposing (update)
 
 {-
 Flow of game:
@@ -26,9 +27,15 @@ Flow of game:
   Season
 
 -}
-main =
-  Browser.sandbox { init = init, update = update, view = view }
 
+
+
+main =
+  Browser.element { init = init
+                  , view = view
+                  , update = update
+                  , subscriptions = subscriptions
+                  }
 
 
 

@@ -1,17 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Main</title>
-  <style>body { padding: 0; margin: 0; }</style>
-</head>
-
-<body>
-
-<pre id="elm"></pre>
-
-<script>
-try {
 (function(scope){
 'use strict';
 
@@ -6300,7 +6286,11 @@ var $author$project$Club$swapPlayersInClub = F3(
 		return _Utils_update(
 			club,
 			{
-				reserves: A3($elm$core$Array$slice, len, -1, swappedArray),
+				reserves: A3(
+					$elm$core$Array$slice,
+					len,
+					$elm$core$Array$length(swappedArray),
+					swappedArray),
 				starters: A3($elm$core$Array$slice, 0, len, swappedArray)
 			});
 	});
@@ -8105,6 +8095,14 @@ var $author$project$Gamestyle$folderStyle = $rtfeldman$elm_css$Css$batch(
 var $rtfeldman$elm_css$Css$displayFlex = A2($rtfeldman$elm_css$Css$property, 'display', 'flex');
 var $rtfeldman$elm_css$Css$flexFlow1 = $rtfeldman$elm_css$Css$prop1('flex-flow');
 var $rtfeldman$elm_css$Css$noWrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'nowrap', whiteSpace: $rtfeldman$elm_css$Css$Structure$Compatible};
+var $author$project$Msg$Drag = function (a) {
+	return {$: 'Drag', a: a};
+};
+var $author$project$Msg$DragEnd = {$: 'DragEnd'};
+var $author$project$Msg$DragOver = {$: 'DragOver'};
+var $author$project$Msg$Drop = function (a) {
+	return {$: 'Drop', a: a};
+};
 var $rtfeldman$elm_css$Css$block = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'block'};
 var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
 var $rtfeldman$elm_css$Css$Internal$property = F2(
@@ -8608,6 +8606,61 @@ var $author$project$Player$name = function (a) {
 		return '';
 	}
 };
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
+	function (eventName, handler) {
+		return A3(
+			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
+			A2($elm$virtual_dom$VirtualDom$on, eventName, handler),
+			false,
+			'');
+	});
+var $rtfeldman$elm_css$Html$Styled$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $author$project$Msg$onDragEnd = function (msg) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$Events$on,
+		'dragend',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $elm$virtual_dom$VirtualDom$MayPreventDefault = function (a) {
+	return {$: 'MayPreventDefault', a: a};
+};
+var $rtfeldman$elm_css$Html$Styled$Events$preventDefaultOn = F2(
+	function (event, decoder) {
+		return A2(
+			$rtfeldman$elm_css$VirtualDom$Styled$on,
+			event,
+			$elm$virtual_dom$VirtualDom$MayPreventDefault(decoder));
+	});
+var $author$project$Msg$onDragOver = function (msg) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$Events$preventDefaultOn,
+		'dragover',
+		$elm$json$Json$Decode$succeed(
+			_Utils_Tuple2(msg, true)));
+};
+var $author$project$Msg$onDragStart = function (msg) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$Events$on,
+		'dragstart',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $author$project$Msg$onDrop = function (msg) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$Events$preventDefaultOn,
+		'drop',
+		$elm$json$Json$Decode$succeed(
+			_Utils_Tuple2(msg, true)));
+};
 var $rtfeldman$elm_css$Css$withPrecedingHash = function (str) {
 	return A2($elm$core$String$startsWith, '#', str) ? str : A2(
 		$elm$core$String$cons,
@@ -9074,7 +9127,13 @@ var $author$project$PlayerDisplay$playerToHtml = F2(
 								$author$project$PlayerDisplay$playerStyle(player),
 								$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block)
 							]))),
-					$rtfeldman$elm_css$Html$Styled$Attributes$draggable('true')
+					$rtfeldman$elm_css$Html$Styled$Attributes$draggable('true'),
+					$author$project$Msg$onDragStart(
+					$author$project$Msg$Drag(player)),
+					$author$project$Msg$onDragEnd($author$project$Msg$DragEnd),
+					$author$project$Msg$onDrop(
+					$author$project$Msg$Drop(player)),
+					$author$project$Msg$onDragOver($author$project$Msg$DragOver)
 				]),
 			_List_fromArray(
 				[
@@ -9307,25 +9366,6 @@ var $author$project$Gamestyle$deckStyle = function () {
 }();
 var $rtfeldman$elm_css$Html$Styled$h3 = $rtfeldman$elm_css$Html$Styled$node('h3');
 var $rtfeldman$elm_css$Css$inlineBlock = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'inline-block'};
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $rtfeldman$elm_css$VirtualDom$Styled$on = F2(
-	function (eventName, handler) {
-		return A3(
-			$rtfeldman$elm_css$VirtualDom$Styled$Attribute,
-			A2($elm$virtual_dom$VirtualDom$on, eventName, handler),
-			false,
-			'');
-	});
-var $rtfeldman$elm_css$Html$Styled$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$rtfeldman$elm_css$VirtualDom$Styled$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
 var $rtfeldman$elm_css$Html$Styled$Events$onClick = function (msg) {
 	return A2(
 		$rtfeldman$elm_css$Html$Styled$Events$on,
@@ -10065,21 +10105,3 @@ var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Model$init, subscriptions: $author$project$Model$subscriptions, update: $author$project$Update$update, view: $author$project$View$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));
-
-  var app = Elm.Main.init({ node: document.getElementById("elm") });
-}
-catch (e)
-{
-  // display initialization errors (e.g. bad flags, infinite recursion)
-  var header = document.createElement("h1");
-  header.style.fontFamily = "monospace";
-  header.innerText = "Initialization Error";
-  var pre = document.getElementById("elm");
-  document.body.insertBefore(header, pre);
-  pre.innerText = e;
-  throw e;
-}
-</script>
-
-</body>
-</html>
