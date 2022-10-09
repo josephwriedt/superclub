@@ -36,7 +36,7 @@ view model =
 inspectPlayer : Model -> StyledHtml.Html Msg
 inspectPlayer model = 
   StyledHtml.node "inspect-player"  
-    [ css [ Gamestyle.displayStyle ] ]
+    [ css [ Css.display Css.block ] ]
     [ PlayerDisplay.playerToHtmlDefault model.inspectedPlayer
     , inspectPlayerButtons model
     ]
@@ -81,7 +81,7 @@ squadView : Model -> StyledHtml.Html Msg
 squadView model = 
   let
       club = model.club
-      squad = Club.squad club
+      squad = Club.clubSquad club
   in
   
 

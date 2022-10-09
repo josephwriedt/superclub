@@ -35,6 +35,10 @@ playerToHtml styles player =
     [ playerId player |> class
     , css <| List.append styles [ playerStyle player, Css.display Css.block ]
     , Html.Styled.Attributes.draggable "true"
+    , Msg.onDragStart <| Msg.Drag player
+    , Msg.onDragEnd Msg.DragEnd
+    , Msg.onDrop <| Msg.Drop player
+    , Msg.onDragOver Msg.DragOver
     ]
     [ StyledHtml.h4 [ css textStyle ] [ player |> name |> text ] 
     , displayAbility player

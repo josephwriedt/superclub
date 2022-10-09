@@ -1,0 +1,16 @@
+<html>
+<body>
+  <div id="superclub"></div>
+  <script>
+    document.body.addEventListener('dragstart', function (event) {
+      event.dataTransfer.setData('text/plain', null);
+    });
+  </script>
+  <script src="elm.js"></script>
+  <script>
+    var app = Elm.Main.init({ 
+        node: document.getElementById("superclub")
+    });
+  </script>
+</body>
+</html>

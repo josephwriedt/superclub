@@ -112,6 +112,11 @@ chemistry a =
       player.chemistry
 
 
+-- Equality of PlayerOrPlaceholders
+playerEquality : PlayerOrPlaceholder -> PlayerOrPlaceholder -> Bool
+playerEquality a b =
+  playerId a == playerId b
+
 -- Functions on PlayerOrPlaceholder
 isPlayer: PlayerOrPlaceholder -> Bool
 isPlayer a = 

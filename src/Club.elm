@@ -8,7 +8,7 @@ import Html.Styled.Attributes exposing (attribute, css, class)
 import Css
 import Gamestyle
 import Array
-import Player exposing (isPlayer)
+import Player exposing (isPlayer, playerEquality, playerId)
 import PlayerDisplay
 
 type Placement = First | Second | Third | Fourth | Fifth | Sixth
@@ -31,7 +31,7 @@ type alias Club =
 
 clubAttackers: Club -> Array PlayerOrPlaceholder
 clubAttackers club =
-  Array.slice 0 5 club.starters
+  Array.slice 0 5 <| club.starters
 
 clubMidfielders: Club -> Array PlayerOrPlaceholder
 clubMidfielders club = 
@@ -46,14 +46,7 @@ clubGoalkeeper club =
   case Array.get 10 club.starters of
     Just player -> player
     Nothing -> Player.defaultGoalkeeper
-  
 
-toString: Club -> String
-toString club = 
-    String.join "\n"
-    [ "Balance: " ++ String.fromInt club.balance 
-    , "Squad: " ++ String.join ", " (List.map Player.playerToString <| squad club)
-    ] 
 
 inRange: Int -> Int -> Int -> Bool
 inRange players min max =
@@ -87,17 +80,51 @@ simGame a b =
     Win
 
 
-squad: Club -> List PlayerOrPlaceholder
-squad club =
+clubSquad: Club -> List PlayerOrPlaceholder
+clubSquad club =
   [ club.reserves, club.starters ] |> List.map Array.toList |> List.concat
 
   
 
-squadStrength: Club -> Int
-squadStrength club = 
-  Player.sumAbility (squad club)
+clubSquadStrength: Club -> Int
+clubSquadStrength club = 
+  Player.sumAbility (clubSquad club)
 
+findPlayerInArray : PlayerOrPlaceholder -> Array PlayerOrPlaceholder ->  Maybe Int
+findPlayerInArray player playerArray =
+  let 
+    f controlPlayer (_, testPlayer) = playerEquality controlPlayer testPlayer
+    playerComparison controlPlayer (index, indexPlayer) =
+      if playerEquality controlPlayer indexPlayer
+        then index
+        else -1
 
+    filteredList = List.filter (f player) (Array.toIndexedList playerArray)
+    -- List.filterMap (playerComparison player) (Array.toIndexedList playerArray)
+  in
+  case List.length filteredList of
+    0 -> Nothing
+    _ -> case List.head filteredList of
+        Just (index, _) -> Just index
+        Nothing -> Nothing
+
+swapPlayersInClub : Club -> PlayerOrPlaceholder -> PlayerOrPlaceholder -> Club
+swapPlayersInClub club playerA playerB =
+  let 
+    len = Array.length club.starters
+    squad = Array.append club.starters club.reserves
+    
+    indexA = findPlayerInArray playerA squad
+    indexB = findPlayerInArray playerB squad
+    swappedArray = case (indexA, indexB) of
+      (Just a, Just b) ->
+        squad |> Array.set a playerB |> Array.set b playerA
+      (_, _) ->
+        squad
+  in
+  { club | starters = Array.slice 0 len swappedArray, reserves = Array.slice len -1 swappedArray }
+    
+-- View for Club
 reservesSliceToHtmlList : Array PlayerOrPlaceholder -> StyledHtml.Html Msg
 reservesSliceToHtmlList players = 
   div 
@@ -161,12 +188,8 @@ startersToHtml club =
 clubFolderHtml: Club -> StyledHtml.Html Msg
 clubFolderHtml club = 
   let
-      reservesHtml = div [ css [ Gamestyle.folderStyle, Css.float Css.left, Css.width (Css.pct 45) ] ] [ reservesToHtml club]
-      startersHtml = div [ css [ Gamestyle.folderStyle , Css.float Css.right, Css.width (Css.pct 45) ] ] [ startersToHtml club ]
-      attributes = [ css 
-                    [ Gamestyle.displayStyle
-                    , Css.flexFlow1 Css.wrap
-                    ]
-                  ]
+      reservesHtml = div [ css [ Gamestyle.folderStyle ] ] [ reservesToHtml club]
+      startersHtml = div [ css [ Gamestyle.folderStyle ] ] [ startersToHtml club ]
+      attributes = []
   in
   StyledHtml.node "player-folder" attributes [ reservesHtml, startersHtml ]

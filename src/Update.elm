@@ -1,11 +1,13 @@
 module Update exposing (..)
-import Model exposing (Model, swapPlayersWithinClub)
+import Model exposing (Model)
 import Msg exposing (Msg(..))
+import Model exposing (modelSwapPlayers)
 
 -- Helper Packages
 import Random exposing (generate)
 import Random.Extra exposing (maybe)
 import Random.List
+
 
 -- UPDATE
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -27,7 +29,7 @@ update msg model =
       )
     
     Swap player ->
-      ( { model | swapPlayers = player :: model.swapPlayers } |> swapPlayersWithinClub
+      ( model
       , Cmd.none
       )
 
@@ -41,5 +43,25 @@ update msg model =
 
     RandomPlayer (maybePlayer, playerList) ->
       ( { model | randomPlayer = maybePlayer, playerDeck = playerList }, Cmd.none )
+
+    Drag player ->
+      ( { model | beingDragged = Just player}
+      , Cmd.none
+      )
+    
+    DragEnd ->
+      ( { model | beingDragged = Nothing } 
+      , Cmd.none
+      )
+
+    DragOver ->
+      ( model, Cmd.none )
+
+    Drop player ->
+     ( modelSwapPlayers model player
+     , Cmd.none 
+     ) 
+
+    
 
 
