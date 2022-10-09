@@ -122,7 +122,7 @@ swapPlayersInClub club playerA playerB =
       (_, _) ->
         squad
   in
-  { club | starters = Array.slice 0 len swappedArray, reserves = Array.slice len -1 swappedArray }
+  { club | starters = Array.slice 0 len swappedArray, reserves = Array.slice len (Array.length swappedArray) swappedArray }
     
 -- View for Club
 reservesSliceToHtmlList : Array PlayerOrPlaceholder -> StyledHtml.Html Msg

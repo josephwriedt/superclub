@@ -6286,7 +6286,11 @@ var $author$project$Club$swapPlayersInClub = F3(
 		return _Utils_update(
 			club,
 			{
-				reserves: A3($elm$core$Array$slice, len, -1, swappedArray),
+				reserves: A3(
+					$elm$core$Array$slice,
+					len,
+					$elm$core$Array$length(swappedArray),
+					swappedArray),
 				starters: A3($elm$core$Array$slice, 0, len, swappedArray)
 			});
 	});
