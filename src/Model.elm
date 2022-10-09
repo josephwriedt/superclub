@@ -1,64 +1,108 @@
 module Model exposing (..)
-import Club exposing (Club, swapPlayersInClub)
+import Club exposing (Club)
 import Player exposing (PlayerOrPlaceholder, playerPlaceHolderName)
+import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
+import Html.Styled.Attributes exposing (attribute, css, class)
+import Html
+import Css
 import List exposing (map)
 import Msg exposing (Msg)
 import Player exposing (PlayerOrPlaceholder(..))
 import Array exposing (Array)
 import Init
 
+-- UPDATE
+update : Msg -> Model -> Model
+update msg model =
+  case msg of
+    Msg.Increment ->
+      model 
 
--- SUBSCRIPTIONS
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+    Msg.Decrement ->
+      model
+
+    Msg.Select (player) ->
+      model
+    
+    Msg.Swap player ->
+      { model | swapPlayers = player :: model.swapPlayers } |> swapPlayersWithinClub
+
+    Msg.Draft (player) ->
+      model
+
+
+
+-- VIEW
+view : Model -> Html.Html Msg
+view model =
+    -- model |> squadView |>  toUnstyled
+    model.club |> Club.clubFolderHtml |> toUnstyled
+
+    
+
+squadView : Model -> StyledHtml.Html msg
+squadView model = 
+  let
+      club = model.club
+      squad = Club.squad club
+  in
+  
+
+    StyledHtml.div
+    [ css [  ] ]
+    <| [ squadToHtml squad ]
+
+
 
 -- MODEL
 type alias Model = 
     { club : Club 
     , swapPlayers : List PlayerOrPlaceholder
-    , playerDeck : List PlayerOrPlaceholder
-    , randomPlayer : Maybe PlayerOrPlaceholder
-    , inspectedPlayer : PlayerOrPlaceholder
-    , beingDragged : Maybe PlayerOrPlaceholder
     }
 
 
  
-init : () -> (Model, Cmd Msg)
-init _ =
+init : Model
+init =
   let
     reserves = Array.fromList Init.arsenalReserves
     starters = Array.fromList Init.arsenalStarters
       -- Array.initialize 20 (\n -> playerPlaceHolderName "starter" n)
-    club =  { balance = 0
-            , stadium_level = Club.I
-            , scouting_level = Club.I
-            , training_level = Club.I
-            , club_level = Club.NewlyPromoted
-            , club_position = Club.Fifth
-            , reserves = reserves
-            , starters = starters
-            }
-    player = Player { name = "Nketiah", position = Player.ATT, chemistry = Player.Left, ability = 2, potential = 5, market_value = 25, scout_value = 15 } 
-    model =   { club = club, swapPlayers = [], playerDeck = Init.playerDeck, randomPlayer = Nothing, inspectedPlayer = player, beingDragged = Nothing }
+    club = { balance = 100
+           , stadium_level = Club.I
+           , scouting_level = Club.I
+           , training_level = Club.I
+           , club_level = Club.NewlyPromoted
+           , club_position = Club.Fifth
+           , reserves = reserves
+           , starters = starters
+           }
   in
-  ( model
-  , Cmd.none
-  )
+  { club = club
+  , swapPlayers = [] }
 
 
-modelSwapPlayers : Model -> PlayerOrPlaceholder -> Model
-modelSwapPlayers model playerB = 
-  case model.beingDragged of
-    Nothing -> 
+swapPlayersWithinClub: Model -> Model
+swapPlayersWithinClub model =
+  case List.length model.swapPlayers of
+    2 -> 
+      -- here we swap players
       model
-    Just playerA ->
-      { model 
-        | club =  swapPlayersInClub model.club playerA playerB
-        , beingDragged = Nothing 
-      }
+    _ -> model
 
 
 
+squadToHtml: List PlayerOrPlaceholder -> StyledHtml.Html msg
+squadToHtml players = 
+  let
+    attributes = [ css 
+                    [ Css.display Css.inlineFlex
+                    , Css.flexFlow1 Css.wrap
+                    ]
+                  , class "squad"
+                  ]
+
+    squadHtml = map Player.playerToHtml players
+  in
+  StyledHtml.div attributes squadHtml
 

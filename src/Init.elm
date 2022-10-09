@@ -22,13 +22,6 @@ arsenalReserves =
     , PlayerPlaceholder "6"
     , PlayerPlaceholder "7"
     , PlayerPlaceholder "8"
-    , PlayerPlaceholder "9"
-    , PlayerPlaceholder "10"
-    , PlayerPlaceholder "11"
-    , PlayerPlaceholder "12"
-    , PlayerPlaceholder "13"
-    , PlayerPlaceholder "14"
-    , PlayerPlaceholder "15"
     ]
 
 arsenalAttackers: List PlayerOrPlaceholder
@@ -81,3 +74,6 @@ playerDeck =
     , Player { name = "Erik", position = Player.DEF, chemistry = Player.Left, ability = 6, potential = 6, market_value = 100, scout_value = 5 }
     , Player { name = "Caroline", position = Player.GK, chemistry = Player.NoChemistry, ability = 6, potential = 6, market_value = 10, scout_value = 5 }                
     ]
+
+-- getRandomPlayer: List PlayerOrPlaceholder -> PlayerOrPlaceholder
+-- getRandomPlayer: 

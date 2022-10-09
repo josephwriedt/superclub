@@ -6,10 +6,9 @@ import Msg exposing (Msg)
 import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
 import Html.Styled.Attributes exposing (attribute, css, class)
 import Css
-import Gamestyle
+import GameStyle
 import Array
-import Player exposing (isPlayer, playerEquality, playerId)
-import PlayerDisplay
+import Player exposing (isPlayer)
 
 type Placement = First | Second | Third | Fourth | Fifth | Sixth
 type ClubLevel = NewlyPromoted | MidTable | Established | TitleContenders
@@ -31,7 +30,7 @@ type alias Club =
 
 clubAttackers: Club -> Array PlayerOrPlaceholder
 clubAttackers club =
-  Array.slice 0 5 <| club.starters
+  Array.slice 0 5 club.starters
 
 clubMidfielders: Club -> Array PlayerOrPlaceholder
 clubMidfielders club = 
@@ -46,7 +45,14 @@ clubGoalkeeper club =
   case Array.get 10 club.starters of
     Just player -> player
     Nothing -> Player.defaultGoalkeeper
+  
 
+toString: Club -> String
+toString club = 
+    String.join "\n"
+    [ "Balance: " ++ String.fromInt club.balance 
+    , "Squad: " ++ String.join ", " (List.map Player.playerToString <| squad club)
+    ] 
 
 inRange: Int -> Int -> Int -> Bool
 inRange players min max =
@@ -80,101 +86,90 @@ simGame a b =
     Win
 
 
-clubSquad: Club -> List PlayerOrPlaceholder
-clubSquad club =
+squad: Club -> List PlayerOrPlaceholder
+squad club =
   [ club.reserves, club.starters ] |> List.map Array.toList |> List.concat
 
   
 
-clubSquadStrength: Club -> Int
-clubSquadStrength club = 
-  Player.sumAbility (clubSquad club)
-
-findPlayerInArray : PlayerOrPlaceholder -> Array PlayerOrPlaceholder ->  Maybe Int
-findPlayerInArray player playerArray =
-  let 
-    f controlPlayer (_, testPlayer) = playerEquality controlPlayer testPlayer
-    playerComparison controlPlayer (index, indexPlayer) =
-      if playerEquality controlPlayer indexPlayer
-        then index
-        else -1
-
-    filteredList = List.filter (f player) (Array.toIndexedList playerArray)
-    -- List.filterMap (playerComparison player) (Array.toIndexedList playerArray)
-  in
-  case List.length filteredList of
-    0 -> Nothing
-    _ -> case List.head filteredList of
-        Just (index, _) -> Just index
-        Nothing -> Nothing
-
-swapPlayersInClub : Club -> PlayerOrPlaceholder -> PlayerOrPlaceholder -> Club
-swapPlayersInClub club playerA playerB =
-  let 
-    len = Array.length club.starters
-    squad = Array.append club.starters club.reserves
-    
-    indexA = findPlayerInArray playerA squad
-    indexB = findPlayerInArray playerB squad
-    swappedArray = case (indexA, indexB) of
-      (Just a, Just b) ->
-        squad |> Array.set a playerB |> Array.set b playerA
-      (_, _) ->
-        squad
-  in
-  { club | starters = Array.slice 0 len swappedArray, reserves = Array.slice len (Array.length swappedArray) swappedArray }
-    
--- View for Club
-reservesSliceToHtmlList : Array PlayerOrPlaceholder -> StyledHtml.Html Msg
-reservesSliceToHtmlList players = 
-  div 
-    [ css [ Css.displayFlex, Css.flexFlow1 Css.noWrap ] ]
-    (players |> Array.toList |> List.map PlayerDisplay.playerToHtmlDefault)
-  
+squadStrength: Club -> Int
+squadStrength club = 
+  Player.sumAbility (squad club)
 
 
-reservesToHtml : Club -> StyledHtml.Html Msg
-reservesToHtml club =
+reservesToHtml: Club -> StyledHtml.Html Msg
+reservesToHtml club = 
   let
-    reserves0 = Array.slice 0 5 club.reserves
-    reserves1 = Array.slice 5 10 club.reserves
-    reserves2 = Array.slice 10 15 club.reserves
+      reserves = club.reserves
+      attributes = [ css 
+                      [ Css.display Css.inlineFlex
+                      , Css.flexFlow1 Css.wrap
+                      ]
+                   , class "reserves"
+                   ]
   in
-  StyledHtml.node "reserves" 
-    []
-    [ reserves0 |> reservesSliceToHtmlList
-    , reserves1 |> reservesSliceToHtmlList
-    , reserves2 |> reservesSliceToHtmlList
-    ]
+  StyledHtml.div attributes <| Array.toList (Array.map Player.playerToHtml reserves)
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
   let
-      playersHtml = clubAttackers club |> Array.toList |> List.map PlayerDisplay.playerToHtmlDefault
-      attributes = [ css [ Css.displayFlex, Css.flexFlow1 Css.noWrap ] ]
+      playersHtml = clubAttackers club |> Array.toList |> List.map Player.playerToHtml
+      attributes = [ css [ GameStyle.flexStyle 
+                         , Css.flexFlow1 Css.wrap
+                         ] 
+                   , class "attackers"
+                   ]
   in
-  StyledHtml.node "attack" attributes playersHtml
+  StyledHtml.div attributes playersHtml
 
 
 midfieldersToHtml: Club -> StyledHtml.Html Msg
 midfieldersToHtml club = 
   let
-      playersHtml = clubMidfielders club |> Array.toList |> List.map PlayerDisplay.playerToHtmlDefault
-      attributes = [ css [ Css.displayFlex, Css.flexFlow1 Css.noWrap ] ]
+      playersHtml = clubMidfielders club |> Array.toList |> List.map Player.playerToHtml
+      attributes = [ css [ GameStyle.flexStyle 
+                         , Css.flexFlow1 Css.wrap 
+                         ] 
+                   , class "midfielders"
+                   ]
   in
-  StyledHtml.node "midfield" attributes playersHtml
+  StyledHtml.div attributes playersHtml
 
 
 defenseToHtml: Club -> StyledHtml.Html Msg
 defenseToHtml club =
   let
-      defendersHtml = (clubDefenders club |> Array.toList |> List.map PlayerDisplay.playerToHtmlDefault)
-      goalkeeperHtml = clubGoalkeeper club |> PlayerDisplay.playerToHtmlDefault
-      attributes = [ css [ Css.displayFlex, Css.flexFlow1 Css.noWrap ] ]
-      playersHtml = goalkeeperHtml :: defendersHtml
+      defendersHtml = StyledHtml.div [ class "defenders" ] (clubDefenders club |> Array.toList |> List.map Player.playerToHtml)
+      goalkeeperHtml = StyledHtml.div [ class "goalkeeper" ] [ clubGoalkeeper club |> Player.playerToHtml ] 
+      attributes = [ css [ GameStyle.flexStyle, Css.flexFlow1 Css.wrap ] ]
+      playersHtml = [ goalkeeperHtml, defendersHtml ]
   in
-  StyledHtml.node "defense" attributes playersHtml
+  StyledHtml.div attributes playersHtml
   
+
+defendersToHtml: Club -> StyledHtml.Html Msg
+defendersToHtml club = 
+  let
+      playersHtml = clubDefenders club |> Array.toList |> List.map Player.playerToHtml
+      attributes = [ css [ GameStyle.flexStyle 
+                         , Css.flexFlow1 Css.wrap 
+                         ] 
+                   , class "defenders"      
+                   ]
+  in
+  StyledHtml.div attributes playersHtml
+
+goalkeeperToHtml: Club -> StyledHtml.Html Msg
+goalkeeperToHtml club =
+  let
+      playersHtml = clubGoalkeeper club |> Player.playerToHtml
+      attributes = [ css [ GameStyle.flexStyle 
+                         , Css.flexFlow1 Css.wrap 
+                         ] 
+                   , class "goalkeeper"
+                   ]
+  in
+  div attributes [ playersHtml ]
 
 startersToHtml: Club -> StyledHtml.Html Msg
 startersToHtml club = 
@@ -183,13 +178,17 @@ startersToHtml club =
     midfieldersHtml = midfieldersToHtml club
     defenseHtml = defenseToHtml club
   in
-  StyledHtml.node "starters" [] [ attackersHtml, midfieldersHtml, defenseHtml ]
+  StyledHtml.div [ class "starters" ] [ attackersHtml, midfieldersHtml, defenseHtml ]
 
 clubFolderHtml: Club -> StyledHtml.Html Msg
 clubFolderHtml club = 
   let
-      reservesHtml = div [ css [ Gamestyle.folderStyle ] ] [ reservesToHtml club]
-      startersHtml = div [ css [ Gamestyle.folderStyle ] ] [ startersToHtml club ]
-      attributes = []
+      reservesHtml = div [ css [ GameStyle.folderStyle, Css.float Css.left, Css.width (Css.pct 45) ] ] [ reservesToHtml club]
+      startersHtml = div [ css [ GameStyle.folderStyle , Css.float Css.right, Css.width (Css.pct 45) ] ] [ startersToHtml club ]
+      attributes = [ css 
+                    [ Css.display Css.inlineFlex
+                    , Css.flexFlow1 Css.wrap
+                    ]
+                  ]
   in
-  StyledHtml.node "player-folder" attributes [ reservesHtml, startersHtml ]
+  StyledHtml.node "PlayerOrPlaceholder-folder" attributes [ reservesHtml, startersHtml ]
