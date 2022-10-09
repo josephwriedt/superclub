@@ -20,7 +20,7 @@ view model =
   let
       randomPlayerHtml = case model.randomPlayer of
                             Just player ->
-                              PlayerDisplay.playerToHtml player 
+                              PlayerDisplay.playerToHtmlDefault player 
                             Nothing -> div [] []
   in
   
@@ -36,8 +36,8 @@ view model =
 inspectPlayer : Model -> StyledHtml.Html Msg
 inspectPlayer model = 
   StyledHtml.node "inspect-player"  
-    [ css [ Gamestyle.displayStyle ] ]
-    [ PlayerDisplay.playerToHtml model.inspectedPlayer
+    [ css [ Css.display Css.block ] ]
+    [ PlayerDisplay.playerToHtmlDefault model.inspectedPlayer
     , inspectPlayerButtons model
     ]
 
@@ -81,7 +81,7 @@ squadView : Model -> StyledHtml.Html Msg
 squadView model = 
   let
       club = model.club
-      squad = Club.squad club
+      squad = Club.clubSquad club
   in
   
 
@@ -99,6 +99,6 @@ squadToHtml players =
                   , class "squad"
                   ]
 
-    squadHtml = List.map PlayerDisplay.playerToHtml players
+    squadHtml = List.map PlayerDisplay.playerToHtmlDefault players
   in
   StyledHtml.div attributes squadHtml

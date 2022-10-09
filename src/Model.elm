@@ -1,5 +1,5 @@
 module Model exposing (..)
-import Club exposing (Club)
+import Club exposing (Club, swapPlayersInClub)
 import Player exposing (PlayerOrPlaceholder, playerPlaceHolderName)
 import List exposing (map)
 import Msg exposing (Msg)
@@ -20,6 +20,7 @@ type alias Model =
     , playerDeck : List PlayerOrPlaceholder
     , randomPlayer : Maybe PlayerOrPlaceholder
     , inspectedPlayer : PlayerOrPlaceholder
+    , beingDragged : Maybe PlayerOrPlaceholder
     }
 
 
@@ -40,20 +41,24 @@ init _ =
             , starters = starters
             }
     player = Player { name = "Nketiah", position = Player.ATT, chemistry = Player.Left, ability = 2, potential = 5, market_value = 25, scout_value = 15 } 
-    model =   { club = club, swapPlayers = [], playerDeck = Init.playerDeck, randomPlayer = Nothing, inspectedPlayer = player }
+    model =   { club = club, swapPlayers = [], playerDeck = Init.playerDeck, randomPlayer = Nothing, inspectedPlayer = player, beingDragged = Nothing }
   in
   ( model
   , Cmd.none
   )
 
 
-swapPlayersWithinClub: Model -> Model
-swapPlayersWithinClub model =
-  case List.length model.swapPlayers of
-    2 -> 
-      -- here we swap players
+modelSwapPlayers : Model -> PlayerOrPlaceholder -> Model
+modelSwapPlayers model playerB = 
+  case model.beingDragged of
+    Nothing -> 
       model
-    _ -> model
+    Just playerA ->
+      { model 
+        | club =  swapPlayersInClub model.club playerA playerB
+        , beingDragged = Nothing 
+      }
+
 
 
 
