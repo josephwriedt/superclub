@@ -6,6 +6,8 @@ import Msg exposing (Msg)
 import Player exposing (PlayerOrPlaceholder(..))
 import Array exposing (Array)
 import Init
+import GamePhase exposing (GamePhase, nextPhase)
+import GamePhase exposing (GamePhase(..))
 
 
 -- SUBSCRIPTIONS
@@ -16,11 +18,12 @@ subscriptions model =
 -- MODEL
 type alias Model = 
     { club : Club 
-    , swapPlayers : List PlayerOrPlaceholder
+    , gamePhase : GamePhase
     , playerDeck : List PlayerOrPlaceholder
     , randomPlayer : Maybe PlayerOrPlaceholder
     , inspectedPlayer : PlayerOrPlaceholder
     , beingDragged : Maybe PlayerOrPlaceholder
+    , draftPlayers : List PlayerOrPlaceholder
     }
 
 
@@ -31,17 +34,24 @@ init _ =
     reserves = Array.fromList Init.arsenalReserves
     starters = Array.fromList Init.arsenalStarters
       -- Array.initialize 20 (\n -> playerPlaceHolderName "starter" n)
-    club =  { balance = 0
-            , stadium_level = Club.I
-            , scouting_level = Club.I
-            , training_level = Club.I
-            , club_level = Club.NewlyPromoted
-            , club_position = Club.Fifth
-            , reserves = reserves
-            , starters = starters
-            }
+    club = { balance = 0
+           , stadium_level = Club.I
+           , scouting_level = Club.I
+           , training_level = Club.I
+           , club_level = Club.NewlyPromoted
+           , club_position = Club.Fifth
+           , reserves = reserves
+           , starters = starters
+           }
     player = Player { name = "Nketiah", position = Player.ATT, chemistry = Player.Left, ability = 2, potential = 5, market_value = 25, scout_value = 15 } 
-    model =   { club = club, swapPlayers = [], playerDeck = Init.playerDeck, randomPlayer = Nothing, inspectedPlayer = player, beingDragged = Nothing }
+    model = { club = club
+            , gamePhase = Draft
+            , playerDeck = Init.playerDeck
+            , randomPlayer = Nothing
+            , inspectedPlayer = player
+            , beingDragged = Nothing 
+            , draftPlayers = []
+            }
   in
   ( model
   , Cmd.none
@@ -59,6 +69,8 @@ modelSwapPlayers model playerB =
         , beingDragged = Nothing 
       }
 
-
+modelNextGamePhase : Model -> Model
+modelNextGamePhase model = 
+  { model | gamePhase = nextPhase model.gamePhase }
 
 

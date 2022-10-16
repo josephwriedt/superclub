@@ -9,6 +9,8 @@ import Html.Styled as StyledHtml exposing (..)
 import Html.Styled.Attributes exposing (attribute, css, class)
 import Html
 import Css exposing (..)
+import Svg.Styled as Svg
+import Svg.Styled.Attributes as Svg
 -- Helper Packages
 import List exposing (map)
 import Msg exposing (Msg)
@@ -26,11 +28,34 @@ view model =
   
     toUnstyled <|
       div []
-          [ deckView
-          , randomPlayerHtml
-          , inspectPlayer model
-          , Club.clubFolderHtml model.club
+          [ Club.clubFolderHtml model.club
+          , div [] [ leftFacingStar, rightFacingStar ] 
           ]
+          -- [ deckView
+          -- , randomPlayerHtml
+          -- , Club.clubFolderHtml model.club
+          -- ]
+
+leftFacingStar : Svg.Svg Msg
+leftFacingStar =
+  Svg.svg
+    [ Svg.height "200", Svg.width "500" ]
+    [ Svg.polygon
+      [ Svg.points "100,10 160,198 100,150 100,78 190,78 100,150" ]
+      []
+    ]
+    
+
+rightFacingStar : Svg.Svg Msg
+rightFacingStar =
+  Svg.svg 
+    [ Svg.height "200", Svg.width "500" ]
+    [ Svg.polygon
+      [ Svg.points "100,10 40,198 100,150 100,78 10,78 100,150", Svg.fill "black" ]
+      -- [ Svg.points "100,10 40,198 190,78 10,78 160,198", Svg.fill "black" ]
+      []
+    ]
+  
 
 
 inspectPlayer : Model -> StyledHtml.Html Msg

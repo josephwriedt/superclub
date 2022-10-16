@@ -19,7 +19,7 @@ arsenalReserves =
     , Player { name = "Cedric", position = Player.DEF, chemistry = Player.NoChemistry, ability = 2, potential = 3, market_value = 10, scout_value = 5 }
     , Player { name = "Erik", position = Player.DEF, chemistry = Player.Left, ability = 6, potential = 6, market_value = 100, scout_value = 5 }
     , Player { name = "Caroline", position = Player.GK, chemistry = Player.NoChemistry, ability = 6, potential = 6, market_value = 10, scout_value = 5 }
-    , PlayerPlaceholder "6"
+    , Player { name = "Chloey Da Big Head", position = Player.MID, chemistry = Player.NoChemistry, ability = 1, potential = 1, market_value = 0, scout_value = 0 }
     , PlayerPlaceholder "7"
     , PlayerPlaceholder "8"
     , PlayerPlaceholder "9"

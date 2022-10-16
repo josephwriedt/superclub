@@ -4,13 +4,11 @@ import Html.Styled.Events as Events
 import Json.Decode as Decode
 
 type Msg
-  = Increment
-  | Decrement
-  | Select PlayerOrPlaceholder
-  | Swap PlayerOrPlaceholder
+  = NextGamePhase
   | RandomDeckPlayer
   | RandomPlayer (Maybe PlayerOrPlaceholder, List PlayerOrPlaceholder)
-  | Draft PlayerOrPlaceholder
+  | ReshuffleDraft 
+  | DraftNewPlayers (List PlayerOrPlaceholder, List PlayerOrPlaceholder)
   | Drag PlayerOrPlaceholder
   | DragEnd
   | DragOver

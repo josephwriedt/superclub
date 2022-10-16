@@ -7,34 +7,15 @@ import Model exposing (modelSwapPlayers)
 import Random exposing (generate)
 import Random.Extra exposing (maybe)
 import Random.List
+import Model exposing (modelNextGamePhase)
 
 
 -- UPDATE
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
-    Increment ->
-      ( model 
-      , Cmd.none
-      )
-
-    Decrement ->
-      ( model 
-      , Cmd.none
-      )
-
-    Select (player) ->
-      ( model 
-      , Cmd.none
-      )
-    
-    Swap player ->
-      ( model
-      , Cmd.none
-      )
-
-    Draft (player) ->
-      ( model 
+    NextGamePhase ->
+      ( modelNextGamePhase model
       , Cmd.none
       )
 
@@ -43,6 +24,12 @@ update msg model =
 
     RandomPlayer (maybePlayer, playerList) ->
       ( { model | randomPlayer = maybePlayer, playerDeck = playerList }, Cmd.none )
+
+    DraftNewPlayers (newDraftPlayers, playerList)  ->
+      ( { model | playerDeck = playerList, draftPlayers = newDraftPlayers }, Cmd.none )
+
+    ReshuffleDraft ->
+      ( model, generate DraftNewPlayers (Random.List.choices 16 model.playerDeck ) )
 
     Drag player ->
       ( { model | beingDragged = Just player}
