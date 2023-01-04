@@ -5410,7 +5410,7 @@ var $author$project$Model$init = function (_v0) {
 	var player = $author$project$Player$Player(
 		{ability: 2, chemistry: $author$project$Player$Left, market_value: 25, name: 'Nketiah', position: $author$project$Player$ATT, potential: 5, scout_value: 15});
 	var club = {balance: 0, club_level: $author$project$Club$NewlyPromoted, club_position: $author$project$Club$Fifth, reserves: reserves, scouting_level: $author$project$Club$I, stadium_level: $author$project$Club$I, starters: starters, training_level: $author$project$Club$I};
-	var model = {beingDragged: $elm$core$Maybe$Nothing, club: club, gamePhase: $author$project$GamePhase$Draft, inspectedPlayer: player, playerDeck: $author$project$Init$playerDeck, randomPlayer: $elm$core$Maybe$Nothing};
+	var model = {beingDragged: $elm$core$Maybe$Nothing, club: club, draftPlayers: _List_Nil, gamePhase: $author$project$GamePhase$Draft, inspectedPlayer: player, playerDeck: $author$project$Init$playerDeck, randomPlayer: $elm$core$Maybe$Nothing};
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -5418,9 +5418,28 @@ var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Model$subscriptions = function (model) {
 	return $elm$core$Platform$Sub$none;
 };
+var $author$project$Msg$DraftNewPlayers = function (a) {
+	return {$: 'DraftNewPlayers', a: a};
+};
 var $author$project$Msg$RandomPlayer = function (a) {
 	return {$: 'RandomPlayer', a: a};
 };
+var $elm$random$Random$Generator = function (a) {
+	return {$: 'Generator', a: a};
+};
+var $elm$random$Random$andThen = F2(
+	function (callback, _v0) {
+		var genA = _v0.a;
+		return $elm$random$Random$Generator(
+			function (seed) {
+				var _v1 = genA(seed);
+				var result = _v1.a;
+				var newSeed = _v1.b;
+				var _v2 = callback(result);
+				var genB = _v2.a;
+				return genB(newSeed);
+			});
+	});
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -5429,9 +5448,6 @@ var $elm$core$List$append = F2(
 			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
 		}
 	});
-var $elm$random$Random$Generator = function (a) {
-	return {$: 'Generator', a: a};
-};
 var $elm$random$Random$constant = function (value) {
 	return $elm$random$Random$Generator(
 		function (seed) {
@@ -5697,6 +5713,47 @@ var $elm_community$random_extra$Random$List$choose = function (list) {
 			gen);
 	}
 };
+var $elm$random$Random$lazy = function (callback) {
+	return $elm$random$Random$Generator(
+		function (seed) {
+			var _v0 = callback(_Utils_Tuple0);
+			var gen = _v0.a;
+			return gen(seed);
+		});
+};
+var $elm_community$random_extra$Random$List$choices = F2(
+	function (count, list) {
+		return (count < 1) ? $elm$random$Random$constant(
+			_Utils_Tuple2(_List_Nil, list)) : A2(
+			$elm$random$Random$andThen,
+			function (_v0) {
+				var choice = _v0.a;
+				var remaining = _v0.b;
+				var genRest = $elm$random$Random$lazy(
+					function (_v3) {
+						return A2($elm_community$random_extra$Random$List$choices, count - 1, remaining);
+					});
+				var addToChoices = F2(
+					function (elem, _v2) {
+						var chosen = _v2.a;
+						var unchosen = _v2.b;
+						return _Utils_Tuple2(
+							A2($elm$core$List$cons, elem, chosen),
+							unchosen);
+					});
+				if (choice.$ === 'Nothing') {
+					return $elm$random$Random$constant(
+						_Utils_Tuple2(_List_Nil, list));
+				} else {
+					var elem = choice.a;
+					return A2(
+						$elm$random$Random$map,
+						addToChoices(elem),
+						genRest);
+				}
+			},
+			$elm_community$random_extra$Random$List$choose(list));
+	});
 var $elm$random$Random$Generate = function (a) {
 	return {$: 'Generate', a: a};
 };
@@ -6353,6 +6410,22 @@ var $author$project$Update$update = F2(
 						model,
 						{playerDeck: playerList, randomPlayer: maybePlayer}),
 					$elm$core$Platform$Cmd$none);
+			case 'DraftNewPlayers':
+				var _v2 = msg.a;
+				var newDraftPlayers = _v2.a;
+				var playerList = _v2.b;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{draftPlayers: newDraftPlayers, playerDeck: playerList}),
+					$elm$core$Platform$Cmd$none);
+			case 'ReshuffleDraft':
+				return _Utils_Tuple2(
+					model,
+					A2(
+						$elm$random$Random$generate,
+						$author$project$Msg$DraftNewPlayers,
+						A2($elm_community$random_extra$Random$List$choices, 16, model.playerDeck)));
 			case 'Drag':
 				var player = msg.a;
 				return _Utils_Tuple2(
