@@ -7,6 +7,7 @@ type Msg
   | Select PlayerOrPlaceholder
   | Swap PlayerOrPlaceholder
   | Draft PlayerOrPlaceholder
+  | ToggleFolder
   | ChooseSlot Slot
   | DragSlot Slot
   | DropSlot Slot

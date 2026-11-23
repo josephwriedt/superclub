@@ -201,8 +201,8 @@ startersToHtml: Club -> StyledHtml.Html Msg
 startersToHtml club =
   folderSlots Msg.Starter club.starters
 
-clubFolderHtml: Club -> StyledHtml.Html Msg
-clubFolderHtml club =
+clubFolderHtml: Bool -> Club -> StyledHtml.Html Msg
+clubFolderHtml isOpen club =
   let
       panel title content =
         StyledHtml.section
@@ -220,7 +220,7 @@ clubFolderHtml club =
           , content
           ]
   in
-  StyledHtml.node "details"
+  div
     [ class "club-folder"
     , css
         [ Css.margin (Css.px 24)
@@ -230,27 +230,45 @@ clubFolderHtml club =
         , Css.boxShadow4 (Css.px 0) (Css.px 8) (Css.px 20) (Css.hex "#a39b8a")
         ]
     ]
-    [ StyledHtml.node "summary"
-        [ css
-            [ Css.cursor Css.pointer
-            , Css.color (Css.hex "#fff8e8")
-            , Css.fontSize (Css.px 24)
-            , Css.fontWeight Css.bold
-            , Css.padding (Css.px 16)
+    [ div
+        [ css [ Css.displayFlex, Css.justifyContent Css.spaceBetween, Css.alignItems Css.center ] ]
+        [ h2 [ css [ Css.color (Css.hex "#fff8e8"), Css.margin Css.zero ] ] [ text "Club folder" ]
+        , StyledHtml.button
+            [ Events.onClick Msg.ToggleFolder
+            , attribute "aria-expanded" (if isOpen then "true" else "false")
+            , attribute "aria-controls" "folder-contents"
+            , css [ Css.cursor Css.pointer, Css.padding (Css.px 12) ]
             ]
+            [ text (if isOpen then "Close folder →" else "Open folder ←") ]
         ]
-        [ text "Club folder — open or close" ]
-    , StyledHtml.p [ css [ Css.color (Css.hex "#fff8e8") ] ] [ text "Drag a card to another slot, or select two cards to swap them." ]
     , div
-        [ css
-            [ Css.displayFlex
-            , Css.flexWrap Css.wrap
-            , Css.padding (Css.px 12)
-            , Css.backgroundColor (Css.hex "#80552e")
-            , Css.borderRadius (Css.px 8)
+        [ css [ Css.position Css.relative, Css.overflow Css.hidden, Css.borderRadius (Css.px 8) ] ]
+        [ div
+            [ attribute "id" "folder-contents"
+            , css
+                [ Css.displayFlex
+                , Css.flexWrap Css.wrap
+                , Css.padding (Css.px 12)
+                , Css.backgroundColor (Css.hex "#80552e")
+                , Css.property "visibility" (if isOpen then "visible" else "hidden")
+                ]
             ]
-        ]
-        [ panel "Reserves" (reservesToHtml club)
-        , panel "Starting lineup" (startersToHtml club)
+            [ panel "Reserves" (reservesToHtml club)
+            , panel "Starting lineup" (startersToHtml club)
+            ]
+        , div
+            [ attribute "aria-hidden" "true"
+            , css
+                [ Css.position Css.absolute
+                , Css.property "inset" "0"
+                , Css.backgroundColor (Css.hex "#9b6938")
+                , Css.borderRadius (Css.px 8)
+                , Css.property "transform-origin" "left center"
+                , Css.property "transform" (if isOpen then "scaleX(0)" else "scaleX(1)")
+                , Css.property "transition" "transform 300ms ease"
+                , Css.property "pointer-events" "none"
+                ]
+            ]
+            []
         ]
     ]

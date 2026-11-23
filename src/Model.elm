@@ -15,6 +15,9 @@ import Init
 update : Msg -> Model -> Model
 update msg model =
   case msg of
+    Msg.ToggleFolder ->
+      { model | folderOpen = not model.folderOpen, selectedSlot = Nothing }
+
     Msg.ChooseSlot slot ->
       case model.selectedSlot of
         Nothing -> { model | selectedSlot = Just slot }
@@ -55,7 +58,7 @@ update msg model =
 view : Model -> Html.Html Msg
 view model =
     -- model |> squadView |>  toUnstyled
-    model.club |> Club.clubFolderHtml |> toUnstyled
+    Club.clubFolderHtml model.folderOpen model.club |> toUnstyled
 
     
 
@@ -76,6 +79,7 @@ squadView model =
 -- MODEL
 type alias Model = 
     { club : Club 
+    , folderOpen : Bool
     , selectedSlot : Maybe Msg.Slot
     , swapPlayers : List PlayerOrPlaceholder
     }
@@ -99,6 +103,7 @@ init =
            }
   in
   { club = club
+  , folderOpen = False
   , selectedSlot = Nothing
   , swapPlayers = [] }
 
