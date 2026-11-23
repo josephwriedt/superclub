@@ -15,6 +15,7 @@ import Svg.Styled.Attributes as Svg
 import List exposing (map)
 import Msg exposing (Msg)
 import Html.Styled.Events exposing (onClick)
+import GamePhase
 
 -- VIEW
 view : Model -> Html.Html Msg
@@ -28,13 +29,9 @@ view model =
   
     toUnstyled <|
       div []
-          [ Club.clubFolderHtml model.club
-          , div [] [ leftFacingStar, rightFacingStar ] 
+          [ headerView model
+          , Club.clubFolderHtml model.club
           ]
-          -- [ deckView
-          -- , randomPlayerHtml
-          -- , Club.clubFolderHtml model.club
-          -- ]
 
 leftFacingStar : Svg.Svg Msg
 leftFacingStar =
@@ -127,3 +124,23 @@ squadToHtml players =
     squadHtml = List.map PlayerDisplay.playerToHtmlDefault players
   in
   StyledHtml.div attributes squadHtml
+
+draftView : Model -> StyledHtml.Html Msg
+draftView model =
+  let
+      attributes = []
+      draftHtml = List.map PlayerDisplay.draftPlayerToHtml model.draftPlayers
+  in
+  
+  StyledHtml.node "draft" attributes draftHtml
+
+
+headerView : Model -> StyledHtml.Html Msg
+headerView model =
+  StyledHtml.div 
+    []
+    [ case model.gamePhase of
+        GamePhase.Draft -> draftView model
+        GamePhase.Offseason -> deckView
+        GamePhase.Season -> deckView
+    ]

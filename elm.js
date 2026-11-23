@@ -5410,7 +5410,16 @@ var $author$project$Model$init = function (_v0) {
 	var player = $author$project$Player$Player(
 		{ability: 2, chemistry: $author$project$Player$Left, market_value: 25, name: 'Nketiah', position: $author$project$Player$ATT, potential: 5, scout_value: 15});
 	var club = {balance: 0, club_level: $author$project$Club$NewlyPromoted, club_position: $author$project$Club$Fifth, reserves: reserves, scouting_level: $author$project$Club$I, stadium_level: $author$project$Club$I, starters: starters, training_level: $author$project$Club$I};
-	var model = {beingDragged: $elm$core$Maybe$Nothing, club: club, draftPlayers: _List_Nil, gamePhase: $author$project$GamePhase$Draft, inspectedPlayer: player, playerDeck: $author$project$Init$playerDeck, randomPlayer: $elm$core$Maybe$Nothing};
+	var model = {
+		beingDragged: $elm$core$Maybe$Nothing,
+		club: club,
+		draftPlayers: _List_fromArray(
+			[player]),
+		gamePhase: $author$project$GamePhase$Draft,
+		inspectedPlayer: player,
+		playerDeck: $author$project$Init$playerDeck,
+		randomPlayer: $elm$core$Maybe$Nothing
+	};
 	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
@@ -9426,53 +9435,171 @@ var $author$project$Club$clubFolderHtml = function (club) {
 		_List_fromArray(
 			[reservesHtml, startersHtml]));
 };
-var $rtfeldman$elm_css$Svg$Styled$Attributes$height = $rtfeldman$elm_css$VirtualDom$Styled$attribute('height');
-var $rtfeldman$elm_css$Svg$Styled$Attributes$points = $rtfeldman$elm_css$VirtualDom$Styled$attribute('points');
-var $rtfeldman$elm_css$VirtualDom$Styled$NodeNS = F4(
-	function (a, b, c, d) {
-		return {$: 'NodeNS', a: a, b: b, c: c, d: d};
-	});
-var $rtfeldman$elm_css$VirtualDom$Styled$nodeNS = $rtfeldman$elm_css$VirtualDom$Styled$NodeNS;
-var $rtfeldman$elm_css$Svg$Styled$node = $rtfeldman$elm_css$VirtualDom$Styled$nodeNS('http://www.w3.org/2000/svg');
-var $rtfeldman$elm_css$Svg$Styled$polygon = $rtfeldman$elm_css$Svg$Styled$node('polygon');
-var $rtfeldman$elm_css$Svg$Styled$svg = $rtfeldman$elm_css$Svg$Styled$node('svg');
-var $rtfeldman$elm_css$Svg$Styled$Attributes$width = $rtfeldman$elm_css$VirtualDom$Styled$attribute('width');
-var $author$project$View$leftFacingStar = A2(
-	$rtfeldman$elm_css$Svg$Styled$svg,
+var $author$project$Msg$RandomDeckPlayer = {$: 'RandomDeckPlayer'};
+var $rtfeldman$elm_css$Css$auto = {alignItemsOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, cursor: $rtfeldman$elm_css$Css$Structure$Compatible, flexBasis: $rtfeldman$elm_css$Css$Structure$Compatible, intOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, justifyContentOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAuto: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrAutoOrCoverOrContain: $rtfeldman$elm_css$Css$Structure$Compatible, lengthOrNumberOrAutoOrNoneOrContent: $rtfeldman$elm_css$Css$Structure$Compatible, overflow: $rtfeldman$elm_css$Css$Structure$Compatible, pointerEvents: $rtfeldman$elm_css$Css$Structure$Compatible, tableLayout: $rtfeldman$elm_css$Css$Structure$Compatible, textRendering: $rtfeldman$elm_css$Css$Structure$Compatible, touchAction: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'auto'};
+var $author$project$Gamestyle$deckStyle = function () {
+	var color = $rtfeldman$elm_css$Css$hex('#0c5a99');
+	var cStyle = $rtfeldman$elm_css$Css$batch(
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Css$border(
+				$rtfeldman$elm_css$Css$px(10)),
+				$rtfeldman$elm_css$Css$padding(
+				$rtfeldman$elm_css$Css$px(50)),
+				$rtfeldman$elm_css$Css$outlineStyle($rtfeldman$elm_css$Css$solid),
+				$rtfeldman$elm_css$Css$borderRadius(
+				$rtfeldman$elm_css$Css$px(10)),
+				$author$project$Gamestyle$cardDimensions
+			]));
+	var boxShadowStyle = A4(
+		$rtfeldman$elm_css$Css$boxShadow4,
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(10),
+		$rtfeldman$elm_css$Css$px(5),
+		color);
+	var backgroundColorStyle = $rtfeldman$elm_css$Css$backgroundColor(color);
+	var styles = _List_fromArray(
+		[backgroundColorStyle, boxShadowStyle, cStyle]);
+	return $rtfeldman$elm_css$Css$batch(styles);
+}();
+var $rtfeldman$elm_css$Html$Styled$h3 = $rtfeldman$elm_css$Html$Styled$node('h3');
+var $rtfeldman$elm_css$Css$inlineBlock = {display: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'inline-block'};
+var $rtfeldman$elm_css$Html$Styled$Events$onClick = function (msg) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $rtfeldman$elm_css$Css$wrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'wrap'};
+var $author$project$View$deck = function (region) {
+	var marginStyle = $rtfeldman$elm_css$Css$margin($rtfeldman$elm_css$Css$auto);
+	var textStyle = _List_fromArray(
+		[
+			$rtfeldman$elm_css$Css$color(
+			A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255)),
+			$author$project$Gamestyle$centerText,
+			marginStyle
+		]);
+	var className = region + '-deck';
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$div,
+		_List_fromArray(
+			[
+				$rtfeldman$elm_css$Html$Styled$Attributes$class(className),
+				$rtfeldman$elm_css$Html$Styled$Events$onClick($author$project$Msg$RandomDeckPlayer),
+				$rtfeldman$elm_css$Html$Styled$Attributes$css(
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$inlineBlock),
+						$rtfeldman$elm_css$Css$flexFlow1($rtfeldman$elm_css$Css$wrap),
+						$author$project$Gamestyle$deckStyle,
+						$rtfeldman$elm_css$Css$margin(
+						$rtfeldman$elm_css$Css$px(20))
+					]))
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$rtfeldman$elm_css$Html$Styled$h3,
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$Attributes$css(textStyle)
+					]),
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$text(region)
+					]))
+			]));
+};
+var $author$project$View$deckView = A2(
+	$rtfeldman$elm_css$Html$Styled$div,
 	_List_fromArray(
 		[
-			$rtfeldman$elm_css$Svg$Styled$Attributes$height('200'),
-			$rtfeldman$elm_css$Svg$Styled$Attributes$width('500')
+			$rtfeldman$elm_css$Html$Styled$Attributes$class('player-decks')
 		]),
 	_List_fromArray(
 		[
-			A2(
-			$rtfeldman$elm_css$Svg$Styled$polygon,
-			_List_fromArray(
-				[
-					$rtfeldman$elm_css$Svg$Styled$Attributes$points('100,10 160,198 100,150 100,78 190,78 100,150')
-				]),
-			_List_Nil)
+			$author$project$View$deck('Europe'),
+			$author$project$View$deck('Asia'),
+			$author$project$View$deck('South America'),
+			$author$project$View$deck('Australia'),
+			$author$project$View$deck('North')
 		]));
-var $rtfeldman$elm_css$Svg$Styled$Attributes$fill = $rtfeldman$elm_css$VirtualDom$Styled$attribute('fill');
-var $author$project$View$rightFacingStar = A2(
-	$rtfeldman$elm_css$Svg$Styled$svg,
-	_List_fromArray(
+var $author$project$PlayerDisplay$draftPlayerToHtml = function (player) {
+	var textStyle = _List_fromArray(
 		[
-			$rtfeldman$elm_css$Svg$Styled$Attributes$height('200'),
-			$rtfeldman$elm_css$Svg$Styled$Attributes$width('500')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$rtfeldman$elm_css$Svg$Styled$polygon,
-			_List_fromArray(
+			$rtfeldman$elm_css$Css$color(
+			A3($rtfeldman$elm_css$Css$rgb, 255, 255, 255)),
+			$author$project$Gamestyle$centerText
+		]);
+	var attributes = function () {
+		if (player.$ === 'PlayerPlaceholder') {
+			return _List_Nil;
+		} else {
+			return _List_fromArray(
 				[
-					$rtfeldman$elm_css$Svg$Styled$Attributes$points('100,10 40,198 100,150 100,78 10,78 100,150'),
-					$rtfeldman$elm_css$Svg$Styled$Attributes$fill('black')
-				]),
-			_List_Nil)
-		]));
+					$rtfeldman$elm_css$Html$Styled$Attributes$class(
+					$author$project$Player$playerId(player)),
+					$rtfeldman$elm_css$Html$Styled$Attributes$css(
+					_List_fromArray(
+						[
+							$author$project$PlayerDisplay$playerStyle(player),
+							$rtfeldman$elm_css$Css$display($rtfeldman$elm_css$Css$block)
+						])),
+					$rtfeldman$elm_css$Html$Styled$Attributes$draggable('true'),
+					$author$project$Msg$onDragStart(
+					$author$project$Msg$Drag(player)),
+					$author$project$Msg$onDragEnd($author$project$Msg$DragEnd),
+					$author$project$Msg$onDrop(
+					$author$project$Msg$Drop(player)),
+					$author$project$Msg$onDragOver($author$project$Msg$DragOver)
+				]);
+		}
+	}();
+	return A3(
+		$rtfeldman$elm_css$Html$Styled$node,
+		'player',
+		attributes,
+		_List_fromArray(
+			[
+				A2(
+				$rtfeldman$elm_css$Html$Styled$h4,
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$Attributes$css(textStyle)
+					]),
+				_List_fromArray(
+					[
+						$rtfeldman$elm_css$Html$Styled$text(
+						$author$project$Player$name(player))
+					])),
+				$author$project$Player$displayAbility(player)
+			]));
+};
+var $author$project$View$draftView = function (model) {
+	var draftHtml = A2($elm$core$List$map, $author$project$PlayerDisplay$draftPlayerToHtml, model.draftPlayers);
+	var attributes = _List_Nil;
+	return A3($rtfeldman$elm_css$Html$Styled$node, 'draft', attributes, draftHtml);
+};
+var $author$project$View$headerView = function (model) {
+	return A2(
+		$rtfeldman$elm_css$Html$Styled$div,
+		_List_Nil,
+		_List_fromArray(
+			[
+				function () {
+				var _v0 = model.gamePhase;
+				switch (_v0.$) {
+					case 'Draft':
+						return $author$project$View$draftView(model);
+					case 'Offseason':
+						return $author$project$View$deckView;
+					default:
+						return $author$project$View$deckView;
+				}
+			}()
+			]));
+};
 var $elm$core$Dict$get = F2(
 	function (targetKey, dict) {
 		get:
@@ -10083,12 +10210,8 @@ var $author$project$View$view = function (model) {
 			_List_Nil,
 			_List_fromArray(
 				[
-					$author$project$Club$clubFolderHtml(model.club),
-					A2(
-					$rtfeldman$elm_css$Html$Styled$div,
-					_List_Nil,
-					_List_fromArray(
-						[$author$project$View$leftFacingStar, $author$project$View$rightFacingStar]))
+					$author$project$View$headerView(model),
+					$author$project$Club$clubFolderHtml(model.club)
 				])));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(

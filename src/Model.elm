@@ -50,7 +50,7 @@ init _ =
             , randomPlayer = Nothing
             , inspectedPlayer = player
             , beingDragged = Nothing 
-            , draftPlayers = []
+            , draftPlayers = [ player ]
             }
   in
   ( model

@@ -8,6 +8,7 @@ import Random exposing (generate)
 import Random.Extra exposing (maybe)
 import Random.List
 import Model exposing (modelNextGamePhase)
+import GamePhase exposing (GamePhase(..))
 
 
 -- UPDATE

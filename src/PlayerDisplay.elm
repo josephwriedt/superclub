@@ -45,6 +45,28 @@ playerToHtml player styles attributeList =
     , displayAbility player
     ]
 
+draftPlayerToHtml : PlayerOrPlaceholder -> StyledHtml.Html Msg
+draftPlayerToHtml player =
+  let
+      textStyle = [ Css.color (Css.rgb 255 255 255), Gamestyle.centerText ]
+      attributes = case player of
+        PlayerPlaceholder _ -> []
+        Player _ ->
+          [ playerId player |> class
+          , css [ playerStyle player, Css.display Css.block ]
+          , Html.Styled.Attributes.draggable "true"
+          , Msg.onDragStart <| Msg.Drag player
+          , Msg.onDragEnd Msg.DragEnd
+          , Msg.onDrop <| Msg.Drop player
+          , Msg.onDragOver Msg.DragOver
+          ]
+          
+  in
+  StyledHtml.node "player" attributes 
+    [ StyledHtml.h4 [ css textStyle ] [ player |> name |> text ] 
+    , displayAbility player
+    ]
+
 
 playerToHtmlDefault: PlayerOrPlaceholder -> StyledHtml.Html Msg
 playerToHtmlDefault player =
