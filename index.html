@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Main</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
@@ -9007,7 +9008,6 @@ var $rtfeldman$elm_css$Css$fixed = {backgroundAttachment: $rtfeldman$elm_css$Css
 var $rtfeldman$elm_css$Css$flexShrink = $rtfeldman$elm_css$Css$prop1('flex-shrink');
 var $rtfeldman$elm_css$Css$left = $rtfeldman$elm_css$Css$prop1('left');
 var $rtfeldman$elm_css$Html$Styled$main_ = $rtfeldman$elm_css$Html$Styled$node('main');
-var $rtfeldman$elm_css$Css$minHeight = $rtfeldman$elm_css$Css$prop1('min-height');
 var $rtfeldman$elm_css$Html$Styled$nav = $rtfeldman$elm_css$Html$Styled$node('nav');
 var $rtfeldman$elm_css$Css$prop2 = F3(
 	function (key, argA, argB) {
@@ -9841,8 +9841,6 @@ var $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled = function (vdom) {
 	}
 };
 var $rtfeldman$elm_css$Html$Styled$toUnstyled = $rtfeldman$elm_css$VirtualDom$Styled$toUnstyled;
-var $rtfeldman$elm_css$Css$VhUnits = {$: 'VhUnits'};
-var $rtfeldman$elm_css$Css$vh = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$VhUnits, 'vh');
 var $author$project$Model$view = function (model) {
 	return $rtfeldman$elm_css$Html$Styled$toUnstyled(
 		A2(
@@ -9868,7 +9866,8 @@ var $author$project$Model$view = function (model) {
 								[
 									$rtfeldman$elm_css$Css$flex(
 									$rtfeldman$elm_css$Css$int(1)),
-									$rtfeldman$elm_css$Css$minWidth($rtfeldman$elm_css$Css$zero)
+									A2($rtfeldman$elm_css$Css$property, 'flex-basis', 'min(100%, 480px)'),
+									A2($rtfeldman$elm_css$Css$property, 'min-width', 'min(100%, 480px)')
 								]))
 						]),
 					_List_fromArray(
@@ -9889,8 +9888,6 @@ var $author$project$Model$view = function (model) {
 									$rtfeldman$elm_css$Css$px(180)),
 									A2($rtfeldman$elm_css$Css$property, 'max-width', '100%'),
 									A2($rtfeldman$elm_css$Css$property, 'box-sizing', 'border-box'),
-									$rtfeldman$elm_css$Css$minHeight(
-									$rtfeldman$elm_css$Css$vh(100)),
 									A2(
 									$rtfeldman$elm_css$Css$padding2,
 									$rtfeldman$elm_css$Css$px(28),

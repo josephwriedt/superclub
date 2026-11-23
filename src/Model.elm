@@ -72,7 +72,7 @@ view model =
     StyledHtml.div
       [ css [ Css.displayFlex, Css.flexWrap Css.wrap ] ]
       [ GameFlow.sidebar model.gameStep
-      , StyledHtml.main_ [ css [ Css.flex (Css.int 1), Css.minWidth Css.zero ] ]
+      , StyledHtml.main_ [ css [ Css.flex (Css.int 1), Css.property "flex-basis" "min(100%, 480px)", Css.property "min-width" "min(100%, 480px)" ] ]
           [ if model.showClubInfo then Club.clubInfoToHtml model.club else Club.clubFolderHtml model.folderOpen model.club ]
       , StyledHtml.nav
           [ attribute "aria-label" "Club navigation"
@@ -81,7 +81,6 @@ view model =
               , Css.width (Css.px 180)
               , Css.property "max-width" "100%"
               , Css.property "box-sizing" "border-box"
-              , Css.minHeight (Css.vh 100)
               , Css.padding2 (Css.px 28) (Css.px 20)
               , Css.backgroundColor (Css.hex "#f3f1eb")
               , Css.color (Css.hex "#202b2d")
