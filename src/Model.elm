@@ -10,12 +10,23 @@ import Msg exposing (Msg)
 import Player exposing (PlayerOrPlaceholder(..))
 import Array exposing (Array)
 import Init
+import GameFlow
+import Html.Styled.Events exposing (onClick)
 import Staff exposing (StaffOrPlaceholder(..))
 
 -- UPDATE
 update : Msg -> Model -> Model
 update msg model =
   case msg of
+    Msg.AdvanceGameStep ->
+      { model | gameStep = GameFlow.next model.gameStep }
+
+    Msg.ShowSquad ->
+      { model | showClubInfo = False, folderOpen = True, selectedSlot = Nothing }
+
+    Msg.ShowClubInfo ->
+      { model | showClubInfo = True, selectedSlot = Nothing }
+
     Msg.ToggleFolder ->
       { model | folderOpen = not model.folderOpen, selectedSlot = Nothing }
 
@@ -59,7 +70,58 @@ update msg model =
 view : Model -> Html.Html Msg
 view model =
     -- model |> squadView |>  toUnstyled
-    Club.clubFolderHtml model.folderOpen model.club |> toUnstyled
+    StyledHtml.div
+      [ css [ Css.displayFlex, Css.flexWrap Css.wrap ] ]
+      [ GameFlow.sidebar model.gameStep
+      , StyledHtml.main_ [ css [ Css.flex (Css.int 1), Css.property "flex-basis" "min(100%, 480px)", Css.property "min-width" "min(100%, 480px)" ] ]
+          [ if model.showClubInfo then Club.clubInfoToHtml model.club else Club.clubFolderHtml model.folderOpen model.club ]
+      , StyledHtml.nav
+          [ attribute "aria-label" "Club navigation"
+          , css
+              [ Css.flexShrink (Css.int 0)
+              , Css.width (Css.px 180)
+              , Css.property "max-width" "100%"
+              , Css.property "box-sizing" "border-box"
+              , Css.padding2 (Css.px 28) (Css.px 20)
+              , Css.backgroundColor (Css.hex "#f3f1eb")
+              , Css.color (Css.hex "#202b2d")
+              , Css.property "font-family" "system-ui, sans-serif"
+              ]
+          ]
+          [ StyledHtml.p
+              [ css [ Css.fontSize (Css.px 11), Css.property "letter-spacing" "0.14em", Css.property "text-transform" "uppercase", Css.marginBottom (Css.px 24) ] ]
+              [ text "Club" ]
+          , StyledHtml.button
+              [ onClick Msg.ShowSquad
+              , attribute "aria-pressed" (if not model.showClubInfo && model.folderOpen then "true" else "false")
+              , css
+                  [ Css.width (Css.pct 100)
+                  , Css.padding2 (Css.px 14) Css.zero
+                  , Css.textAlign Css.left
+                  , Css.backgroundColor Css.transparent
+                  , Css.color (Css.hex "#202b2d")
+                  , Css.border Css.zero
+                  , Css.property "border-top" "1px solid #bcbfb9"
+                  , Css.property "border-bottom" "1px solid #bcbfb9"
+                  , Css.cursor Css.pointer
+                  ]
+              ]
+              [ text "Squad" ]
+          , StyledHtml.button
+              [ onClick Msg.ShowClubInfo
+              , attribute "aria-pressed" (if model.showClubInfo then "true" else "false")
+              , css [ Css.width (Css.pct 100), Css.padding2 (Css.px 14) Css.zero, Css.textAlign Css.left, Css.backgroundColor Css.transparent, Css.color (Css.hex "#202b2d"), Css.border Css.zero, Css.property "border-bottom" "1px solid #bcbfb9", Css.cursor Css.pointer ]
+              ]
+              [ text "Info" ]
+          ]
+      , StyledHtml.button
+          [ onClick Msg.AdvanceGameStep
+          , attribute "title" "Advance the flow tracker; this does not perform game actions"
+          , css [ Css.position Css.fixed, Css.right (Css.px 24), Css.bottom (Css.px 24), Css.padding2 (Css.px 12) (Css.px 18), Css.backgroundColor (Css.hex "#0142aa"), Css.color (Css.hex "#ffffff"), Css.border Css.zero, Css.borderRadius (Css.px 7), Css.cursor Css.pointer ]
+          ]
+          [ text "Advance step" ]
+      ]
+      |> toUnstyled
 
     
 
@@ -80,6 +142,8 @@ squadView model =
 -- MODEL
 type alias Model = 
     { club : Club 
+    , gameStep : GameFlow.Step
+    , showClubInfo : Bool
     , folderOpen : Bool
     , selectedSlot : Maybe Msg.Slot
     , swapPlayers : List PlayerOrPlaceholder
@@ -105,7 +169,9 @@ init =
            }
   in
   { club = club
-  , folderOpen = False
+  , gameStep = GameFlow.Draft
+  , showClubInfo = False
+  , folderOpen = True
   , selectedSlot = Nothing
   , swapPlayers = [] }
 
