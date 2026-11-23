@@ -22,6 +22,13 @@ arsenalReserves =
     , PlayerPlaceholder "6"
     , PlayerPlaceholder "7"
     , PlayerPlaceholder "8"
+    , PlayerPlaceholder "9"
+    , PlayerPlaceholder "10"
+    , PlayerPlaceholder "11"
+    , PlayerPlaceholder "12"
+    , PlayerPlaceholder "13"
+    , PlayerPlaceholder "14"
+    , PlayerPlaceholder "15"
     ]
 
 arsenalAttackers: List PlayerOrPlaceholder
@@ -49,7 +56,6 @@ arsenalDefenders =
     , Player { name = "Saliba", position = Player.DEF, chemistry = Player.NoChemistry, ability = 3, potential = 6, market_value = 45, scout_value = 27 }
     , Player { name = "White", position = Player.DEF, chemistry = Player.Right, ability = 3, potential = 4, market_value = 10, scout_value = 5 }
     , Player { name = "Tomiyasu", position = Player.DEF, chemistry = Player.NoChemistry, ability = 3, potential = 3, market_value = 20, scout_value = 10 }
-    , playerPlaceHolderName "starter-defender" 1
     ]
 
 arsenalStarters: List PlayerOrPlaceholder

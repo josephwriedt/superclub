@@ -15,6 +15,25 @@ import Init
 update : Msg -> Model -> Model
 update msg model =
   case msg of
+    Msg.ChooseSlot slot ->
+      case model.selectedSlot of
+        Nothing -> { model | selectedSlot = Just slot }
+        Just first -> { model | club = swapSlots first slot model.club, selectedSlot = Nothing }
+
+    Msg.DragSlot slot ->
+      { model | selectedSlot = Just slot }
+
+    Msg.DropSlot slot ->
+      case model.selectedSlot of
+        Just first -> { model | club = swapSlots first slot model.club, selectedSlot = Nothing }
+        Nothing -> model
+
+    Msg.DragOver ->
+      model
+
+    Msg.CancelDrag ->
+      { model | selectedSlot = Nothing }
+
     Msg.Increment ->
       model 
 
@@ -57,6 +76,7 @@ squadView model =
 -- MODEL
 type alias Model = 
     { club : Club 
+    , selectedSlot : Maybe Msg.Slot
     , swapPlayers : List PlayerOrPlaceholder
     }
 
@@ -79,6 +99,7 @@ init =
            }
   in
   { club = club
+  , selectedSlot = Nothing
   , swapPlayers = [] }
 
 
@@ -106,3 +127,20 @@ squadToHtml players =
   in
   StyledHtml.div attributes squadHtml
 
+
+
+swapSlots : Msg.Slot -> Msg.Slot -> Club -> Club
+swapSlots first second club =
+  let
+    get slot =
+      case slot of
+        Msg.Reserve index -> Array.get index club.reserves
+        Msg.Starter index -> Array.get index club.starters
+    set slot player current =
+      case slot of
+        Msg.Reserve index -> { current | reserves = Array.set index player current.reserves }
+        Msg.Starter index -> { current | starters = Array.set index player current.starters }
+  in
+  case ( get first, get second ) of
+    ( Just a, Just b ) -> club |> set first b |> set second a
+    _ -> club

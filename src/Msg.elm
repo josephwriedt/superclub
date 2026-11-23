@@ -7,3 +7,10 @@ type Msg
   | Select PlayerOrPlaceholder
   | Swap PlayerOrPlaceholder
   | Draft PlayerOrPlaceholder
+  | ChooseSlot Slot
+  | DragSlot Slot
+  | DropSlot Slot
+  | CancelDrag
+  | DragOver
+
+type Slot = Reserve Int | Starter Int

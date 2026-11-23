@@ -3,6 +3,8 @@ import Player exposing (PlayerOrPlaceholder, comparePlayers, Position)
 import Array exposing (..)
 import Html.Attributes exposing (start)
 import Msg exposing (Msg)
+import Html.Styled.Events as Events
+import Json.Decode as Decode
 import Html.Styled as StyledHtml exposing (Attribute, div, h2, h4, text, toUnstyled, span)
 import Html.Styled.Attributes exposing (attribute, css, class)
 import Css
@@ -97,18 +99,42 @@ squadStrength club =
   Player.sumAbility (squad club)
 
 
-reservesToHtml: Club -> StyledHtml.Html Msg
-reservesToHtml club = 
+slotToHtml : (Int -> Msg.Slot) -> Int -> PlayerOrPlaceholder -> StyledHtml.Html Msg
+slotToHtml slotType index player =
   let
-      reserves = club.reserves
-      attributes = [ css 
-                      [ Css.display Css.inlineFlex
-                      , Css.flexFlow1 Css.wrap
-                      ]
-                   , class "reserves"
-                   ]
+    slot = slotType index
+    label = if Player.isPlayer player then Player.name player else "Empty slot"
   in
-  StyledHtml.div attributes <| Array.toList (Array.map Player.playerToHtml reserves)
+  div
+    [ css [ Css.width (Css.pct 20), Css.padding (Css.px 3), Css.property "box-sizing" "border-box", Css.minWidth Css.zero ]
+    , attribute "draggable" "true"
+    , Events.on "dragstart" (Decode.succeed (Msg.DragSlot slot))
+    , Events.on "dragend" (Decode.succeed Msg.CancelDrag)
+    , Events.preventDefaultOn "dragover" (Decode.succeed ( Msg.DragOver, True ))
+    , Events.preventDefaultOn "drop" (Decode.succeed ( Msg.DropSlot slot, True ))
+    ]
+    [ StyledHtml.button
+        [ Events.onClick (Msg.ChooseSlot slot)
+        , attribute "aria-label" ("Select " ++ label ++ " to move or swap")
+        , css [ Css.border Css.zero, Css.padding Css.zero, Css.backgroundColor Css.transparent, Css.cursor Css.pointer, Css.width (Css.pct 100) ]
+        ]
+        [ Player.playerToHtml player ]
+    ]
+
+
+folderSlots : (Int -> Msg.Slot) -> Array PlayerOrPlaceholder -> StyledHtml.Html Msg
+folderSlots slotType players =
+  let
+    row offset =
+      div [ css [ Css.displayFlex, Css.flexWrap Css.noWrap ] ]
+        (players |> Array.toIndexedList |> List.drop offset |> List.take 5 |> List.map (\( index, player ) -> slotToHtml slotType index player))
+  in
+  div [ css [ Css.overflowX Css.auto ] ] (List.map row [ 0, 5, 10 ])
+
+
+reservesToHtml: Club -> StyledHtml.Html Msg
+reservesToHtml club =
+  folderSlots Msg.Reserve club.reserves
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
@@ -172,23 +198,59 @@ goalkeeperToHtml club =
   div attributes [ playersHtml ]
 
 startersToHtml: Club -> StyledHtml.Html Msg
-startersToHtml club = 
-  let
-    attackersHtml = attackersToHtml club
-    midfieldersHtml = midfieldersToHtml club
-    defenseHtml = defenseToHtml club
-  in
-  StyledHtml.div [ class "starters" ] [ attackersHtml, midfieldersHtml, defenseHtml ]
+startersToHtml club =
+  folderSlots Msg.Starter club.starters
 
 clubFolderHtml: Club -> StyledHtml.Html Msg
-clubFolderHtml club = 
+clubFolderHtml club =
   let
-      reservesHtml = div [ css [ GameStyle.folderStyle, Css.float Css.left, Css.width (Css.pct 45) ] ] [ reservesToHtml club]
-      startersHtml = div [ css [ GameStyle.folderStyle , Css.float Css.right, Css.width (Css.pct 45) ] ] [ startersToHtml club ]
-      attributes = [ css 
-                    [ Css.display Css.inlineFlex
-                    , Css.flexFlow1 Css.wrap
-                    ]
-                  ]
+      panel title content =
+        StyledHtml.section
+          [ css
+              [ Css.flex (Css.int 1)
+              , Css.minWidth Css.zero
+              , Css.flexBasis (Css.px 420)
+              , Css.padding (Css.px 24)
+              , Css.margin (Css.px 6)
+              , Css.backgroundColor (Css.hex "#f8f2df")
+              , Css.borderRadius (Css.px 6)
+              ]
+          ]
+          [ h2 [ css [ Css.color (Css.hex "#493d2d") ] ] [ text title ]
+          , content
+          ]
   in
-  StyledHtml.node "PlayerOrPlaceholder-folder" attributes [ reservesHtml, startersHtml ]
+  StyledHtml.node "details"
+    [ class "club-folder"
+    , css
+        [ Css.margin (Css.px 24)
+        , Css.padding (Css.px 20)
+        , Css.backgroundColor (Css.hex "#aa7740")
+        , Css.borderRadius (Css.px 12)
+        , Css.boxShadow4 (Css.px 0) (Css.px 8) (Css.px 20) (Css.hex "#a39b8a")
+        ]
+    ]
+    [ StyledHtml.node "summary"
+        [ css
+            [ Css.cursor Css.pointer
+            , Css.color (Css.hex "#fff8e8")
+            , Css.fontSize (Css.px 24)
+            , Css.fontWeight Css.bold
+            , Css.padding (Css.px 16)
+            ]
+        ]
+        [ text "Club folder — open or close" ]
+    , StyledHtml.p [ css [ Css.color (Css.hex "#fff8e8") ] ] [ text "Drag a card to another slot, or select two cards to swap them." ]
+    , div
+        [ css
+            [ Css.displayFlex
+            , Css.flexWrap Css.wrap
+            , Css.padding (Css.px 12)
+            , Css.backgroundColor (Css.hex "#80552e")
+            , Css.borderRadius (Css.px 8)
+            ]
+        ]
+        [ panel "Reserves" (reservesToHtml club)
+        , panel "Starting lineup" (startersToHtml club)
+        ]
+    ]

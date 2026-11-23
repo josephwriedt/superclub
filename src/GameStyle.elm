@@ -6,19 +6,22 @@ import Html.Styled as StyledHtml
 
 cardDimensions: Style
 cardDimensions =
-    Css.batch [ width (inches 1.25)
-              , height (inches 1.75)
-              ]
+    Css.batch
+        [ width (pct 100)
+        , Css.property "aspect-ratio" "5 / 7"
+        , Css.property "box-sizing" "border-box"
+        ]
 
 
 cardStyle: Style
-cardStyle = 
-    Css.batch 
-        [ Css.border (px 10)
-        , Css.padding (px 50)
+cardStyle =
+    Css.batch
+        [ Css.padding (pct 5)
         , Css.outlineStyle Css.solid
-        , borderRadius (px 10)
-        , Css.padding (pct 5)
+        , Css.outlineWidth (px 1)
+        , borderRadius (px 8)
+        , Css.property "font-size" "clamp(0.55rem, 1.1vw, 1rem)"
+        , Css.property "overflow-wrap" "anywhere"
         , cardDimensions
         ]
 
@@ -37,7 +40,7 @@ playerPlaceholderStyle =
     let
         color = (hex "#e0e0e0")
         backgroundColorStyle = Css.backgroundColor color
-        boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
+        boxShadowStyle = Css.boxShadow4 (px 2) (px 3) (px 5) color
         styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ]
     in
     Css.batch styles
@@ -47,7 +50,7 @@ goalkeeperStyle =
     let
         color = rgb 252 103 3
         backgroundColorStyle = Css.backgroundColor color
-        boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
+        boxShadowStyle = Css.boxShadow4 (px 2) (px 3) (px 5) color
         styles =  [ backgroundColorStyle, boxShadowStyle, cardStyle ] 
     in
     
@@ -58,7 +61,7 @@ defenderStyle =
     let
         color = (hex "#e01e26")
         backgroundColorStyle = Css.backgroundColor color
-        boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
+        boxShadowStyle = Css.boxShadow4 (px 2) (px 3) (px 5) color
         styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ] 
     in
     
@@ -69,7 +72,7 @@ midfielderStyle =
     let
         color = (hex "#fcc800")
         backgroundColorStyle = Css.backgroundColor color
-        boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
+        boxShadowStyle = Css.boxShadow4 (px 2) (px 3) (px 5) color
         styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ] 
     in
     
@@ -80,7 +83,7 @@ attackerStyle =
     let
         color = (hex "#00913c")
         backgroundColorStyle = Css.backgroundColor color
-        boxShadowStyle = Css.boxShadow4 (px 10) (px 10) (px 5) color
+        boxShadowStyle = Css.boxShadow4 (px 2) (px 3) (px 5) color
         styles = [ backgroundColorStyle, boxShadowStyle, cardStyle ]
     in
     
