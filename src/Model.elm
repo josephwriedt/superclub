@@ -12,6 +12,7 @@ import Array exposing (Array)
 import Init
 import GameFlow
 import Html.Styled.Events exposing (onClick)
+import Staff exposing (StaffOrPlaceholder(..))
 
 -- UPDATE
 update : Msg -> Model -> Model
@@ -162,6 +163,7 @@ init =
            , training_level = Club.I
            , club_level = Club.NewlyPromoted
            , club_position = Club.Fifth
+           , staff = Array.fromList [ StaffPlaceholder "staff-1", StaffPlaceholder "staff-2", StaffPlaceholder "staff-3" ]
            , reserves = reserves
            , starters = starters
            }
