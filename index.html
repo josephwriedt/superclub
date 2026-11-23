@@ -2,7 +2,6 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Main</title>
   <style>body { padding: 0; margin: 0; }</style>
 </head>
@@ -4508,6 +4507,9 @@ var $author$project$Club$Fifth = {$: 'Fifth'};
 var $author$project$Club$I = {$: 'I'};
 var $author$project$Club$NewlyPromoted = {$: 'NewlyPromoted'};
 var $elm$core$Maybe$Nothing = {$: 'Nothing'};
+var $author$project$Staff$StaffPlaceholder = function (a) {
+	return {$: 'StaffPlaceholder', a: a};
+};
 var $elm$core$Basics$True = {$: 'True'};
 var $author$project$Player$ATT = {$: 'ATT'};
 var $author$project$Player$DEF = {$: 'DEF'};
@@ -4772,7 +4774,23 @@ var $elm$core$Array$fromList = function (list) {
 var $author$project$Model$init = function () {
 	var starters = $elm$core$Array$fromList($author$project$Init$arsenalStarters);
 	var reserves = $elm$core$Array$fromList($author$project$Init$arsenalReserves);
-	var club = {balance: 100, club_level: $author$project$Club$NewlyPromoted, club_position: $author$project$Club$Fifth, reserves: reserves, scouting_level: $author$project$Club$I, stadium_level: $author$project$Club$I, starters: starters, training_level: $author$project$Club$I};
+	var club = {
+		balance: 100,
+		club_level: $author$project$Club$NewlyPromoted,
+		club_position: $author$project$Club$Fifth,
+		reserves: reserves,
+		scouting_level: $author$project$Club$I,
+		stadium_level: $author$project$Club$I,
+		staff: $elm$core$Array$fromList(
+			_List_fromArray(
+				[
+					$author$project$Staff$StaffPlaceholder('staff-1'),
+					$author$project$Staff$StaffPlaceholder('staff-2'),
+					$author$project$Staff$StaffPlaceholder('staff-3')
+				])),
+		starters: starters,
+		training_level: $author$project$Club$I
+	};
 	return {club: club, folderOpen: true, gameStep: $author$project$GameFlow$Draft, selectedSlot: $elm$core$Maybe$Nothing, showClubInfo: false, swapPlayers: _List_Nil};
 }();
 var $elm$core$Result$Err = function (a) {
@@ -7938,6 +7956,9 @@ var $rtfeldman$elm_css$Css$relative = {position: $rtfeldman$elm_css$Css$Structur
 var $author$project$Msg$Reserve = function (a) {
 	return {$: 'Reserve', a: a};
 };
+var $rtfeldman$elm_css$Css$Preprocess$ApplyStyles = function (a) {
+	return {$: 'ApplyStyles', a: a};
+};
 var $rtfeldman$elm_css$Css$batch = $rtfeldman$elm_css$Css$Preprocess$ApplyStyles;
 var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
 var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
@@ -7967,6 +7988,7 @@ var $author$project$GameStyle$cardStyle = $rtfeldman$elm_css$Css$batch(
 			A2($rtfeldman$elm_css$Css$property, 'overflow-wrap', 'anywhere'),
 			$author$project$GameStyle$cardDimensions
 		]));
+var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
 var $rtfeldman$elm_css$Css$dashed = {borderStyle: $rtfeldman$elm_css$Css$Structure$Compatible, textDecorationStyle: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'dashed'};
 var $elm$core$List$drop = F2(
 	function (n, list) {
@@ -7989,7 +8011,6 @@ var $elm$core$List$drop = F2(
 			}
 		}
 	});
-var $rtfeldman$elm_css$Css$marginBottom = $rtfeldman$elm_css$Css$prop1('margin-bottom');
 var $rtfeldman$elm_css$Css$noWrap = {flexDirectionOrWrap: $rtfeldman$elm_css$Css$Structure$Compatible, flexWrap: $rtfeldman$elm_css$Css$Structure$Compatible, value: 'nowrap', whiteSpace: $rtfeldman$elm_css$Css$Structure$Compatible};
 var $author$project$Msg$CancelDrag = {$: 'CancelDrag'};
 var $author$project$Msg$ChooseSlot = function (a) {
@@ -8042,12 +8063,6 @@ var $rtfeldman$elm_css$Html$Styled$Events$onClick = function (msg) {
 		$rtfeldman$elm_css$Html$Styled$Events$on,
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
-};
-var $rtfeldman$elm_css$Css$PercentageUnits = {$: 'PercentageUnits'};
-var $rtfeldman$elm_css$Css$pct = A2($rtfeldman$elm_css$Css$Internal$lengthConverter, $rtfeldman$elm_css$Css$PercentageUnits, '%');
-var $rtfeldman$elm_css$Css$center = $rtfeldman$elm_css$Css$prop1('center');
-var $rtfeldman$elm_css$Css$Preprocess$ApplyStyles = function (a) {
-	return {$: 'ApplyStyles', a: a};
 };
 var $rtfeldman$elm_css$Css$Internal$property = F2(
 	function (key, value) {
@@ -8857,7 +8872,6 @@ var $author$project$Club$reservesToHtml = function (club) {
 				[0, 1, 2])));
 };
 var $rtfeldman$elm_css$Html$Styled$section = $rtfeldman$elm_css$Html$Styled$node('section');
-var $rtfeldman$elm_css$Css$spaceBetween = $rtfeldman$elm_css$Css$prop1('space-between');
 var $author$project$Msg$Starter = function (a) {
 	return {$: 'Starter', a: a};
 };
@@ -8911,13 +8925,6 @@ var $author$project$Club$folderSlots = F2(
 				_List_fromArray(
 					[0, 5, 10])));
 	});
-var $author$project$Club$reservesToHtml = function (club) {
-	return A2($author$project$Club$folderSlots, $author$project$Msg$Reserve, club.reserves);
-};
-var $rtfeldman$elm_css$Html$Styled$section = $rtfeldman$elm_css$Html$Styled$node('section');
-var $author$project$Msg$Starter = function (a) {
-	return {$: 'Starter', a: a};
-};
 var $author$project$Club$startersToHtml = function (club) {
 	return A2($author$project$Club$folderSlots, $author$project$Msg$Starter, club.starters);
 };
