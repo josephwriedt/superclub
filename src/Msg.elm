@@ -7,6 +7,9 @@ type Msg
   | Select PlayerOrPlaceholder
   | Swap PlayerOrPlaceholder
   | Draft PlayerOrPlaceholder
+  | AdvanceGameStep
+  | ShowSquad
+  | ShowClubInfo
   | ToggleFolder
   | ChooseSlot Slot
   | DragSlot Slot

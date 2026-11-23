@@ -230,17 +230,7 @@ clubFolderHtml isOpen club =
         , Css.boxShadow4 (Css.px 0) (Css.px 8) (Css.px 20) (Css.hex "#a39b8a")
         ]
     ]
-    [ div
-        [ css [ Css.displayFlex, Css.justifyContent Css.spaceBetween, Css.alignItems Css.center ] ]
-        [ h2 [ css [ Css.color (Css.hex "#fff8e8"), Css.margin Css.zero ] ] [ text "Club folder" ]
-        , StyledHtml.button
-            [ Events.onClick Msg.ToggleFolder
-            , attribute "aria-expanded" (if isOpen then "true" else "false")
-            , attribute "aria-controls" "folder-contents"
-            , css [ Css.cursor Css.pointer, Css.padding (Css.px 12) ]
-            ]
-            [ text (if isOpen then "Close folder →" else "Open folder ←") ]
-        ]
+    [ h2 [ css [ Css.color (Css.hex "#fff8e8"), Css.marginBottom (Css.px 16) ] ] [ text "Brown Team" ]
     , div
         [ css [ Css.position Css.relative, Css.overflow Css.hidden, Css.borderRadius (Css.px 8) ] ]
         [ div
@@ -271,4 +261,12 @@ clubFolderHtml isOpen club =
             ]
             []
         ]
+    ]
+
+
+clubInfoToHtml : Club -> StyledHtml.Html Msg
+clubInfoToHtml _ =
+  StyledHtml.section [ css [ Css.margin (Css.px 24), Css.padding (Css.px 24) ] ]
+    [ h2 [] [ text "Club info" ]
+    , StyledHtml.p [] [ text "Club information is not available yet." ]
     ]
