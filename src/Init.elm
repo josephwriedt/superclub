@@ -26,9 +26,6 @@ arsenalReserves =
     , PlayerPlaceholder "10"
     , PlayerPlaceholder "11"
     , PlayerPlaceholder "12"
-    , PlayerPlaceholder "13"
-    , PlayerPlaceholder "14"
-    , PlayerPlaceholder "15"
     ]
 
 arsenalAttackers: List PlayerOrPlaceholder
