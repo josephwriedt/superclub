@@ -11,6 +11,7 @@ import Css
 import GameStyle
 import Array
 import Player exposing (isPlayer)
+import Staff exposing (StaffOrPlaceholder(..))
 
 type Placement = First | Second | Third | Fourth | Fifth | Sixth
 type ClubLevel = NewlyPromoted | MidTable | Established | TitleContenders
@@ -26,6 +27,7 @@ type alias Club =
   , training_level : FacilityLevel
   , club_level : ClubLevel
   , club_position : Placement
+  , staff : Array StaffOrPlaceholder
   , reserves : Array PlayerOrPlaceholder
   , starters : Array PlayerOrPlaceholder
   }
@@ -99,14 +101,14 @@ squadStrength club =
   Player.sumAbility (squad club)
 
 
-slotToHtml : (Int -> Msg.Slot) -> Int -> PlayerOrPlaceholder -> StyledHtml.Html Msg
-slotToHtml slotType index player =
+slotToHtml : Float -> (Int -> Msg.Slot) -> Int -> PlayerOrPlaceholder -> StyledHtml.Html Msg
+slotToHtml slotWidth slotType index player =
   let
     slot = slotType index
     label = if Player.isPlayer player then Player.name player else "Empty slot"
   in
   div
-    [ css [ Css.width (Css.pct 20), Css.padding (Css.px 3), Css.property "box-sizing" "border-box", Css.minWidth Css.zero ]
+    [ css [ Css.width (Css.pct slotWidth), Css.property "flex" "1 1 0", Css.property "box-sizing" "border-box", Css.minWidth Css.zero ]
     , attribute "draggable" "true"
     , Events.on "dragstart" (Decode.succeed (Msg.DragSlot slot))
     , Events.on "dragend" (Decode.succeed Msg.CancelDrag)
@@ -126,15 +128,54 @@ folderSlots : (Int -> Msg.Slot) -> Array PlayerOrPlaceholder -> StyledHtml.Html 
 folderSlots slotType players =
   let
     row offset =
-      div [ css [ Css.displayFlex, Css.flexWrap Css.noWrap ] ]
-        (players |> Array.toIndexedList |> List.drop offset |> List.take 5 |> List.map (\( index, player ) -> slotToHtml slotType index player))
+      div [ css [ Css.displayFlex, Css.flexWrap Css.noWrap, Css.property "gap" "8px", Css.marginBottom (Css.px 8) ] ]
+        (players |> Array.toIndexedList |> List.drop offset |> List.take 5 |> List.map (\( index, player ) -> slotToHtml 20 slotType index player))
   in
   div [ css [ Css.overflowX Css.auto ] ] (List.map row [ 0, 5, 10 ])
 
 
 reservesToHtml: Club -> StyledHtml.Html Msg
 reservesToHtml club =
-  folderSlots Msg.Reserve club.reserves
+  let
+    staffCard staff =
+      let
+        label = case staff of
+          StaffMember member -> member.name ++ " — " ++ member.role
+          StaffPlaceholder _ -> "Staff slot"
+      in
+      div
+        [ css
+            [ Css.width (Css.pct 20)
+            , Css.property "flex" "1 1 0"
+            , Css.property "box-sizing" "border-box"
+            , Css.minWidth Css.zero
+            ]
+        ]
+        [ div
+            [ class "staff-card"
+            , attribute "aria-label" label
+            , css
+                [ GameStyle.cardStyle
+                , Css.backgroundColor (Css.hex "#b9def2")
+                , Css.outlineStyle Css.dashed
+                , Css.outlineWidth (Css.px 1)
+                , Css.borderRadius (Css.px 8)
+                , Css.textAlign Css.center
+                ]
+            ]
+            [ text label ]
+        ]
+    row rowIndex =
+      let
+        players = club.reserves |> Array.toIndexedList |> List.drop (rowIndex * 4) |> List.take 4
+        staff = Array.get rowIndex club.staff |> Maybe.map staffCard |> Maybe.withDefault (text "")
+      in
+      div [ css [ Css.displayFlex, Css.flexWrap Css.noWrap, Css.property "gap" "8px", Css.marginBottom (Css.px 8) ] ]
+        (List.map (\( index, player ) -> slotToHtml 20 Msg.Reserve index player) players ++ [ staff ])
+  in
+  div
+    [ class "reserves" ]
+    (List.map row [ 0, 1, 2 ])
 
 attackersToHtml: Club -> StyledHtml.Html Msg
 attackersToHtml club =
@@ -204,19 +245,20 @@ startersToHtml club =
 clubFolderHtml: Bool -> Club -> StyledHtml.Html Msg
 clubFolderHtml isOpen club =
   let
-      panel title content =
+      panel title background foreground content =
         StyledHtml.section
           [ css
               [ Css.flex (Css.int 1)
+              , Css.property "box-sizing" "border-box"
               , Css.minWidth Css.zero
               , Css.flexBasis (Css.px 420)
               , Css.padding (Css.px 24)
               , Css.margin (Css.px 6)
-              , Css.backgroundColor (Css.hex "#f8f2df")
+              , Css.backgroundColor (Css.hex background)
               , Css.borderRadius (Css.px 6)
               ]
           ]
-          [ h2 [ css [ Css.color (Css.hex "#493d2d") ] ] [ text title ]
+          [ h2 [ css [ Css.color (Css.hex foreground) ] ] [ text title ]
           , content
           ]
   in
@@ -253,8 +295,8 @@ clubFolderHtml isOpen club =
                 , Css.property "visibility" (if isOpen then "visible" else "hidden")
                 ]
             ]
-            [ panel "Reserves" (reservesToHtml club)
-            , panel "Starting lineup" (startersToHtml club)
+            [ panel "Reserves" "#f8f2df" "#493d2d" (reservesToHtml club)
+            , panel "Starting lineup" "#173451" "#ffffff" (startersToHtml club)
             ]
         , div
             [ attribute "aria-hidden" "true"
