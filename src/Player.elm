@@ -223,14 +223,14 @@ playerToHtml a =
   in
   div 
     [ class <| playerId a
-    , css [ GameStyle.paddingStyle, Css.float Css.left ]
+    , css [ Css.width (Css.pct 100) ]
     ]
     [ div 
       [ css [ playerStyle a ] 
       , class "player-card"
       -- , onMouseDown (Msg.Swap a)
       ]
-      [ StyledHtml.h4 [ css textStyle ] [ a |> name |> text ] 
+      [ StyledHtml.h4 [ css (Css.margin (Css.pct 5) :: textStyle) ] [ a |> name |> text ]
       , displayAbility a
       ]
     ]
@@ -239,7 +239,7 @@ playerToHtml a =
   --     Player player ->
   --       div 
   --         [ class player.name
-  --         , css [ GameStyle.paddingStyle, Css.float Css.left ] 
+  --         , css [ Css.width (Css.pct 100) ]
   --         ] 
   --         [
   --           div 
